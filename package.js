@@ -17,6 +17,6 @@ Package.onUse(function (api) {
         'index.js',
         'index.import.js',
 
-        'i18n.import.js'
+        'lib/i18n.import.js'
     ]);
 });

@@ -1,3 +1,4 @@
+<img src="http://uniproject.vazco.eu/black_logo.png" />
 # Universe i18n
 
 ### Instalation

@@ -8,7 +8,7 @@ Internationalization package with support:
 regional dialects e.g. 'en_us' inherits from translations assigned to 'en'
 - react component `<T>ok</T>`
 
-**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+**Table of Contents**
 
 - [Universe i18n](#universe-i18n)
   - [Instalation](#instalation)

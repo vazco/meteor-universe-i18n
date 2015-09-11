@@ -17,6 +17,7 @@ export const i18n = {
     },
     createComponent (translator = i18n.createTranslator()) {
         return React.createClass({
+            displayName: 'T',
             render () {
                 return (
                     <span dangerouslySetInnerHTML={{

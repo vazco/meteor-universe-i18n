@@ -77,7 +77,7 @@ i18n.addTranslation(prefix, key, translation);
 i18n.addTranslations(prefix, translationsMap);
 
 // get translation
-i18n.getTranslation(prefix, key,..., params);
+i18n.getTranslation(prefix, key, ..., params);
 i18n.__(prefix, key,..., params);
 
 // get translations

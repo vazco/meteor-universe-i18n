@@ -103,7 +103,7 @@ i18n.getLocale()
 ```
 
 ## Locales list
-
+```
 Locale   Language             Country  
     aa_DJ    Afar                 Djibouti                                   aa   DJ  
     aa_ER    Afar                 Eritrea                                    aa   ER  
@@ -344,3 +344,4 @@ Locale   Language             Country
     zh_SG    Chinese              Singapore                                  zh   SG  
     zh_TW    Chinese              Taiwan, Province Of China                  zh   TW  
     zu_ZA    Zulu                 South Africa                               zu   ZA  
+```

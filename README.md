@@ -78,6 +78,9 @@ i18n.__(namespace, key, parameters);
 i18n.__(key, key, key, key, parameters);
 //same with "getTranslation" e.g.:
 i18n.getTranslation(key, key, key, key, parameters);
+// namespaced translations
+var t = i18n.createTranslator(namespace);
+t(key, parameters);
 ```
 
 If needed, parameters can be passed as last of function argument, as a object or array.

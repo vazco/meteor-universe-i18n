@@ -27,8 +27,13 @@ export const i18n = {
         });
     },
 
-    createTranslator (namespace) {
-        return (key, params) => i18n.getTranslation(namespace, key, params);
+    createTranslator (namespace, locale) {
+        return (...args) => {
+            const params = typeof args[args.length -1] === 'object'? 
+            args[args.length -1] : () => {args.push({}); return args[args.length -1]}();
+            params._locale = params._locale || locale;
+            i18n.getTranslation(namespace, ...args);
+        }
     },
 
     _translations: {},
@@ -48,10 +53,15 @@ export const i18n = {
             }
         });
         const key = keysArr.join('.');
-        let token = i18n.getLocale() + '.' + key;
+        let params = {};
+        if (typeof args[args.length - 1] === 'object') {
+            params = args[args.length - 1];
+        }
+        const currentLang = params._locale || i18n.getLocale();
+        let token = currentLang + '.' + key;
         let string = UniUtils.get(i18n._translations, token);
         if (!string) {
-            token = i18n.getLocale().replace(/_[a-z]{2}$/, '') + '.' + key;
+            token = currentLang.replace(/_[a-z]{2}$/, '') + '.' + key;
             string = UniUtils.get(i18n._translations, token, key);
 
             if (!string) {
@@ -65,12 +75,9 @@ export const i18n = {
             }
         }
 
-        if (typeof args[args.length - 1] === 'object') {
-            const params = args[args.length - 1];
-            Object.keys(params).forEach(param => {
+        Object.keys(params).forEach(param => {
                 string = string.replace(open + param + close, params[param]);
-            });
-        }
+        });
 
         return string;
     },

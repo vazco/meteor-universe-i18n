@@ -15,8 +15,7 @@ export const i18n = {
     getLocale () {
         return i18n._locale || i18n._defaultLocale;
     },
-    createComponent (translator) {
-        translator = translator || i18n.createTranslator();
+    createComponent (translator = i18n.createTranslator()) {
         return React.createClass({
             render () {
                 return (
@@ -64,7 +63,7 @@ export const i18n = {
         return string;
     },
     __: this.getTranslation,
-    getTranslations (prefix, locale) {
+    getTranslations (prefix, locale = i18n.getLocale()) {
         if (locale) {
             prefix = locale + '.' + prefix;
         }
@@ -81,9 +80,8 @@ export const i18n = {
     * parseNumber('16217 and 17217,715'); // 16,217 and 17,217.715
     * parseNumber('7013217.715', 'ru-ru'); // 7 013 217,715
     */
-    parseNumber (number, locale) {
+    parseNumber (number, locale = i18n.getLocale()) {
         number = '' + number;
-        locale = locale || i18n.getLocale();
         let sep = locales[locale];
         if (!sep) return number;
         return number.replace(/(\d+)[\.,]*(\d*)/gim, function(match, num, dec) {

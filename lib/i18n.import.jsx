@@ -1,11 +1,16 @@
 import {UniUtils} from '{universe:utilities}!vars';
+import locales from './locales';
 
 export const i18n = {
-    _defaultLocale: 'en_us',
+    _defaultLocale: 'en-us',
     _locale: this._defaultLocale,
     setLocale (locale) {
-        //TODO: validation here
-        i18n._locale = locale.toLocaleLowerCase();
+        locale = locale.toLocaleLowerCase();
+        if (!locales[locale]) {
+            console.error('Missing locale:', locale);
+            return;
+        }
+        i18n._locale = locale;
     },
     getLocale () {
         return i18n._locale || i18n._defaultLocale;
@@ -70,7 +75,33 @@ export const i18n = {
         const translation = args.pop();
         UniUtils.set(i18n._translations, args.join('.'), translation);
     },
-    addTranslations: this.addTranslation
+    addTranslations: this.addTranslation,
+    /**
+    * parseNumber('7013217.715'); // 7,013,217.715
+    * parseNumber('16217 and 17217,715'); // 16,217 and 17,217.715
+    * parseNumber('7013217.715', 'ru-ru'); // 7 013 217,715
+    */
+    parseNumber (number, locale) {
+        number = '' + number;
+        locale = locale || i18n.getLocale();
+        let sep = locales[locale];
+        if (!sep) return number;
+        return number.replace(/(\d+)[\.,]*(\d*)/gim, function(match, num, dec) {
+            return format(+num, sep.charAt(0)) + (dec ? sep.charAt(1) + dec : '');
+      }) || '0';
+    }
+}
+
+function format(int, sep) {
+  var str = '';
+  var n;
+
+  while (int) {
+    n = int % 1e3;
+    int = parseInt(int / 1e3);
+    if (int === 0) return n + str;
+    str = sep + (n < 10 ? '00' : (n < 100 ? '0' : '')) + n + str;
+  }
 }
 
 export default i18n;

@@ -46,7 +46,7 @@ i18n.getLocale() //en_us
 
 ### Adding Translations by methods
 
-```jsx
+```js
 import i18n from '{universe:i18n}';
 
 i18n.addTranslation('en_us', 'common', 'no', 'No');
@@ -100,7 +100,7 @@ i18n.__('items', ['a', 'b', 'c']); //output: First item a and last is c!
 
 ### Creating react component
 
-```jsx
+```js
 import i18n from '{universe:i18n}';
 
 //instance of translate component with top-level context
@@ -171,7 +171,7 @@ For example, translations files in packages are namespaced as a default by packa
 }
 ```
 
-```jsx
+```js
 import i18n from '{universe:i18n}';
 
 i18n.__('universe:profile', 'userName') //output: User name

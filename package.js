@@ -1,6 +1,6 @@
 Package.describe({
     name: 'universe:i18n',
-    version: '0.1.0',
+    version: '0.2.0',
     summary: 'React i18n (internationalization) package for Universe',
     git: 'https://github.com/vazco/meteor-universe-i18n'
 });
@@ -16,7 +16,7 @@ Package.onUse(function (api) {
     api.addFiles([
         'index.js',
         'index.import.js',
-
+        'lib/locales.import.jsx'
         'lib/i18n.import.jsx'
     ]);
 });

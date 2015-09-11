@@ -235,8 +235,8 @@ userName: User name
 ```
 
 ```js
-i18n.__('user.listing.item.userName') //output: User name
-i18n.__('user', 'listing', item.userName') //output: User name
+i18n.__('user.listing.item.userName'); //output: User name
+i18n.__('user', 'listing', 'item.userName'); //output: User name
 // in react:
 const T = i18n.createComponent();
 <T>user.listing.item.userName</T>
@@ -279,9 +279,9 @@ i18n.options = {
 i18n.parseNumber(number, locale);
 
 // Setting locale
-i18n.setLocale(locale)
+i18n.setLocale(locale);
 // Getting locale
-i18n.getLocale()
+i18n.getLocale();
 
 ```
 

@@ -18,17 +18,17 @@ i18n.getLocale() //en_us
 ```js
 import i18n from '{universe:i18n}';
 
-i18n.addTranslation('en', 'common', 'no', 'No');
-i18n.addTranslation('en.common', 'ok', 'Ok');
-i18n.addTranslation('en.common.ok', 'Ok');
+i18n.addTranslation('en_us', 'common', 'no', 'No');
+i18n.addTranslation('en_us.common', 'ok', 'Ok');
+i18n.addTranslation('en_us.common.ok', 'Ok');
 
-i18n.addTranslations('en', {
+i18n.addTranslations('en_us', {
     common: {
         hello: 'Hello {$name} {$0}!'
     }
 });
 
-i18n.addTranslations('en', 'common', {
+i18n.addTranslations('en_us', 'common', {
     hello: 'Hello {$name} {$0}!'
 });
 ```

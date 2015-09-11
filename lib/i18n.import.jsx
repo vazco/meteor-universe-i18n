@@ -2,7 +2,7 @@ import {UniUtils} from '{universe:utilities}!vars';
 import locales from './locales';
 
 export const i18n = {
-    _defaultLocale: 'en-us',
+    _defaultLocale: 'en_us',
     _locale: this._defaultLocale,
     setLocale (locale) {
         locale = locale.toLocaleLowerCase();

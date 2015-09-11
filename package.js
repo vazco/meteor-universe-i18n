@@ -1,12 +1,12 @@
 Package.describe({
     name: 'universe:i18n',
     version: '1.0.0',
-    summary: 'React i18n (internationalization) package for Universe',
+    summary: 'React i18n (internationalization) package with YAML & JSON support',
     git: 'https://github.com/vazco/meteor-universe-i18n'
 });
 
 Package.registerBuildPlugin({
-    name: 'UniverseI18nBuilder',
+    name: 'UniverseI18n',
     sources: ['build-plugin.js'],
     npmDependencies: {
         'json-comments': '0.2.1',

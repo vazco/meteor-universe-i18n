@@ -5,6 +5,15 @@ Package.describe({
     git: 'https://github.com/vazco/meteor-universe-i18n'
 });
 
+Package.registerBuildPlugin({
+    name: 'UniverseI18nBuilder',
+    sources: ['build-plugin.js'],
+    npmDependencies: {
+        'json-comments': '0.2.1',
+        'yamljs': '0.2.3'
+    }
+});
+
 Package.onUse(function (api) {
     api.versionsFrom('1.1.0.3');
 
@@ -16,7 +25,7 @@ Package.onUse(function (api) {
     api.addFiles([
         'index.js',
         'index.import.js',
-        'lib/locales.import.jsx'
+        'lib/locales.import.jsx',
         'lib/i18n.import.jsx'
     ]);
 });

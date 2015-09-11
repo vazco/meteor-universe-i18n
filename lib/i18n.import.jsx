@@ -3,7 +3,7 @@ import locales from './locales';
 
 export const i18n = {
     _defaultLocale: 'en_us',
-    _locale: this._defaultLocale,
+    _locale: i18n._defaultLocale,
     setLocale (locale) {
         locale = locale.toLocaleLowerCase();
         if (!locales[locale]) {

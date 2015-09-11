@@ -46,7 +46,7 @@ i18n.getLocale() //en_us
 
 ### Adding Translations by methods
 
-```js
+```jsx
 import i18n from '{universe:i18n}';
 
 i18n.addTranslation('en_us', 'common', 'no', 'No');
@@ -70,7 +70,7 @@ You can translate translation string on few way:
 *about react component in next section*
 - you can use 2 methods (i18n.getTranslation() or quicker call i18n.__())
 
-```
+```js
 i18n.__(key);
 i18n.__(key, params);
 i18n.__(namespace, key, parameters);
@@ -100,7 +100,7 @@ i18n.__('items', ['a', 'b', 'c']); //output: First item a and last is c!
 
 ### Creating react component
 
-```js
+```jsx
 import i18n from '{universe:i18n}';
 
 //instance of translate component with top-level context
@@ -112,7 +112,7 @@ const T = i18n.createComponent();
 <T name="World" {...[69]}>common.hello</T>
 ```
 
-```js
+```jsx
 import i18n from '{universe:i18n}';
 //instance of translate component in "common" namespace
 const T = i18n.createComponent(i18n.createTranslator('common'));
@@ -189,7 +189,7 @@ You can change default namespace for file by setting prefix to file under key "_
 ```json
 //file en.json in package universe:profile
 {
-    "_namespace": "common"
+    "_namespace": "common",
     "userName": "User name"
 }
 ```

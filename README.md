@@ -4,7 +4,8 @@ Internationalization package with support:
 - namespacing of translations strings
 - file format YAML and JSON supports
 - named and positional parameters
-- locale (typographic number, regional dialects e.g. 'en_us' inherits from translations assigned to 'en')
+- locale like typographic number, 
+regional dialects e.g. 'en_us' inherits from translations assigned to 'en'
 - react component `<T>ok</T>`
 
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*

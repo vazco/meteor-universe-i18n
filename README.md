@@ -43,7 +43,7 @@ i18n.setLocale('en_us')
 i18n.getLocale() //en_us
 ```
 
-### Adding Translations my methods
+### Adding Translations by methods
 
 ```js
 import i18n from '{universe:i18n}';

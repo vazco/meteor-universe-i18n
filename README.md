@@ -189,7 +189,7 @@ You can change default namespace for file by setting prefix to file under key "_
 ```json
 //file en.json in package universe:profile
 {
-    "_namespace": 'common'
+    "_namespace": "common"
     "userName": "User name"
 }
 ```

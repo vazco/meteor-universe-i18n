@@ -81,6 +81,9 @@ i18n.getTranslation(key, key, key, key, parameters);
 // namespaced translations
 var t = i18n.createTranslator(namespace);
 t(key, parameters);
+// different language translations
+var t2 = i18n.createTranslator('', 'fr_fr');
+t2(key, parameters);
 ```
 
 If needed, parameters can be passed as last of function argument, as a object or array.
@@ -121,9 +124,9 @@ import i18n from '{universe:i18n}';
 const T = i18n.createComponent(i18n.createTranslator('common'));
 
 // Later...
-<T>no</T>
 <T>ok</T>
-<T name="World" {...[69]}>.hello</T>
+// this time with override locale  
+<T _locale='pl_pl'>hello</T>
 ```
 
 ### Formatting numbers
@@ -254,7 +257,7 @@ const T2 = i18n.createComponent(i18n.createTranslator('user.listing'));
 i18n.createComponent(translator);
 
 // create namespaced translator
-i18n.createTranslator(namespace);
+i18n.createTranslator(namespace, locale);
 
 // add translation
 i18n.addTranslation(namespace, key, ..., translation);

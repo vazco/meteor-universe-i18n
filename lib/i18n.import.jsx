@@ -28,11 +28,19 @@ export const i18n = {
     },
 
     createTranslator (namespace, locale) {
+        if(typeof locale === 'string' && !locale) {
+            locale = undefined;
+        }
         return (...args) => {
-            const params = typeof args[args.length -1] === 'object'? 
-            args[args.length -1] : () => {args.push({}); return args[args.length -1]}();
-            params._locale = params._locale || locale;
-            i18n.getTranslation(namespace, ...args);
+            if(locale){
+                if(typeof args[args.length -1] === 'object'){
+                    let params = args[args.length -1];
+                    params._locale = params._locale || locale;
+                } else {
+                    args.push({_locale: locale});
+                }
+            }
+            return i18n.getTranslation(namespace, ...args);
         }
     },
 
@@ -61,8 +69,8 @@ export const i18n = {
         let token = currentLang + '.' + key;
         let string = UniUtils.get(i18n._translations, token);
         if (!string) {
-            token = currentLang.replace(/_[a-z]{2}$/, '') + '.' + key;
-            string = UniUtils.get(i18n._translations, token, key);
+            token = currentLang.replace(/_[a-z][a-z]$/, '') + '.' + key;
+            string = UniUtils.get(i18n._translations, token);
 
             if (!string) {
                 token = i18n._defaultLocale + '.' + key;
@@ -81,6 +89,7 @@ export const i18n = {
 
         return string;
     },
+    
     getTranslations (namespace, locale = i18n.getLocale()) {
         if (locale) {
             namespace = locale + '.' + namespace;

@@ -89,7 +89,7 @@ export const i18n = {
 
         return string;
     },
-    
+
     getTranslations (namespace, locale = i18n.getLocale()) {
         if (locale) {
             namespace = locale + '.' + namespace;

@@ -1,6 +1,6 @@
 Package.describe({
     name: 'universe:i18n',
-    version: '1.0.1',
+    version: '1.0.2',
     summary: 'React i18n (internationalization) package with YAML & JSON support',
     git: 'https://github.com/vazco/meteor-universe-i18n'
 });

@@ -65,11 +65,16 @@ var lacaleTestReg = /^[a-z]{2}(?:(?:_[a-z]{2})|$)/;
 function getLocaleFromPath (step) {
     var path = step.inputPath.toLowerCase();
     var locale = path.replace(/\.i18n\.(?:json|yml)$/, '').replace('-', '_');
+    var inputArr = locale.split('/');
+    locale = inputArr[inputArr.length -1];
     if (lacaleTestReg.test(locale)) {
         return locale;
     }
+    if(inputArr.length > 1 && lacaleTestReg.test(inputArr[inputArr.length -2])){
+        return inputArr[inputArr.length -2];
+    }
     path = step.fullInputPath.toLowerCase();
-    locale = path.match(fullInputPath1, path);
+    locale = path.match(fullInputPath1);
     if (locale && locale.length > 1) {
         return locale[1].replace(/[\/\\]/, '_');
     }

@@ -44,7 +44,7 @@ i18n.setLocale('en_us')
 i18n.getLocale() //en_us
 ```
 
-Example for those, who want to set locale as in browser has:
+Example for those, who want to set locale as in browser:
 
 ```js
 // somewhere in page layout ( or in router?)

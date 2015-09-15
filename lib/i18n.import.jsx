@@ -1,12 +1,13 @@
 import {UniUtils} from '{universe:utilities}!vars';
 import locales from './locales';
-
+const lacaleTestReg = /^[a-z]{2}(?:(?:_[a-z]{2})|$)/;
 export const i18n = {
     _defaultLocale: 'en_us',
     setLocale (locale) {
-        locale = locale.toLocaleLowerCase();
-        if (!locales[locale]) {
-            console.error('Missing locale:', locale);
+        locale = locale.toLowerCase();
+        locale = locale.replace('-', '_');
+        if (!lacaleTestReg.test(locale)) {
+            console.error('Wrong locale:', locale, '[Should be xx_yy or xx]');
             return;
         }
         i18n._locale = locale;

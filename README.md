@@ -44,6 +44,23 @@ i18n.setLocale('en_us')
 i18n.getLocale() //en_us
 ```
 
+Example for those, who want to set locale as in browser:
+
+```js
+// somewhere in page layout ( or in router?)
+function getLang() {
+    if (navigator.languages != undefined)  {
+        return navigator.languages[0];
+    }
+    return navigator.language || navigator.browserLanguage;
+}
+
+i18n.setLocale(getLang());
+```
+
+But this will be work only on client side.
+For server side you should read it from header 'accept-language'
+
 ### Adding Translations by methods
 
 ```js

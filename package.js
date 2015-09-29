@@ -1,6 +1,6 @@
 Package.describe({
     name: 'universe:i18n',
-    version: '1.0.3',
+    version: '1.0.4',
     summary: 'React i18n (internationalization) package with YAML & JSON support',
     git: 'https://github.com/vazco/meteor-universe-i18n'
 });
@@ -19,7 +19,7 @@ Package.onUse(function (api) {
 
     api.use([
         'universe:modules@0.4.2',
-        'universe:utilities@1.0.0'
+        'universe:utilities@1.0.0 || 2.0.0'
     ]);
 
     api.addFiles([

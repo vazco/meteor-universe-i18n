@@ -1,4 +1,3 @@
-import {UniUtils} from '{universe:utilities}!vars';
 import locales from './locales';
 const lacaleTestReg = /^[a-z]{2}(?:(?:_[a-z]{2})|$)/;
 export const i18n = {

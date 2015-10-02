@@ -1,4 +1,4 @@
-var JSONC = Npm.require('json-comments');
+var stripJsonComments = Npm.require('strip-json-comments');
 var YAML = Npm.require('yamljs');
 
 var handler = function (compileStep) {
@@ -9,7 +9,7 @@ var handler = function (compileStep) {
     var translations;
     if (type === 'json') {
         try {
-            translations = JSONC.parse(source);
+            translations = JSON.parse(stripJsonComments(source));
         } catch (e) {
             compileStep.error({
                 message: 'Cannot parse json file: '+e.toString,

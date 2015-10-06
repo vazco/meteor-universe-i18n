@@ -1,4 +1,5 @@
 import locales from './locales';
+import {UniUtils} from '{universe:utilities}!exports';
 const lacaleTestReg = /^[a-z]{2}(?:(?:_[a-z]{2})|$)/;
 export const i18n = {
     _defaultLocale: 'en_us',
@@ -101,7 +102,7 @@ export const i18n = {
         let translation = args.pop();
         let namespace = args.join('.');
         namespace = namespace.replace(/\.\.|\.$/, '');
-        translation = merge(UniUtils.get(i18n._translations, namespace) || {}, translation);
+        translation = UniUtils.deepExtend(UniUtils.get(i18n._translations, namespace) || {}, translation);
         UniUtils.set(i18n._translations, namespace, translation);
     },
     /**
@@ -132,38 +133,6 @@ function format (int, sep) {
         if (int === 0) return n + str;
         str = sep + (n < 10 ? '00' : (n < 100 ? '0' : '')) + n + str;
     }
-}
-
-function merge (...args) {
-    let i, j, obj, src, key, keys, len;
-    let target = args[0];
-    const length = args.length;
-
-    for (i = 1; i < length; ++i) {
-        obj = args[i];
-        if ((obj === null || typeof obj !== 'object') && typeof obj !== 'function') {
-            continue;
-        }
-
-        keys = Object.keys(obj);
-        len = keys.length;
-
-        for (j = 0; j < len; j++) {
-            key = keys[j];
-            src = obj[key];
-            if (src !== null && typeof src === 'object') {
-                if (target[key] === null || typeof target[key] !== 'object') {
-                    target[key] = Array.isArray(src) ? [] : {};
-                }
-
-                merge([target[key], src], true);
-            } else {
-                target[key] = src;
-            }
-        }
-    }
-
-    return target;
 }
 
 export default i18n;

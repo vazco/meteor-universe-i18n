@@ -1,16 +1,13 @@
-import locales from './locales';
-import {UniUtils} from '{universe:utilities}!exports';
-const lacaleTestReg = /^[a-z]{2}(?:(?:_[a-z]{2})|$)/;
-export const i18n = {
-    _defaultLocale: 'en_us',
+const i18n = {
+    _defaultLocale: 'en-us',
     setLocale (locale) {
         locale = locale.toLowerCase();
-        locale = locale.replace('-', '_');
-        if (!lacaleTestReg.test(locale)) {
-            console.error('Wrong locale:', locale, '[Should be xx_yy or xx]');
+        locale = locale.replace('_', '-');
+        if (!locales[locale]) {
+            console.error('Wrong locale:', locale, '[Should be xx-yy or xx]');
             return;
         }
-        i18n._locale = locale;
+        i18n._locale = locales[locale][0];
     },
     getLocale () {
         return i18n._locale || i18n._defaultLocale;
@@ -29,13 +26,13 @@ export const i18n = {
     },
 
     createTranslator (namespace, locale) {
-        if(typeof locale === 'string' && !locale) {
+        if (typeof locale === 'string' && !locale) {
             locale = undefined;
         }
         return (...args) => {
-            if(locale){
-                if(typeof args[args.length -1] === 'object'){
-                    let params = args[args.length -1];
+            if (locale) {
+                if (typeof args[args.length - 1] === 'object') {
+                    let params = args[args.length - 1];
                     params._locale = params._locale || locale;
                 } else {
                     args.push({_locale: locale});
@@ -70,7 +67,7 @@ export const i18n = {
         let token = currentLang + '.' + key;
         let string = UniUtils.get(i18n._translations, token);
         if (!string) {
-            token = currentLang.replace(/_[a-z][a-z]$/, '') + '.' + key;
+            token = currentLang.replace(/-.+$/, '') + '.' + key;
             string = UniUtils.get(i18n._translations, token);
 
             if (!string) {
@@ -78,14 +75,14 @@ export const i18n = {
                 string = UniUtils.get(i18n._translations, token);
 
                 if (!string) {
-                    token = i18n._defaultLocale.replace(/_[a-z]{2}$/, '') + '.' + key;
+                    token = i18n._defaultLocale.replace(/-.+$/, '') + '.' + key;
                     string = UniUtils.get(i18n._translations, token, key);
                 }
             }
         }
 
         Object.keys(params).forEach(param => {
-                string = string.replace(open + param + close, params[param]);
+            string = string.replace(open + param + close, params[param]);
         });
 
         return string;
@@ -102,6 +99,14 @@ export const i18n = {
         let translation = args.pop();
         let namespace = args.join('.');
         namespace = namespace.replace(/\.\.|\.$/, '');
+        //backwards compatibility
+        const firstDot = namespace.indexOf('.');
+        let lang = namespace.slice(0, firstDot);
+        lang = lang.toLowerCase().replace('_', '-');
+        if (locales[lang]) {
+            lang = locales[lang][0];
+            namespace = lang + namespace.slice(firstDot);
+        }
         translation = UniUtils.deepExtend(UniUtils.get(i18n._translations, namespace) || {}, translation);
         UniUtils.set(i18n._translations, namespace, translation);
     },
@@ -114,16 +119,30 @@ export const i18n = {
         number = '' + number;
         let sep = locales[locale];
         if (!sep) return number;
+        sep = sep[4];
         return number.replace(/(\d+)[\.,]*(\d*)/gim, function (match, num, dec) {
                 return format(+num, sep.charAt(0)) + (dec ? sep.charAt(1) + dec : '');
             }) || '0';
+    },
+    _locales: locales,
+    getCurrencySymbol (locale = i18n.getLocale()) {
+        return locales[locale] && locales[locale][6];
+    },
+    getLanguageName (locale = i18n.getLocale()) {
+        return locales[locale] && locales[locale][1];
+    },
+    getLanguageNativeName (locale = i18n.getLocale()) {
+        return locales[locale] && locales[locale][2];
+    },
+    isRTL (locale = i18n.getLocale()) {
+        return locales[locale] && locales[locale][3];
     }
 };
 
 i18n.__ = i18n.getTranslation;
 i18n.addTranslations = i18n.addTranslation;
 
-function format (int, sep) {
+function format(int, sep) {
     var str = '';
     var n;
 
@@ -135,4 +154,4 @@ function format (int, sep) {
     }
 }
 
-export default i18n;
+_i18n = i18n;

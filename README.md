@@ -5,7 +5,9 @@ Internationalization package with support:
 - file format YAML and JSON supports
 - named and positional parameters
 - locale like typographic number, 
+- 353 locales (with basic informations: name, symbol of currency, rtl) 
 regional dialects e.g. 'en_us' inherits from translations assigned to 'en'
+- universe:modules (es6/modules)
 - react component `<T>ok</T>`
 
 **Table of Contents**
@@ -36,12 +38,28 @@ $ meteor add universe:i18n
 ```
 
 ## Usage
+This plugin is dedicated to work with react and universe:modules, but you can use it without react or universe:modules.
+### Using with universe:modules (ecmascript 2015 modules)
+
+```
+import i18n from '{universe:i18n}';
+```
+
+### Importing by SystemJs Api (universe:modules)
+
+```
+System.import('{universe:i18n}').then(/*something to do*/)
+```
+
+### Using as a global (pure meteor)
+
+Package from version 1.1.5 exports global under name `_i18n`
 
 ### Setting/Getting locale
 
 ```js
-i18n.setLocale('en_us')
-i18n.getLocale() //en_us
+i18n.setLocale('en-US')
+i18n.getLocale() //en-US
 ```
 
 Example for those, who want to set locale as in browser:
@@ -66,17 +84,17 @@ For server side you should read it from header 'accept-language'
 ```js
 import i18n from '{universe:i18n}';
 
-i18n.addTranslation('en_us', 'common', 'no', 'No');
-i18n.addTranslation('en_us.common', 'ok', 'Ok');
-i18n.addTranslation('en_us.common.ok', 'Ok');
+i18n.addTranslation('en-US', 'common', 'no', 'No');
+i18n.addTranslation('en-US.common', 'ok', 'Ok');
+i18n.addTranslation('en-US.common.ok', 'Ok');
 
-i18n.addTranslations('en_us', {
+i18n.addTranslations('en-US', {
     common: {
         hello: 'Hello {$name} {$0}!'
     }
 });
 
-i18n.addTranslations('en_us', 'common', {
+i18n.addTranslations('en-US', 'common', {
     hello: 'Hello {$name} {$0}!'
 });
 ```
@@ -99,7 +117,7 @@ i18n.getTranslation(key, key, key, key, parameters);
 var t = i18n.createTranslator(namespace);
 t(key, parameters);
 // different language translations
-var t2 = i18n.createTranslator('', 'fr_fr');
+var t2 = i18n.createTranslator('', 'fr-fr');
 t2(key, parameters);
 ```
 
@@ -143,7 +161,7 @@ const T = i18n.createComponent(i18n.createTranslator('common'));
 // Later...
 <T>ok</T>
 // this time with override locale  
-<T _locale='pl_pl'>hello</T>
+<T _locale='pl-PL'>hello</T>
 ```
 
 ### Formatting numbers
@@ -151,7 +169,7 @@ const T = i18n.createComponent(i18n.createTranslator('common'));
 ```js
 i18n.parseNumber('7013217.715'); // 7,013,217.715
 i18n.parseNumber('16217 and 17217,715'); // 16,217 and 17,217.715
-i18n.parseNumber('7013217.715', 'ru_ru'); // 7 013 217,715
+i18n.parseNumber('7013217.715', 'ru-RU'); // 7 013 217,715
 ```
 
 ## Translations files
@@ -163,7 +181,7 @@ You can store translations in files YAML or JSON, according with following file 
 Name of file can be any but only if in file has the locale declared under key **'_locale'**
 
 ```yml
-_locale: 'en_us',
+_locale: 'en-US',
 title: Title
 ```
 
@@ -175,8 +193,8 @@ en.json
 en_us.yml
 en-us.yml
 en/us.yml
-en_us/someName.yml
-someDir/en_us/someName.yml
+en-US/someName.yml
+someDir/en-us/someName.yml
 ```
 ### Namespace
 
@@ -306,69 +324,16 @@ i18n.setLocale(locale);
 // Getting locale
 i18n.getLocale();
 
+// Additional informations about locale ( default locale is current )
+
+getCurrencySymbol (locale)
+getLanguageName (locale)
+getLanguageNativeName (locale)
+isRTL (locale)
 ```
 
-## Locales list 
-*( predefined for parseNumber, can be more )*
+## Locales list (353 locales suported)
+*( predefined for parseNumber, currency, names, native names)*
 ```
-ar, ar_ae, ar_bh, ar_eg, ar_jo, ar_kw, ar_lb, ar_qa, ar_sa,
-az_az,
-be, be_by,
-bg, bg_bg,
-bn, bn_bd,
-bs, bs_ba, 
-ca, ca_es, 
-cs, cs_cz, 
-cy, cy_gb, 
-da, da_dk, 
-de, de_at, de_ch, de_de, de_lu, 
-el, el_gr, 
-en, en_au, en_bb, en_bm, en_ca, en_gb, en_gh, en_id, en_ie, en_in, en_my, en_ng, en_nz, en_ph, en_pk, en_sg, en_us, en_za, 
-es, es_ar, es_bo, es_cl, es_co, es_cr, es_do, es_ec, es_es, es_gt, es_hn, es_mx, es_pa, es_pe, es_pr, es_py, es_sv, es_uy, es_ve, 
-et, et_ee, 
-eu, eu_es, 
-fi, fi_fi, 
-fr, fr_be, fr_ca, fr_ch, fr_fr, fr_lu, fr_mc, 
-ga, ga_ie, 
-hi, hi_in, 
-hr, hr_hr, 
-hu, hu_hu, 
-hy, hy_am, 
-in, in_id, 
-is, is_is, 
-it, it_ch, it_it, 
-iw, iw_il, 
-ja, ja_jp, 
-ka, ka_ge, 
-kk, kk_kz, 
-km, km_kh, 
-ko, ko_kr, 
-ky, ky_kg, 
-lb, lb_lu, 
-lt, lt_lt, 
-lv, lv_lv, 
-mk, mk_mk, 
-ms, ms_bn, ms_my, 
-mt, mt_mt, 
-nl, nl_be, nl_nl, nl_sr, 
-no, no_no, 
-pl, pl_pl, 
-pt, pt_ao, pt_br, pt_pt, 
-rm, rm_ch, 
-ro, ro_md, ro_ro, 
-ru, ru_ru, 
-sh, sh_ba, sh_cs, sh_me, 
-sk, sk_sk, 
-sl, sl_si, 
-sq, sq_al, 
-sr, sr_ba, sr_cs, 
-sv, sv_se, 
-tg, tg_tj, 
-th, th_th, 
-tl, tl_ph, 
-tr, tr_tr, 
-uk, uk_ua, 
-ur, ur_pk, 
-vi, vi_vn, 
-zh, zh_cn, zh_hk, zh_mo, zh_sg, zh_tw   
+
 ```

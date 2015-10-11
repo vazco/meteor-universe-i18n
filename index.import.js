@@ -1,2 +1,1 @@
-export * from './lib/i18n';
-export {i18n as default} from './lib/i18n';
+export {_i18n as i18n, _i18n as default};

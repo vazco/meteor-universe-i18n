@@ -5,8 +5,8 @@ Internationalization package with support:
 - file format YAML and JSON supports
 - named and positional parameters
 - locale like typographic number, 
-- 353 locales (with basic informations: name, symbol of currency, rtl) 
-regional dialects e.g. 'en_us' inherits from translations assigned to 'en'
+- 353 locales (with basic informations: name, symbol of currency, rtl)
+- regional dialects e.g. 'en-us' inherits from translations assigned to 'en'
 - universe:modules (es6/modules)
 - react component `<T>ok</T>`
 
@@ -39,19 +39,20 @@ $ meteor add universe:i18n
 
 ## Usage
 This plugin is dedicated to work with react and universe:modules, but you can use it without react or universe:modules.
-### Using with universe:modules (ecmascript 2015 modules)
+
+#### Using with universe:modules (ecmascript 2015 modules)
 
 ```
 import i18n from '{universe:i18n}';
 ```
 
-### Importing by SystemJs Api (universe:modules)
+#### Importing by SystemJs Api (universe:modules)
 
 ```
 System.import('{universe:i18n}').then(/*something to do*/)
 ```
 
-### Using as a global (pure meteor)
+#### Using as a global (pure meteor)
 
 Package from version 1.1.5 exports global under name `_i18n`
 

@@ -23,6 +23,9 @@ class UniverseI18nBuilder extends CachingCompiler {
 
     compileOneFile(file) {
         const source = file.getContentsAsString();
+        if(!source){
+            return;
+        }
         const filePath = file.getPathInPackage();
         let path = filePath.split('.i18n.');
         const type = path[path.length - 1].toLowerCase();

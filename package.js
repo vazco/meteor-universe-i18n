@@ -19,16 +19,16 @@ Package.onUse(function (api) {
     api.versionsFrom('1.2.0.2');
 
     api.use([
-        'jsx',
-        'universe:modules@0.5.0',
+        'ecmascript',
         'universe:utilities@2.0.5',
         'isobuild:compiler-plugin@1.0.0'
     ]);
 
+    api.use('universe:modules@0.5.0', {weak:true});
+
     api.addFiles([
         'lib/locales.js',
-        'lib/i18n.jsx',
-        'index.import.js'
+        'lib/i18n.js'
     ]);
 
     api.export('_i18n');

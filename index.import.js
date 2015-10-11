@@ -1,1 +1,0 @@
-export {_i18n as i18n, _i18n as default};

@@ -5,8 +5,8 @@ Internationalization package with support:
 - file format YAML and JSON supports
 - named and positional parameters
 - locale like typographic number, 
-- 353 locales (with basic informations: name, symbol of currency, rtl) 
-regional dialects e.g. 'en_us' inherits from translations assigned to 'en'
+- 353 locales (with basic informations: name, symbol of currency, rtl)
+- regional dialects e.g. 'en-us' inherits from translations assigned to 'en'
 - universe:modules (es6/modules)
 - react component `<T>ok</T>`
 

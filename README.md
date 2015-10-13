@@ -189,13 +189,13 @@ title: Title
 Other ways file should have name of his locale or be in directory under this name:
  
 ```bash
-en.yml
-en.json
-en_us.yml
-en-us.yml
-en/us.yml
-en-US/someName.yml
-someDir/en-us/someName.yml
+en.i18n.yml
+en.i18n.json
+en_us.i18n.yml
+en-us.i18n.yml
+en/us.i18n.yml
+en-US/someName.i18n.yml
+someDir/en-us/someName.i18n.yml
 ```
 ### Namespace
 

@@ -287,6 +287,21 @@ const T2 = i18n.createComponent(i18n.createTranslator('user.listing'));
 <T2>item.userName</T2>
 ```
 
+## Listener on change language
+
+```
+// Adding listener on change language
+onChangeLocale (function(newLocale){
+    console.log(newLocale);
+})
+
+// Removing listener
+offChangeLocale (fn)
+
+// Make something on first change and stop listener 
+onceChangeLocale (fn)
+```
+
 ## API
 ```js
 // create React component
@@ -331,16 +346,6 @@ getCurrencySymbol (locale)
 getLanguageName (locale)
 getLanguageNativeName (locale)
 isRTL (locale)
-
-// Callback on/off changing language
-onChangeLocale (function(newLocale){
-    console.log(newLocale);
-})
-
-offChangeLocale (fn)
-
-// do only once
-onceChangeLocale (fn)
 ```
 
 ## Locales list (353 locales suported)

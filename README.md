@@ -291,15 +291,15 @@ const T2 = i18n.createComponent('user.listing');
 
 ```
 // Adding listener on change language
-onChangeLocale (function(newLocale){
+i18n.onChangeLocale (function(newLocale){
     console.log(newLocale);
 })
 
 // Removing listener
-offChangeLocale (fn)
+i18n.offChangeLocale (fn)
 
 // Make something on first change and stop listener 
-onceChangeLocale (fn)
+i18n.onceChangeLocale (fn)
 ```
 
 ## API

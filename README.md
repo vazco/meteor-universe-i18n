@@ -331,6 +331,16 @@ getCurrencySymbol (locale)
 getLanguageName (locale)
 getLanguageNativeName (locale)
 isRTL (locale)
+
+// Callback on/off changing language
+onChangeLocale (function(newLocale){
+    console.log(newLocale);
+})
+
+offChangeLocale (fn)
+
+// do only once
+onceChangeLocale (fn)
 ```
 
 ## Locales list (353 locales suported)

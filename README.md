@@ -283,7 +283,7 @@ i18n.__('user', 'listing', 'item.userName'); //output: User name
 const T = i18n.createComponent();
 <T>user.listing.item.userName</T>
 // or
-const T2 = i18n.createComponent(i18n.createTranslator('user.listing'));
+const T2 = i18n.createComponent('user.listing');
 <T2>item.userName</T2>
 ```
 

@@ -37,7 +37,7 @@ class UniverseI18nBuilder extends CachingCompiler {
             } catch (e) {
                 file.error({
                     message: 'Cannot parse json file: ' + e.toString,
-                    sourcePath: ifilePath
+                    sourcePath: filePath
                 });
                 return;
             }

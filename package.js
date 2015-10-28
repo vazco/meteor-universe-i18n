@@ -1,6 +1,6 @@
 Package.describe({
     name: 'universe:i18n',
-    version: '1.1.8',
+    version: '1.1.9',
     summary: 'React i18n (also es6 modules), Both YAML & JSON translation files supported. recognizes 353 locales',
     git: 'https://github.com/vazco/meteor-universe-i18n'
 });
@@ -20,11 +20,11 @@ Package.onUse(function (api) {
 
     api.use([
         'ecmascript',
-        'universe:utilities@2.0.5',
+        'universe:utilities@2.0.9',
         'isobuild:compiler-plugin@1.0.0'
     ]);
 
-    api.use('universe:modules@0.5.0', {weak:true});
+    api.use('universe:modules@0.6.1', {weak:true});
 
     api.addFiles([
         'lib/locales.js',

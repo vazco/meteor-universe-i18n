@@ -9,6 +9,9 @@ Internationalization package with support:
 - regional dialects e.g. 'en-us' inherits from translations assigned to 'en'
 - universe:modules (es6/modules)
 - react component `<T>ok</T>`
+- much lighter for performance than other packages
+(tracker dependency on every strings isn't light, so in react we do it in React way)
+
 
 **Table of Contents**
 
@@ -26,6 +29,7 @@ Internationalization package with support:
       - [Translation in packages](#translation-in-packages)
       - [Translation in application](#translation-in-application)
   - [API](#api)
+  - [Support for blaze](#support-for-blaze)
   - [Locales list](#locales-list)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -305,26 +309,31 @@ i18n.onceChangeLocale (fn)
 ## API
 ```js
 // create React component
-i18n.createComponent(translator);
+_i18n.createComponent(translator);
 
 // create namespaced translator
-i18n.createTranslator(namespace, locale);
+_i18n.createTranslator(namespace, locale);
+
+// create reactive translator for autoruns
+_i18n.createReactiveTranslator(namespace, locale);
+// TIP: Remember tracker dependency object isn't light, so in react this isn't necessary 
+//so our React component can be reactive and much lighter for performance
 
 // add translation
-i18n.addTranslation(namespace, key, ..., translation);
+_i18n.addTranslation(namespace, key, ..., translation);
 
 // add translations (same as addTranslation)
-i18n.addTranslations(namespace, translationsMap);
+_i18n.addTranslations(namespace, translationsMap);
 
 // get translation
-i18n.getTranslation(namespace, key, ..., params);
-i18n.__(namespace, key,..., params);
+_i18n.getTranslation(namespace, key, ..., params);
+_i18n.__(namespace, key,..., params);
 
 // get translations ( default locale is current )
-i18n.getTranslations(namespace, locale);
+_i18n.getTranslations(namespace, locale);
 
 // options
-i18n.options = {
+_i18n.options = {
     // opening string
     open: '{$',
 
@@ -333,12 +342,12 @@ i18n.options = {
 };
 
 // formatting numbers for locale ( default locale is current )
-i18n.parseNumber(number, locale);
+_i18n.parseNumber(number, locale);
 
 // Setting locale
-i18n.setLocale(locale);
+_i18n.setLocale(locale);
 // Getting locale
-i18n.getLocale();
+_i18n.getLocale();
 
 // Additional informations about locale ( default locale is current )
 
@@ -347,6 +356,11 @@ getLanguageName (locale)
 getLanguageNativeName (locale)
 isRTL (locale)
 ```
+
+## Support for blaze
+
+[universe:i18n-blaze](https://atmospherejs.com/universe/i18n-blaze)
+
 
 ## Locales list (353 locales suported)
 *( predefined for parseNumber, currency, names, native names)*

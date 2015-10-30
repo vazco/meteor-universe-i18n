@@ -21,7 +21,7 @@ Package.onUse(function (api) {
     api.use([
         'tracker',
         'ecmascript',
-        'universe:utilities@2.0.9',
+        'universe:utilities@2.1.0',
         'isobuild:compiler-plugin@1.0.0'
     ]);
 

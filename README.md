@@ -15,22 +15,22 @@ Internationalization package with support:
 
 **Table of Contents**
 
-- [Universe i18n](#universe-i18n)
-  - [Instalation](#instalation)
-  - [Usage](#usage)
-    - [Setting/Getting locale](#settinggetting-locale)
-    - [Adding Translations my methods](#adding-translations-my-methods)
-    - [Getting translations](#getting-translations)
-    - [Creating react component](#creating-react-component)
-    - [Formatting numbers](#formatting-numbers)
-  - [Translations files](#translations-files)
-    - [Recognition locale of translation](#recognition-locale-of-translation)
-    - [Namespace](#namespace)
-      - [Translation in packages](#translation-in-packages)
-      - [Translation in application](#translation-in-application)
-  - [API](#api)
-  - [Support for blaze](#support-for-blaze)
-  - [Locales list](#locales-list)
+- [Universe i18n](https://github.com/vazco/meteor-universe-i18n/#universe-i18n)
+  - [Instalation](https://github.com/vazco/meteor-universe-i18n/#instalation)
+  - [Usage](https://github.com/vazco/meteor-universe-i18n/#usage)
+    - [Setting/Getting locale](https://github.com/vazco/meteor-universe-i18n/#settinggetting-locale)
+    - [Adding Translations my methods](https://github.com/vazco/meteor-universe-i18n/#adding-translations-my-methods)
+    - [Getting translations](https://github.com/vazco/meteor-universe-i18n/#getting-translations)
+    - [Creating react component](https://github.com/vazco/meteor-universe-i18n/#creating-react-component)
+    - [Formatting numbers](https://github.com/vazco/meteor-universe-i18n/#formatting-numbers)
+  - [Translations files](https://github.com/vazco/meteor-universe-i18n/#translations-files)
+    - [Recognition locale of translation](https://github.com/vazco/meteor-universe-i18n/#recognition-locale-of-translation)
+    - [Namespace](https://github.com/vazco/meteor-universe-i18n/#namespace)
+      - [Translation in packages](https://github.com/vazco/meteor-universe-i18n/#translation-in-packages)
+      - [Translation in application](https://github.com/vazco/meteor-universe-i18n/#translation-in-application)
+  - [API](https://github.com/vazco/meteor-universe-i18n/#api)
+  - [Support for blaze](https://github.com/vazco/meteor-universe-i18n/#support-for-blaze)
+  - [Locales list](https://github.com/vazco/meteor-universe-i18n/#locales-list)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 

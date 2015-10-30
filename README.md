@@ -317,7 +317,7 @@ _i18n.createTranslator(namespace, locale);
 // create reactive translator for autoruns
 _i18n.createReactiveTranslator(namespace, locale);
 // TIP: Remember tracker dependency object isn't light, so in react this isn't necessary 
-//so our React component can be reactive and much lighter for performance
+//our React component can be reactive and much lighter for performance
 
 // add translation
 _i18n.addTranslation(namespace, key, ..., translation);

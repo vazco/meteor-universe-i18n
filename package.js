@@ -1,6 +1,6 @@
 Package.describe({
     name: 'universe:i18n',
-    version: '1.1.9',
+    version: '1.2.0',
     summary: 'React i18n (also es6 modules), Both YAML & JSON translation files supported. recognizes 353 locales',
     git: 'https://github.com/vazco/meteor-universe-i18n'
 });
@@ -11,7 +11,7 @@ Package.registerBuildPlugin({
     sources: ['builder.js'],
     npmDependencies: {
         'strip-json-comments': '1.0.4',
-        'yamljs': '0.2.3'
+        'yamljs': '0.2.4'
     }
 });
 
@@ -19,6 +19,7 @@ Package.onUse(function (api) {
     api.versionsFrom('1.2.0.2');
 
     api.use([
+        'tracker',
         'ecmascript',
         'universe:utilities@2.0.9',
         'isobuild:compiler-plugin@1.0.0'

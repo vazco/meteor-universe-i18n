@@ -7,18 +7,30 @@ class UniverseI18nBuilder extends CachingCompiler {
             compilerName: 'UniverseI18n',
             defaultCacheSize: 1024 * 1024 * 10
         });
+        this.localesInClientBundle = ['en-us'];
+        if (process.env.I18N_LOCALES) {
+            this.localesInClientBundle.push(...(process.env.I18N_LOCALES.split(',')));
+        }
+        let lcb = [];
+        this.localesInClientBundle = this.localesInClientBundle.map(loc => {
+            loc = loc.toLocaleLowerCase();
+            const loc2 = loc.replace(/\-.+$/, '');
+            loc2 !== loc && lcb.push(loc2);
+            return loc;
+        });
+        this.localesInClientBundle.push(...lcb);
     }
 
     getCacheKey (file) {
-        return [
+        return JSON.stringify([
             file.getSourceHash(),
             file.getPathInPackage(),
             file.getFileOptions()
-        ]
+        ])
     }
 
-    compileResultSize (compileResult) {
-        return compileResult.length;
+    compileResultSize ({data = ''}) {
+        return data.length;
     }
 
     compileOneFile (file) {
@@ -67,14 +79,22 @@ class UniverseI18nBuilder extends CachingCompiler {
         var namespace = typeof translations._namespace === 'string' ? translations._namespace : packageName || '';
         delete translations._locale;
         delete translations._namespace;
-        return `Package['universe:i18n']._i18n.addTranslations('${localesNames[locale]}','${namespace}',${JSON.stringify(translations)});`
+        return {
+            locale,
+            data:`Package['universe:i18n']._i18n.addTranslations('${localesNames[locale]}','${namespace}',${JSON.stringify(translations)});`
+        }
     }
 
-    addCompileResult (file, compileResult) {
+    addCompileResult (file, {locale, data}) {
+        if (file.getArch() === 'web.browser' && !_.contains(this.localesInClientBundle, 'all')) {
+            if (!_.contains(this.localesInClientBundle, locale)) {
+                return;
+            }
+        }
         file.addJavaScript({
             path: file.getPathInPackage() + '.js',
             sourcePath: file.getPathInPackage(),
-            data: compileResult
+            data: data
         });
     }
 }

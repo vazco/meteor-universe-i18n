@@ -60,4 +60,5 @@ function getJS (locale, namespace, isBefore) {
     return `(Package['universe:i18n']._i18n).addTranslations('${locale}', ${json});`;
 }
 
-_i18n.options.translationsHeaders = {'Cache-Control':'max-age=31536000'};
+_i18n._formatgetters = {getJS, getJSON, getYML};
+_i18n.options.translationsHeaders = {'Cache-Control':'max-age=2628000'};

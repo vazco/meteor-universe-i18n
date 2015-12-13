@@ -8,12 +8,12 @@ class UniverseI18nBuilder extends CachingCompiler {
             defaultCacheSize: 1024 * 1024 * 10
         });
         this.localesInClientBundle = ['en-us'];
-        if (process.env.I18N_LOCALES) {
-            this.localesInClientBundle.push(...(process.env.I18N_LOCALES.split(',')));
+        if (process.env.UNIVERSE_I18N_LOCALES) {
+            this.localesInClientBundle.push(...(process.env.UNIVERSE_I18N_LOCALES.split(',')));
         }
         let lcb = [];
         this.localesInClientBundle = this.localesInClientBundle.map(loc => {
-            loc = loc.toLocaleLowerCase();
+            loc = loc.toLowerCase();
             const loc2 = loc.replace(/\-.+$/, '');
             loc2 !== loc && lcb.push(loc2);
             return loc;

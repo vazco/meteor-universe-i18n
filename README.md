@@ -346,7 +346,9 @@ under `UNIVERSE_I18N_LOCALES` environment variable:
 
 - `UNIVERSE_I18N_LOCALES = all` for bundling all translations strings
 - one or more locales as codes to attach them in bundle, (as a separator you should use `,`)
+
  e.g. `UNIVERSE_I18N_LOCALES = 'de-CH, pl'`
+ 
 - [How set an environment variable](http://www.schrodinger.com/kb/1842)
  
 ## API
@@ -388,9 +390,15 @@ _i18n.options = {
 _i18n.parseNumber(number, locale);
 
 // Setting locale
-_i18n.setLocale(locale);
+_i18n.setLocale(locale, params);
+// this function on client side returns promise (but only if parameter `noDownload !== true`)
+
 // Getting locale
 _i18n.getLocale();
+
+// loading locale (params: fresh = false, async = false, silent = false)
+_i18n.loadLocale(locale, params) // accessible: client
+// this function returns promise
 
 // Additional informations about locale ( default locale is current )
 

@@ -13,7 +13,7 @@ class UniverseI18nBuilder extends CachingCompiler {
         }
         let lcb = [];
         this.localesInClientBundle = this.localesInClientBundle.map(loc => {
-            loc = loc.toLowerCase();
+            loc = loc.toLowerCase().trim();
             const loc2 = loc.replace(/\-.+$/, '');
             loc2 !== loc && lcb.push(loc2);
             return loc;

@@ -46,24 +46,24 @@ $ meteor add universe:i18n
 ## Usage
 This plugin is dedicated to work with react and universe:modules, but you can use it without react or universe:modules.
 
-#### Using with ecmascript 2015 modules by packages: ['universe:modules'](https://atmospherejs.com/universe/modules) or ['universe:ecmascript'](https://atmospherejs.com/universe/ecmascript)
+- Using as a global (pure meteor)
+
+This Package exports global under name `_i18n`
+
+- Using with ecmascript 2015 modules by packages: ['universe:modules'](https://atmospherejs.com/universe/modules) or ['universe:ecmascript'](https://atmospherejs.com/universe/ecmascript)
 
 ```
 import i18n from '{universe:i18n}';
 ```
 
-#### Importing by SystemJs Api (universe:modules)
+- Importing by SystemJs Api (universe:modules)
 
 ```
 System.import('{universe:i18n}').then(/*something to do*/)
 ```
 
-#### Using as a global (pure meteor)
-
-This Package exports global under name `_i18n`
-
-#### Importing in CoffeeScript 
-
+- Importing in CoffeeScript
+ 
 Nice way for importing universe modules in CoffeeScript provides package [universe:modules-for-coffee](https://atmospherejs.com/universe/modules-for-coffee)
 Of course you can just use a global way
 

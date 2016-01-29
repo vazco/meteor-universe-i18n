@@ -384,6 +384,10 @@ _i18n.options = {
 
     // closing string
     close: '}'
+    
+    // url to the host with translations (default: Meteor.absoluteUrl())
+    // useful when you want to load translations from different host
+    hostUrl: 'http://current.host.url/'
 };
 
 // formatting numbers for locale ( default locale is current )

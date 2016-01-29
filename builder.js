@@ -7,9 +7,10 @@ class UniverseI18nBuilder extends CachingCompiler {
             compilerName: 'UniverseI18n',
             defaultCacheSize: 1024 * 1024 * 10
         });
-        this.localesInClientBundle = ['en-us'];
         if (process.env.UNIVERSE_I18N_LOCALES) {
-            this.localesInClientBundle.push(...(process.env.UNIVERSE_I18N_LOCALES.split(',')));
+            this.localesInClientBundle = process.env.UNIVERSE_I18N_LOCALES.split(',');
+        } else {
+        	this.localesInClientBundle = ['en-us'];
         }
         let lcb = [];
         this.localesInClientBundle = this.localesInClientBundle.map(loc => {

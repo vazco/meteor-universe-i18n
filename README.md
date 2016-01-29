@@ -11,7 +11,7 @@ Internationalization package with support:
 - react component `<T>ok</T>`
 - much lighter for performance than other packages
 (tracker dependency on every strings isn't light, so in react we do it in React way)
-- **incremental loading of translations** (new)
+- **incremental loading of translations** (now also from different host)
 
 
 **Table of Contents**
@@ -354,7 +354,15 @@ under `UNIVERSE_I18N_LOCALES` environment variable:
 ## API
 ```js
 // create React component
-_i18n.createComponent(translator);
+_i18n.createComponent(translator, locale, reactjs);
+
+params: 
+translator - (optional, default is i18n.createTranslator())  
+    using this argument you can set different function for translation or the namespace for default translator.
+locale - (optional, default current locale) set language for this component (can be different than on rest of site)
+reactjs - (optional, as a default it tries to get React from global variable)
+    you can pass React object if is not available in global scope
+
 
 // create namespaced translator
 _i18n.createTranslator(namespace, locale);

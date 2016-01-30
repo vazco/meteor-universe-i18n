@@ -357,7 +357,7 @@ under `UNIVERSE_I18N_LOCALES` environment variable:
 ```js
 // create React component
 _i18n.createComponent(translator, locale, reactjs);
-//  params: 
+//  @params: 
 //    translator - (optional, default is i18n.createTranslator())  
 //      using this argument you can set different function for translation or the namespace for default translator.
 //    locale - (optional, default current locale) set language for this component (can be different than on rest of site)
@@ -416,7 +416,7 @@ _i18n.loadLocale(locale, params)
 //@params on client { fresh = false, async = false, silent = false,
 // host = _i18n.options.hostUrl, pathOnHost = _i18n.options.pathOnHost }
 //@params on server { queryParams = {}, fresh = false, silent = false,
-// host = _i18n.options.hostUrl, pathOnHost = _i18n.options.pathOnHost}
+// host = _i18n.options.hostUrl, pathOnHost = _i18n.options.pathOnHost }
 // On server side, this method uses HTTP.get with query parameter `type=json` to fetch json data.
 // On client site, it adds new script with translations to head node.
 // this function returns promise

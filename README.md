@@ -404,14 +404,14 @@ _i18n.options = {
 // formatting numbers for locale ( default locale is current )
 _i18n.parseNumber(number, locale);
 
-// Setting locale
+// change locale
 _i18n.setLocale(locale, params);
 // this function on client side returns promise (but only if parameter `noDownload !== true`)
 
 // Getting locale
 _i18n.getLocale();
 
-// loading translations for locale (client/server)
+// fetch translations file from remote server (client/server)
 _i18n.loadLocale(locale, params)
 //@params on client { fresh = false, async = false, silent = false,
 // host = _i18n.options.hostUrl, pathOnHost = _i18n.options.pathOnHost }

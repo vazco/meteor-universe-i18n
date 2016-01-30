@@ -1,17 +1,19 @@
 <a href="http://unicms.io"><img src="http://unicms.io/banners/standalone.png" /></a>
 # Universe i18n
 Internationalization package with support:
-- namespacing of translations strings
-- file format YAML and JSON supports
-- named and positional parameters
-- locale like typographic number, 
+- namespacing of translation strings
+- supported file formats **YAML** and **JSON**
+- both types of parameters (named and positional)
+- include support for typographic notation of numbers 
 - 353 locales (with basic informations: name, symbol of currency, rtl)
 - regional dialects e.g. 'en-us' inherits from translations assigned to 'en'
-- support for universe:modules (es6/modules)
 - react component `<T>ok</T>`
-- much lighter for performance than other packages
-(tracker dependency on every strings isn't light, so in react we do it in React way)
-- **incremental loading of translations** (now also from different host)
+- support for universe:modules (es6/modules)
+- much better performance than other packages
+  (Tracker dependency on every strings isn't light, so in React we use simple eventemitter)
+- **incremental loading of translations**
+  (Client do not need to download all translations at once)
+- remote loading of translations from different host
 
 
 **Table of Contents**

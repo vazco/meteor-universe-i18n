@@ -1,7 +1,8 @@
 _i18n.loadLocale = (localeName, options) => {
-    const {fresh = false, async = false, silent = false} = options || {};
+    const {fresh = false, async = false, silent = false,
+        host = _i18n.options.hostUrl, pathOnHost = _i18n.options.pathOnHost} = options || {};
     localeName = locales[localeName.toLowerCase()]? locales[localeName.toLowerCase()][0] : localeName;
-    let url = _i18n.options.hostUrl + 'universe/locale/'+localeName;
+    let url = host  + pathOnHost + localeName;
     if (fresh) {
         url += '?ts='+(new Date().getTime());
     }

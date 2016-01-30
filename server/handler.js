@@ -26,19 +26,19 @@ WebApp.connectHandlers.use('/universe/locale/', function(req, res, next) {
     switch (type) {
         case 'json':
             res.writeHead(200, _.extend(
-                {'Content-Type': 'application/json'},
+                {'Content-Type': 'application/json; charset=utf-8'},
                 _i18n.options.translationsHeaders, headerPart
             ));
             return res.end(cache.getJSON(locale, namespace));
         case 'yml':
             res.writeHead(200, _.extend(
-                {'Content-Type': 'text/yaml'},
+                {'Content-Type': 'text/yaml; charset=utf-8'},
                 _i18n.options.translationsHeaders, headerPart
             ));
             return res.end(cache.getYML(locale, namespace));
         default:
             res.writeHead(200, _.extend(
-                {'Content-Type': 'application/javascript'},
+                {'Content-Type': 'application/javascript; charset=utf-8'},
                 _i18n.options.translationsHeaders, headerPart
             ));
             return res.end(cache.getJS(locale, namespace, preload));

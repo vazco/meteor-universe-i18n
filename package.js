@@ -5,24 +5,25 @@ Package.describe({
     git: 'https://github.com/vazco/meteor-universe-i18n'
 });
 
+var npmDependencies = {
+    'strip-json-comments': '2.0.0',
+    'yamljs': '0.2.4'
+};
+
 Package.registerBuildPlugin({
     name: 'UniverseI18n',
     use: ['ecmascript@0.1.6', 'caching-compiler@1.0.0', 'underscore@1.0.4'],
     sources: ['builder.js'],
-    npmDependencies: {
-        'strip-json-comments': '2.0.0',
-        'yamljs': '0.2.4'
-    }
+    npmDependencies: npmDependencies
 });
 
-Npm.depends({
-    'yamljs': '0.2.4'
-});
+Npm.depends(npmDependencies);
 
 Package.onUse(function (api) {
     api.versionsFrom('1.2.1');
 
     api.use([
+        'http',
         'webapp',
         'tracker',
         'promise',

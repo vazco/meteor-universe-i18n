@@ -411,8 +411,14 @@ _i18n.setLocale(locale, params);
 // Getting locale
 _i18n.getLocale();
 
-// loading locale (params: fresh = false, async = false, silent = false)
-_i18n.loadLocale(locale, params) // accessible: client
+// loading translations for locale (client/server)
+_i18n.loadLocale(locale, params)
+//@params on client { fresh = false, async = false, silent = false,
+// host = _i18n.options.hostUrl, pathOnHost = _i18n.options.pathOnHost }
+//@params on server { queryParams = {}, fresh = false, silent = false,
+// host = _i18n.options.hostUrl, pathOnHost = _i18n.options.pathOnHost}
+// On server side, this method uses HTTP.get with query parameter `type=json` to fetch json data.
+// On client site, it adds new script with translations to head node.
 // this function returns promise
 
 // Additional informations about locale ( default locale is current )

@@ -373,10 +373,10 @@ _i18n.createReactiveTranslator(namespace, locale);
 //our React component can be reactive and much lighter for performance
 
 // add translation
-_i18n.addTranslation(namespace, key, ..., translation);
+_i18n.addTranslation(locale, namespace, key, ..., translation);
 
 // add translations (same as addTranslation)
-_i18n.addTranslations(namespace, translationsMap);
+_i18n.addTranslations(locale, namespace, translationsMap);
 
 // get translation
 _i18n.getTranslation(namespace, key, ..., params);

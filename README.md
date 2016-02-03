@@ -391,14 +391,17 @@ _i18n.options = {
     open: '{$',
 
     // closing string
-    close: '}'
+    close: '}',
+    
+    // decide whether to show when there's no translation in the current and default language
+    hideMissing: false
     
     // url to the host with translations (default: Meteor.absoluteUrl())
     // useful when you want to load translations from different host
-    hostUrl: 'http://current.host.url/'
+    hostUrl: 'http://current.host.url/',
     
     // (On server side only) Gives you possibility of adding/changing response headers
-    translationsHeaders = {'Cache-Control':'max-age=2628000'};
+    translationsHeaders = {'Cache-Control':'max-age=2628000'}
 };
 
 // formatting numbers for locale ( default locale is current )

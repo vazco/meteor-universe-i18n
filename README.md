@@ -365,7 +365,7 @@ i18n.setLocale('en-AU').then(function () {
 });
 ```
 
-Additionally you can use listen on this event:
+also you can use listen on this event:
 ```
 i18n.onChangeLocale (function(newLocale){
     console.log(newLocale);

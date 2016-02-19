@@ -352,6 +352,7 @@ under `UNIVERSE_I18N_LOCALES` environment variable:
  e.g. `UNIVERSE_I18N_LOCALES = 'de-CH, pl'`
  
 - [How set an environment variable](http://www.schrodinger.com/kb/1842)
+- Note: If you want use this flag, is very important to do this before meteor prepares bundle (after that, setting this variable will be useless)
  
 ## API
 ```js

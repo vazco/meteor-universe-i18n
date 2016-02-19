@@ -353,6 +353,24 @@ under `UNIVERSE_I18N_LOCALES` environment variable:
  
 - [How set an environment variable](http://www.schrodinger.com/kb/1842)
 - Note: If you want use this flag, is very important to do this before meteor prepares bundle (after that, setting this variable will be useless)
+
+**Again how it works:**
+If user will change current locale on that what isn't attached to client bundle, translations for new locale will be downloaded on demand. So, any time when `_i18n.set Locale('de-CH')` is called and language isn't attached to client bundle. I18n will be try to download that language from server (you can customize url of host to getting translations, but default is same as Meteor.absoluteUrl() returns)
+ 
+Additionally `_i18n.setLocale()` returns promise.
+e.g:
+```
+i18n.setLocale('en-AU').then(function () {
+    console.log('already is!');
+});
+```
+
+Additionally you can use listen on this event:
+```
+i18n.onChangeLocale (function(newLocale){
+    console.log(newLocale);
+})
+``` 
  
 ## API
 ```js

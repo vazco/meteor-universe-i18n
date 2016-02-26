@@ -29,13 +29,11 @@ Package.onUse(function (api) {
         'promise',
         'ecmascript',
         'underscore',
+        'modules@0.5.0-modules.8',
+        'ecmascript@0.4.0-modules.8',
         'universe:utilities@2.1.0',
         'isobuild:compiler-plugin@1.0.0'
     ]);
-
-    api.use('universe:modules@0.6.8', {weak:true});
-    api.use('react-runtime@0.13.3_6||0.14.1', {weak:true});
-    api.use('react@0.13.3_6||0.14.1', {weak:true});
 
     api.addFiles([
         'lib/locales.js',

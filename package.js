@@ -12,7 +12,7 @@ var npmDependencies = {
 
 Package.registerBuildPlugin({
     name: 'UniverseI18n',
-    use: ['ecmascript@0.1.6', 'caching-compiler@1.0.0', 'underscore@1.0.4'],
+    use: ['ecmascript@0.4.0-modules.8', 'caching-compiler@1.0.0', 'underscore@1.0.4'],
     sources: ['builder.js'],
     npmDependencies: npmDependencies
 });
@@ -27,7 +27,6 @@ Package.onUse(function (api) {
         'webapp',
         'tracker',
         'promise',
-        'ecmascript',
         'underscore',
         'modules@0.5.0-modules.8',
         'ecmascript@0.4.0-modules.8',

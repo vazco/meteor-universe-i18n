@@ -50,7 +50,7 @@ This plugin is dedicated to work with react and universe:modules, but you can us
 
 - Using as a global (pure meteor)
 
-This Package exports global under name `_i18n`
+This Package exports global under name `i18n`
 
 - Using with ecmascript 2015 modules by packages: ['universe:modules'](https://atmospherejs.com/universe/modules) or ['universe:ecmascript'](https://atmospherejs.com/universe/ecmascript)
 
@@ -449,7 +449,7 @@ getCurrencySymbol (locale)
 getLanguageName (locale)
 getLanguageNativeName (locale)
 isRTL (locale)
-getAllKeysForLocale(locale)
+getAllKeysForLocale(locale, exactlyThis = false)
 ```
 
 ## Support for blaze

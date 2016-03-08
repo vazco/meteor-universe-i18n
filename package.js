@@ -1,6 +1,6 @@
 Package.describe({
     name: 'universe:i18n',
-    version: '1.3.6',
+    version: '1.3.7',
     summary: 'Lightweight i18n, YAML & JSON translation files, React component, incremental & remote loading',
     git: 'https://github.com/vazco/meteor-universe-i18n'
 });
@@ -12,7 +12,7 @@ var npmDependencies = {
 
 Package.registerBuildPlugin({
     name: 'UniverseI18n',
-    use: ['ecmascript@0.1.6', 'caching-compiler@1.0.0', 'underscore@1.0.4'],
+    use: ['ecmascript', 'caching-compiler', 'underscore'],
     sources: ['builder.js'],
     npmDependencies: npmDependencies
 });
@@ -30,7 +30,7 @@ Package.onUse(function (api) {
         'ecmascript',
         'underscore',
         'universe:utilities@2.3.1',
-        'isobuild:compiler-plugin@1.0.0'
+        'isobuild:compiler-plugin'
     ]);
 
     api.use('universe:modules@0.6.8', {weak:true});

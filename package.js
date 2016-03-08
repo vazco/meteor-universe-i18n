@@ -1,6 +1,6 @@
 Package.describe({
     name: 'universe:i18n',
-    version: '1.3.5',
+    version: '1.3.6',
     summary: 'Lightweight i18n, YAML & JSON translation files, React component, incremental & remote loading',
     git: 'https://github.com/vazco/meteor-universe-i18n'
 });
@@ -29,7 +29,7 @@ Package.onUse(function (api) {
         'promise',
         'ecmascript',
         'underscore',
-        'universe:utilities@2.1.0',
+        'universe:utilities@2.3.1',
         'isobuild:compiler-plugin@1.0.0'
     ]);
 
@@ -51,7 +51,7 @@ Package.onUse(function (api) {
         'client/api.js'
     ], 'client');
 
-    api.export('_i18n');
+    api.export(['_i18n', 'i18n']);
 });
 
 

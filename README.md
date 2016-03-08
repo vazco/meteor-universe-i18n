@@ -449,6 +449,7 @@ getCurrencySymbol (locale)
 getLanguageName (locale)
 getLanguageNativeName (locale)
 isRTL (locale)
+getAllKeysForLocale(locale)
 ```
 
 ## Support for blaze

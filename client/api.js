@@ -51,3 +51,7 @@ if (typeof __uniI18nPre === 'object') {
         }
     });
 }
+
+_i18n.isLoaded = (locale = _i18n.getLocale()) => {
+    return _i18n._isLoaded[locale];
+};

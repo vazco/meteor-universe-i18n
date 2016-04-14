@@ -55,7 +55,7 @@ This Package exports global under name `i18n`
 - Using with ecmascript 2015 modules by packages: ['universe:modules'](https://atmospherejs.com/universe/modules) or ['universe:ecmascript'](https://atmospherejs.com/universe/ecmascript)
 
 ```
-import i18n from '{universe:i18n}';
+import i18n from 'meteor/universe:i18n';
 ```
 
 - Importing by SystemJs Api (universe:modules)
@@ -102,7 +102,7 @@ For server side you should read it from header 'accept-language'
 ### Adding Translations by methods
 
 ```js
-import i18n from '{universe:i18n}';
+import i18n from 'meteor/universe:i18n';
 
 i18n.addTranslation('en-US', 'common', 'no', 'No');
 i18n.addTranslation('en-US.common', 'ok', 'Ok');
@@ -162,7 +162,7 @@ i18n.__('items', ['a', 'b', 'c']); //output: First item a and last is c!
 ### Creating react component
 
 ```js
-import i18n from '{universe:i18n}';
+import i18n from 'meteor/universe:i18n';
 
 //instance of translate component with top-level context
 const T = i18n.createComponent();
@@ -174,7 +174,7 @@ const T = i18n.createComponent();
 ```
 
 ```jsx
-import i18n from '{universe:i18n}';
+import i18n from 'meteor/universe:i18n';
 //instance of translate component in "common" namespace
 const T = i18n.createComponent(i18n.createTranslator('common'));
 
@@ -189,7 +189,7 @@ A simple mixin for react that refreshes whole component when locale was changed.
 (as a benefit it provides "locale" property in state)
 
 ```
-import {refreshOnChangeLocaleMixin} from '{universe:i18n}';
+import {refreshOnChangeLocaleMixin} from 'meteor/universe:i18n';
 
 export default React.createClass({
     displayName: 'StatsWidget',
@@ -247,7 +247,7 @@ For example, translations files in packages are namespaced as a default by packa
 ```
 
 ```js
-import i18n from '{universe:i18n}';
+import i18n from 'meteor/universe:i18n';
 
 i18n.__('universe:profile', 'userName') //output: User name
 
@@ -355,9 +355,9 @@ under `UNIVERSE_I18N_LOCALES` environment variable:
 - Note: If you want use this flag, is very important to do this before meteor prepares bundle (after that, setting this variable will be useless)
 
 **Again how it works:**
-If user will change current locale on that what isn't attached to client bundle, translations for new locale will be downloaded on demand. So, any time when `_i18n.setLocale('de-CH')` is called and language isn't attached to client bundle. I18n will be try to download that language from server (you can customize url of host to getting translations, but default is same as Meteor.absoluteUrl() returns)
+If user will change current locale on that what isn't attached to client bundle, translations for new locale will be downloaded on demand. So, any time when `i18n.setLocale('de-CH')` is called and language isn't attached to client bundle. I18n will be try to download that language from server (you can customize url of host to getting translations, but default is same as Meteor.absoluteUrl() returns)
  
-Additionally `_i18n.setLocale()` returns promise.
+Additionally `i18n.setLocale()` returns promise.
 e.g:
 ```
 i18n.setLocale('en-AU').then(function () {
@@ -375,7 +375,7 @@ i18n.onChangeLocale (function(newLocale){
 ## API
 ```js
 // create React component
-_i18n.createComponent(translator, locale, reactjs);
+i18n.createComponent(translator, locale, reactjs);
 //  @params: 
 //    translator - (optional, default is i18n.createTranslator())  
 //      using this argument you can set different function for translation or the namespace for default translator.
@@ -384,28 +384,28 @@ _i18n.createComponent(translator, locale, reactjs);
 //      you can pass React object if is not available in global scope
 
 // create namespaced translator
-_i18n.createTranslator(namespace, locale);
+i18n.createTranslator(namespace, locale);
 
 // create reactive translator for autoruns
-_i18n.createReactiveTranslator(namespace, locale);
+i18n.createReactiveTranslator(namespace, locale);
 // TIP: Remember tracker dependency object isn't light, so in react this isn't necessary 
 //our React component can be reactive and much lighter for performance
 
 // add translation
-_i18n.addTranslation(locale, namespace, key, ..., translation);
+i18n.addTranslation(locale, namespace, key, ..., translation);
 
 // add translations (same as addTranslation)
-_i18n.addTranslations(locale, namespace, translationsMap);
+i18n.addTranslations(locale, namespace, translationsMap);
 
 // get translation
-_i18n.getTranslation(namespace, key, ..., params);
-_i18n.__(namespace, key,..., params);
+i18n.getTranslation(namespace, key, ..., params);
+i18n.__(namespace, key,..., params);
 
 // get translations ( default locale is current )
-_i18n.getTranslations(namespace, locale);
+i18n.getTranslations(namespace, locale);
 
 // options
-_i18n.options = {
+i18n.options = {
     // opening string
     open: '{$',
 
@@ -424,21 +424,21 @@ _i18n.options = {
 };
 
 // formatting numbers for locale ( default locale is current )
-_i18n.parseNumber(number, locale);
+i18n.parseNumber(number, locale);
 
 // change locale
-_i18n.setLocale(locale, params);
+i18n.setLocale(locale, params);
 // this function on client side returns promise (but only if parameter `noDownload !== true`)
 
 // Getting locale
-_i18n.getLocale();
+i18n.getLocale();
 
 // fetch translations file from remote server (client/server)
-_i18n.loadLocale(locale, params)
+i18n.loadLocale(locale, params)
 //@params on client { fresh = false, async = false, silent = false,
-// host = _i18n.options.hostUrl, pathOnHost = _i18n.options.pathOnHost }
+// host = i18n.options.hostUrl, pathOnHost = i18n.options.pathOnHost }
 //@params on server { queryParams = {}, fresh = false, silent = false,
-// host = _i18n.options.hostUrl, pathOnHost = _i18n.options.pathOnHost }
+// host = i18n.options.hostUrl, pathOnHost = i18n.options.pathOnHost }
 // On server side, this method uses HTTP.get with query parameter `type=json` to fetch json data.
 // On client site, it adds new script with translations to head node.
 // this function returns promise

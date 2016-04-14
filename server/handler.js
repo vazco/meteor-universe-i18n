@@ -1,3 +1,5 @@
+import i18n from '../lib/i18n';
+
 const url = Npm.require('url');
 
 WebApp.connectHandlers.use('/universe/locale/', function(req, res, next) {
@@ -14,7 +16,7 @@ WebApp.connectHandlers.use('/universe/locale/', function(req, res, next) {
         return next();
     }
 
-    const cache = _i18n.getCache(locale);
+    const cache = i18n.getCache(locale);
     if (!cache || !cache.updatedAt) {
         res.writeHead(501);
         return res.end();
@@ -27,19 +29,19 @@ WebApp.connectHandlers.use('/universe/locale/', function(req, res, next) {
         case 'json':
             res.writeHead(200, _.extend(
                 {'Content-Type': 'application/json; charset=utf-8'},
-                _i18n.options.translationsHeaders, headerPart
+                i18n.options.translationsHeaders, headerPart
             ));
             return res.end(cache.getJSON(locale, namespace));
         case 'yml':
             res.writeHead(200, _.extend(
                 {'Content-Type': 'text/yaml; charset=utf-8'},
-                _i18n.options.translationsHeaders, headerPart
+                i18n.options.translationsHeaders, headerPart
             ));
             return res.end(cache.getYML(locale, namespace));
         default:
             res.writeHead(200, _.extend(
                 {'Content-Type': 'application/javascript; charset=utf-8'},
-                _i18n.options.translationsHeaders, headerPart
+                i18n.options.translationsHeaders, headerPart
             ));
             return res.end(cache.getJS(locale, namespace, preload));
     }

@@ -82,7 +82,7 @@ class UniverseI18nBuilder extends CachingCompiler {
         delete translations._namespace;
         return {
             locale,
-            data:`Package['universe:i18n']._i18n.addTranslations('${localesNames[locale]}','${namespace}',${JSON.stringify(translations)});`
+            data:`Package['universe:i18n'].i18n.addTranslations('${localesNames[locale]}','${namespace}',${JSON.stringify(translations)});`
         }
     }
 

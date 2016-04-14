@@ -12,7 +12,7 @@ var npmDependencies = {
 
 Package.registerBuildPlugin({
     name: 'UniverseI18n',
-    use: ['ecmascript', 'caching-compiler', 'underscore'],
+    use: ['ecmascript', 'caching-compiler@1.0.3', 'underscore'],
     sources: ['builder.js'],
     npmDependencies: npmDependencies
 });
@@ -30,7 +30,7 @@ Package.onUse(function (api) {
         'ecmascript',
         'underscore',
         'universe:utilities@2.3.2',
-        'isobuild:compiler-plugin'
+        'isobuild:compiler-plugin@1.0.0'
     ]);
 
     api.mainModule('lib/i18n.js');

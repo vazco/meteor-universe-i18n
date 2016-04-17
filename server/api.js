@@ -1,4 +1,5 @@
 import i18n from '../lib/i18n';
+import locales from '../lib/locales';
 
 const YAML = Npm.require('yamljs');
 const stripJsonComments = Npm.require('strip-json-comments');

@@ -1,4 +1,5 @@
 import i18n from '../lib/i18n';
+import locales from '../lib/locales';
 
 i18n.loadLocale = (localeName, options) => {
     const {fresh = false, async = false, silent = false,

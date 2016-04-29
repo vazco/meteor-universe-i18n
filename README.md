@@ -443,6 +443,11 @@ i18n.loadLocale(locale, params)
 // On client site, it adds new script with translations to head node.
 // this function returns promise
 
+// Executes function in locale context,
+i18n.runWithLocale(locale, func)
+// it mean, every default locale used inside called function will be set into passed locale.
+// please remember that locale must be loaded first (if is not bundled)
+
 // Additional informations about locale ( default locale is current )
 
 getCurrencySymbol (locale)

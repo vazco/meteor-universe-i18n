@@ -11,6 +11,8 @@ i18n.loadLocale = (localeName, options) => {
 
     if (fresh) {
         url += '?ts='+(new Date().getTime());
+    } else {
+        url += '?ts='+ i18n._ts;
     }
 
     const promise = new Promise(function(resolve, reject) {

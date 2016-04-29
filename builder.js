@@ -82,13 +82,18 @@ class UniverseI18nBuilder extends CachingCompiler {
         delete translations._namespace;
         return {
             locale,
+            ts: `Package['universe:i18n'].i18n._ts = Math.max(Package['universe:i18n'].i18n._ts, ${Date.now()});`,
             data:`Package['universe:i18n'].i18n.addTranslations('${localesNames[locale]}','${namespace}',${JSON.stringify(translations)});`
         }
     }
 
-    addCompileResult (file, {locale, data}) {
+    addCompileResult (file, {locale, data, ts}) {
         if (file.getArch() === 'web.browser' && !_.contains(this.localesInClientBundle, 'all')) {
             if (!_.contains(this.localesInClientBundle, locale)) {
+                file.addJavaScript({
+                    path: file.getPathInPackage() + '.js',
+                    data: ts
+                });
                 return;
             }
         }

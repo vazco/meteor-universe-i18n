@@ -193,6 +193,7 @@ i18n.parseNumber('7013217.715', 'ru-RU'); // 7 013 217,715
 
 Instead of setting translations directly by i18n.addTranslation(s).
 You can store translations in files YAML or JSON, according with following file extensions: **.i18n.yml**, **.i18n.json**.
+Because of lazy loading of locales, the translation files should be placed in common space. *But only for incremental loading of locale (default behavior), if locales are attached to the bundle, this isn't important*
 
 ### Recognition locale of translation
 Name of file can be any but only if in file has the locale declared under key **'_locale'**

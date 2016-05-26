@@ -4,7 +4,7 @@ Internationalization package with support:
 - namespacing of translation strings
 - supported file formats **YAML** and **JSON**
 - both types of parameters (named and positional)
-- include support for typographic notation of numbers 
+- include support for typographic notation of numbers
 - 353 locales (with basic informations: name, symbol of currency, rtl)
 - regional dialects e.g. 'en-us' inherits from translations assigned to 'en'
 - react component `<T>ok</T>`
@@ -64,7 +64,7 @@ i18n.getLocale() //en-US
  - silent - protect against broadcasting the refresh event (both sides)
  - async - download translation in async way (client side)
  - fresh - download fresh translations (without browser cache)
- 
+
 Example for those, who want to set locale as in browser:
 
 ```js
@@ -126,7 +126,7 @@ t2(key, parameters);
 
 If needed, parameters can be passed as last of function argument, as a object or array.
 Parameters can be named or positional (indexed).
-For positional parameters isn't important if passed was array or object with keys 0,1,2... 
+For positional parameters isn't important if passed was array or object with keys 0,1,2...
 Or if they are mixed with named parameters.
 
 ```yml
@@ -163,7 +163,7 @@ const T = i18n.createComponent(i18n.createTranslator('common'));
 
 // Later...
 <T>ok</T>
-// this time with override locale  
+// this time with override locale
 <T _locale='pl-PL'>hello</T>
 ```
 
@@ -204,7 +204,7 @@ title: Title
 ```
 
 Other ways file should have name of his locale or be in directory under this name:
- 
+
 ```bash
 en.i18n.yml
 en.i18n.json
@@ -221,7 +221,7 @@ Namespace can be set up only for whole file, but file can add deeper embedded st
 
 #### Translation in packages
 
-For example, translations files in packages are namespaced as a default by package name. 
+For example, translations files in packages are namespaced as a default by package name.
 
 ```json
 //file en.json in package universe:profile
@@ -315,7 +315,7 @@ i18n.onChangeLocale (function(newLocale){
 // Removing listener
 i18n.offChangeLocale (fn)
 
-// Make something on first change and stop listener 
+// Make something on first change and stop listener
 i18n.onceChangeLocale (fn)
 ```
 
@@ -334,13 +334,13 @@ under `UNIVERSE_I18N_LOCALES` environment variable:
 - one or more locales as codes to attach them in bundle, (as a separator you should use `,`)
 
  e.g. `UNIVERSE_I18N_LOCALES = 'de-CH, pl'`
- 
+
 - [How set an environment variable](http://www.schrodinger.com/kb/1842)
 - Note: If you want use this flag, is very important to do this before meteor prepares bundle (after that, setting this variable will be useless)
 
 **Again how it works:**
 If user will change current locale on that what isn't attached to client bundle, translations for new locale will be downloaded on demand. So, any time when `i18n.setLocale('de-CH')` is called and language isn't attached to client bundle. I18n will be try to download that language from server (you can customize url of host to getting translations, but default is same as Meteor.absoluteUrl() returns)
- 
+
 Additionally `i18n.setLocale()` returns promise.
 e.g:
 ```
@@ -354,14 +354,14 @@ also you can listen on this event:
 i18n.onChangeLocale (function(newLocale){
     console.log(newLocale);
 })
-``` 
- 
+```
+
 ## API
 ```js
 // create React component
 i18n.createComponent(translator, locale, reactjs);
-//  @params: 
-//    translator - (optional, default is i18n.createTranslator())  
+//  @params:
+//    translator - (optional, default is i18n.createTranslator())
 //      using this argument you can set different function for translation or the namespace for default translator.
 //    locale - (optional, default current locale) set language for this component (can be different than on rest of site)
 //    reactjs - (optional, as a default it tries to get React from global variable)
@@ -372,7 +372,7 @@ i18n.createTranslator(namespace, locale);
 
 // create reactive translator for autoruns
 i18n.createReactiveTranslator(namespace, locale);
-// TIP: Remember tracker dependency object isn't light, so in react this isn't necessary 
+// TIP: Remember tracker dependency object isn't light, so in react this isn't necessary
 //our React component can be reactive and much lighter for performance
 
 // add translation
@@ -389,23 +389,23 @@ i18n.__(namespace, key,..., params);
 i18n.getTranslations(namespace, locale);
 
 // options
-i18n.options = {
+i18n.setOptions({
     // opening string
     open: '{$',
 
     // closing string
     close: '}',
-    
+
     // decide whether to show when there's no translation in the current and default language
     hideMissing: false
-    
+
     // url to the host with translations (default: Meteor.absoluteUrl())
     // useful when you want to load translations from different host
     hostUrl: 'http://current.host.url/',
-    
+
     // (On server side only) Gives you possibility of adding/changing response headers
     translationsHeaders = {'Cache-Control':'max-age=2628000'}
-};
+});
 
 // formatting numbers for locale ( default locale is current )
 i18n.parseNumber(number, locale);

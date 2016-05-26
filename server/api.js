@@ -66,7 +66,11 @@ function getJS (locale, namespace, isBefore) {
 }
 
 i18n._formatgetters = {getJS, getJSON, getYML};
-i18n.options.translationsHeaders = {'Cache-Control':'max-age=2628000'};
+i18n.setOptions({
+    translationsHeaders: {
+        'Cache-Control': 'max-age=2628000'
+    }
+});
 
 i18n.loadLocale = (localeName, { host = i18n.options.hostUrl, pathOnHost = i18n.options.pathOnHost,
                                     queryParams = {}, fresh = false, silent = false } = {}) => {

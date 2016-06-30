@@ -1,13 +1,13 @@
 Package.describe({
     name: 'universe:i18n',
-    version: '1.6.0',
+    version: '1.6.1',
     summary: 'Lightweight i18n, YAML & JSON translation files, React component, incremental & remote loading',
     git: 'https://github.com/vazco/meteor-universe-i18n'
 });
 
 var npmDependencies = {
     'strip-json-comments': '2.0.1',
-    'yamljs': '0.2.7'
+    'yamljs': '0.2.8'
 };
 
 Package.registerBuildPlugin({

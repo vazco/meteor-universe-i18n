@@ -434,7 +434,13 @@ i18n.runWithLocale(locale, func)
 
 // Additional informations about locale ( default locale is current )
 
-getCurrencySymbol (locale)
+getCurrencySymbol (code) // or locale with country 
+returns currency symbol if is known
+
+i18n.getCurrencySymbol('en-US') // = $
+i18n.getCurrencySymbol('USD') // = $
+i18n.getCurrencyCodes('en-US') // = ["USD", "USN", "USS"]
+
 getLanguageName (locale)
 getLanguageNativeName (locale)
 isRTL (locale)

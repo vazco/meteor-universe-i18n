@@ -417,6 +417,12 @@ i18n.setLocale(locale, params);
 // Getting locale
 i18n.getLocale();
 
+// Getting languages with at least one translation
+i18n.getLanguages(codes = true, native = false)
+i18n.getLanguages() // ['de', 'en']
+i18n.getLanguages(false) // ['German', 'English']
+i18n.getLanguages(false, true) // ['Deutsch', 'English']
+
 // fetch translations file from remote server (client/server)
 i18n.loadLocale(locale, params)
 //@params on client { fresh = false, async = false, silent = false,
@@ -434,7 +440,7 @@ i18n.runWithLocale(locale, func)
 
 // Additional informations about locale ( default locale is current )
 
-getCurrencySymbol (code) // or locale with country 
+getCurrencySymbol (code) // or locale with country
 returns currency symbol if is known
 
 i18n.getCurrencySymbol('en-US') // = $

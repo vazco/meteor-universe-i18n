@@ -356,6 +356,29 @@ i18n.onChangeLocale (function(newLocale){
 })
 ```
 
+### Listing available languages
+
+You can use `i18n.getLanguages` to list all languages with at least one translation:
+```javascript
+i18n.getLanguages() // ['en', 'de']
+i18n.getLanguages('name') // ['English', 'German']
+```
+
+This method will show all available translations on the server but only loaded translations on the client.
+
+To build a language picker with all possible options you would need to fetch data from the server, e.g. by a method:
+```javascript
+Meteor.methods({
+    getLanguages() {
+        return i18n.getLanguages().map(code => ({
+            code,
+            name: i18n.getLanguageNativeName(code)
+        }));
+    }
+});
+```
+
+
 ## API
 ```js
 // create React component
@@ -418,10 +441,10 @@ i18n.setLocale(locale, params);
 i18n.getLocale();
 
 // Getting languages with at least one translation
-i18n.getLanguages(codes = true, native = false)
+i18n.getLanguages(type = 'code')
 i18n.getLanguages() // ['de', 'en']
-i18n.getLanguages(false) // ['German', 'English']
-i18n.getLanguages(false, true) // ['Deutsch', 'English']
+i18n.getLanguages('name') // ['German', 'English']
+i18n.getLanguages('nativeName') // ['Deutsch', 'English']
 
 // fetch translations file from remote server (client/server)
 i18n.loadLocale(locale, params)

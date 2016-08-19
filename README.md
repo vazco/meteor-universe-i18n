@@ -167,6 +167,8 @@ const T = i18n.createComponent(i18n.createTranslator('common'));
 <T _locale='pl-PL'>hello</T>
 // overriding the default DOM element 'span' with 'h1'
 <T tagType='h1'>hello</T>
+// providing props to the element
+<T props={{ className: 'text-center', style: { color: '#f33' }}}>hello</T>
 ```
 
 ### Refresh mixin

@@ -165,6 +165,8 @@ const T = i18n.createComponent(i18n.createTranslator('common'));
 <T>ok</T>
 // this time with override locale
 <T _locale='pl-PL'>hello</T>
+// overriding the default DOM element 'span' with 'h1'
+<T tagType='h1'>hello</T>
 ```
 
 ### Refresh mixin

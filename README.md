@@ -165,6 +165,10 @@ const T = i18n.createComponent(i18n.createTranslator('common'));
 <T>ok</T>
 // this time with override locale
 <T _locale='pl-PL'>hello</T>
+// overriding the default DOM element 'span' with 'h1'
+<T tagType='h1'>hello</T>
+// providing props to the element
+<T props={{ className: 'text-center', style: { color: '#f33' }}}>hello</T>
 ```
 
 ### Refresh mixin
@@ -382,13 +386,14 @@ Meteor.methods({
 ## API
 ```js
 // create React component
-i18n.createComponent(translator, locale, reactjs);
+i18n.createComponent(translator, locale, reactjs, type);
 //  @params:
 //    translator - (optional, default is i18n.createTranslator())
 //      using this argument you can set different function for translation or the namespace for default translator.
 //    locale - (optional, default current locale) set language for this component (can be different than on rest of site)
 //    reactjs - (optional, as a default it tries to get React from global variable)
 //      you can pass React object if is not available in global scope
+//    type - (optional, as default it uses <span> to render the content.) set which DOM element that will be rendered, e.g. 'li', 'div' or 'h1'.
 
 // create namespaced translator
 i18n.createTranslator(namespace, locale);

@@ -69,11 +69,14 @@ Example for those, who want to set locale as in browser:
 
 ```js
 // somewhere in page layout ( or in router?)
-function getLang() {
-    if (navigator.languages != undefined)  {
-        return navigator.languages[0];
-    }
-    return navigator.language || navigator.browserLanguage;
+function getLang () {
+    return (
+        navigator.languages && navigator.languages[0] ||
+        navigator.language ||
+        navigator.browserLanguage ||
+        navigator.userLanguage ||
+        'en-US'
+    );
 }
 
 i18n.setLocale(getLang());

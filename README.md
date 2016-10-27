@@ -14,7 +14,7 @@ Internationalization package with support:
 - **incremental loading of translations**
   (Client do not need to download all translations at once)
 - remote loading of translations from different host
-
+- dedicated editor for translators (alpha version) [mac os](https://drive.google.com/open?id=0ByCHJxkqk5WjV3ZEcmRIVUdPcTQ), [win x64](https://drive.google.com/open?id=0ByCHJxkqk5WjcjNxdUFEbVZHSGs)
 
 **Table of Contents**
 

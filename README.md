@@ -8,7 +8,7 @@ Internationalization package with support:
 - 353 locales (with basic informations: name, symbol of currency, rtl)
 - regional dialects e.g. 'en-us' inherits from translations assigned to 'en'
 - react component `<T>ok</T>`
-- support for universe:modules (es6/modules)
+- support for es6/modules
 - much better performance than other packages
   (Tracker dependency on every strings isn't light, so in React we use simple eventemitter)
 - **incremental loading of translations**

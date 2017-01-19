@@ -52,6 +52,11 @@ This plugin is dedicated to work with react and modules, but you can use it with
 import i18n from 'meteor/universe:i18n';
 ```
 
+### Tutorials
+
+- [Internationalizing Meteor with Universe:i18n](http://www.sonicviz.com/wp/2016/10/23/internationalizing-meteor/)
+- [Meteor Guide](https://guide.meteor.com/ui-ux.html#universe-i18n)
+
 ### Setting/Getting locale
 
 ```js

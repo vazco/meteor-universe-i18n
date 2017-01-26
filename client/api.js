@@ -40,7 +40,7 @@ i18n.loadLocale = (localeName, options) => {
         promise.then(() => {
             const locale = i18n.getLocale();
             //If current locale is changed we must notify about that.
-            if (locale.indexOf(localeName) === 0 || i18n._defaultLocale.indexOf(localeName) === 0) {
+            if (locale.indexOf(localeName) === 0 || i18n.options.defaultLocale.indexOf(localeName) === 0) {
                 i18n._emitChange();
             }
         });

@@ -404,6 +404,9 @@ i18n.getTranslations(namespace, locale);
 
 // options
 i18n.setOptions({
+    // default locale
+    defaultLocale: 'en-US'
+
     // opens string
     open: '{$',
 

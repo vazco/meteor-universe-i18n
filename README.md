@@ -24,7 +24,6 @@ The package supports:
     - [Adding translations by methods](https://github.com/vazco/meteor-universe-i18n/#adding-translations-my-methods)
     - [Getting translations](https://github.com/vazco/meteor-universe-i18n/#getting-translations)
     - [Creating a React component](https://github.com/vazco/meteor-universe-i18n/#creating-react-component)
-    - [Refresh mixin](https://github.com/vazco/meteor-universe-i18n/#refresh-mixin)
     - [Formatting numbers](https://github.com/vazco/meteor-universe-i18n/#formatting-numbers)
   - [Translations files](https://github.com/vazco/meteor-universe-i18n/#translations-files)
     - [Recognition locale of translation](https://github.com/vazco/meteor-universe-i18n/#recognition-locale-of-translation)
@@ -173,21 +172,6 @@ const T = i18n.createComponent(i18n.createTranslator('common'));
 <T _tagType='h1'>hello</T>
 // providing props to the element
 <T _props={{ className: 'text-center', style: { color: '#f33' }}}>hello</T>
-```
-
-### Refresh mixin
-
-A simple mixin for React that refreshes the whole component when locale has been changed.
-(As a benefit it provides "locale" property in the state.)
-
-```
-import {refreshOnChangeLocaleMixin} from 'meteor/universe:i18n';
-
-export default React.createClass({
-    displayName: 'StatsWidget',
-    mixins: [refreshOnChangeLocaleMixin],
-    /* ... */
-});
 ```
 
 ### Formatting numbers

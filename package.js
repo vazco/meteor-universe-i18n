@@ -51,8 +51,10 @@ Package.onUse(function (api) {
 Package.onTest(function(api) {
     api.use([
         'ecmascript',
-        'universe:e2e',
-        'universe:i18n',
+        'practicalmeteor:chai',
+        'practicalmeteor:mocha',
+        'practicalmeteor:sinon',
+        'universe:i18n'
     ]);
 
     api.addFiles('i18n.tests.js');

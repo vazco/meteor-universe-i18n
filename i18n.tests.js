@@ -1,5 +1,3 @@
-import i18n from 'meteor/universe:i18n';
-
 describe('universe-i18n', function () {
     it('should support YAML files', async function () {
         await i18n.setLocale('fr-FR')
@@ -74,4 +72,4 @@ describe('universe-i18n', function () {
         await i18n.setLocale('en-US');
         expect(i18n.getLanguages()).to.include(i18n.getLocale());
     });
-})
+});

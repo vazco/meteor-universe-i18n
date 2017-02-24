@@ -52,13 +52,13 @@ Package.onUse(function (api) {
 
 Package.onTest(function(api) {
     api.use([
+        'ecmascript',
         'lmieulet:meteor-coverage@1.1.4',
         'practicalmeteor:chai',
         'practicalmeteor:mocha',
         'practicalmeteor:sinon'
     ]);
-    api.use('universe:i18n')
-    api.use(packages);
+    api.use('universe:i18n');
 
     api.addAssets('settings.coverage.json', 'server');
     api.addFiles(['es-es.i18n.json', 'fr-fr.i18n.yml', 'it-it.i18n.yml']);

@@ -6,6 +6,6 @@ describe('universe-i18n - client', function () {
         expect(i18n.getLocale()).to.equal('it-IT');
         expect(i18n.getLanguages()).to.include(i18n.getLocale());
     });
-})
+});
 
 import '../i18n.tests';

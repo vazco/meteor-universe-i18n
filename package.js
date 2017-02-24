@@ -10,6 +10,17 @@ var npmDependencies = {
     'yamljs': '0.2.8'
 };
 
+var packages = [
+    'http',
+    'webapp',
+    'tracker',
+    'promise',
+    'ecmascript',
+    'underscore',
+    'universe:utilities@2.3.2',
+    'isobuild:compiler-plugin@1.0.0'
+]
+
 Package.registerBuildPlugin({
     name: 'UniverseI18n',
     use: ['ecmascript', 'caching-compiler@1.0.3', 'underscore'],
@@ -22,16 +33,7 @@ Npm.depends(npmDependencies);
 Package.onUse(function (api) {
     api.versionsFrom('1.3');
 
-    api.use([
-        'http',
-        'webapp',
-        'tracker',
-        'promise',
-        'ecmascript',
-        'underscore',
-        'universe:utilities@2.3.2',
-        'isobuild:compiler-plugin@1.0.0'
-    ]);
+    api.use(packages);
 
     api.mainModule('lib/i18n.js');
 
@@ -50,15 +52,17 @@ Package.onUse(function (api) {
 
 Package.onTest(function(api) {
     api.use([
-        'ecmascript',
+        'lmieulet:meteor-coverage@1.1.4',
         'practicalmeteor:chai',
         'practicalmeteor:mocha',
-        'practicalmeteor:sinon',
-        'universe:i18n'
+        'practicalmeteor:sinon'
     ]);
+    api.use('universe:i18n')
+    api.use(packages);
 
-    api.addFiles(['es-es.i18n.json', 'fr-fr.i18n.yml', 'i18n.tests.js', 'it-it.i18n.yml']);
-    api.addFiles([
-        'client/i18n.tests.js'
-    ], 'client');
+    api.addAssets('settings.coverage.json', 'server');
+    api.addFiles(['es-es.i18n.json', 'fr-fr.i18n.yml', 'it-it.i18n.yml']);
+
+    api.mainModule('i18n.tests.js', 'server');
+    api.mainModule('client/i18n.tests.js', 'client');
 });

@@ -1,3 +1,5 @@
+import i18n from 'meteor/universe:i18n';
+
 describe('universe-i18n', function () {
     it('should support YAML files', async function () {
         await i18n.setLocale('fr-FR')

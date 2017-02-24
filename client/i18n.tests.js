@@ -7,3 +7,5 @@ describe('universe-i18n - client', function () {
         expect(i18n.getLanguages()).to.include(i18n.getLocale());
     });
 })
+
+import '../i18n.tests';

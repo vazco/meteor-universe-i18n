@@ -1,0 +1,5 @@
+_locale: 'fr-FR'
+_namespace: ''
+
+common:
+    name: yml

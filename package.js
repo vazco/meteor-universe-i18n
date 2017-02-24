@@ -57,5 +57,5 @@ Package.onTest(function(api) {
         'universe:i18n'
     ]);
 
-    api.addFiles('i18n.tests.js');
+    api.addFiles(['es-es.i18n.json', 'fr-fr.i18n.yml', 'i18n.tests.js']);
 });

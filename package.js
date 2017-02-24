@@ -60,7 +60,6 @@ Package.onTest(function(api) {
     ]);
     api.use('universe:i18n');
 
-    api.addAssets('settings.coverage.json', 'server');
     api.addFiles(['es-es.i18n.json', 'fr-fr.i18n.yml', 'it-it.i18n.yml']);
 
     api.mainModule('i18n.tests.js', 'server');

@@ -93,7 +93,7 @@ Keep in mind though that it will work on the client side only. Therefore, for th
 import i18n from 'meteor/universe:i18n';
 
 i18n.addTranslation('en-US', 'common', 'no', 'No');
-i18n.addTranslation('en-US', common.ok', 'Ok');
+i18n.addTranslation('en-US', 'common.ok', 'Ok');
 
 i18n.addTranslations('en-US', {
     common: {

@@ -2,6 +2,16 @@ import i18n from '../lib/i18n';
 
 const url = Npm.require('url');
 
+WebApp.connectHandlers.use('/universe/locale/availability/', function(req, res, next) {
+
+    const {pathname} = url.parse(req.url, true);
+    let locale = pathname.match(/^\/?([a-z]{2}[a-z0-9\-_]*)/i);
+    locale = locale && locale[1];
+
+    res.writeHead(locale && i18n.getLanguages().includes(locale) ? 200 : 204);
+    return res.end();
+});
+
 WebApp.connectHandlers.use('/universe/locale/', function(req, res, next) {
 
     const {pathname, query} = url.parse(req.url, true);

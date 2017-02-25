@@ -62,6 +62,6 @@ Package.onTest(function(api) {
 
     api.addFiles(['es-es.i18n.json', 'fr-fr.i18n.yml', 'it-it.i18n.yml']);
 
-    api.mainModule('i18n.tests.js', 'server');
+    api.mainModule('server/i18n.tests.js', 'server');
     api.mainModule('client/i18n.tests.js', 'client');
 });

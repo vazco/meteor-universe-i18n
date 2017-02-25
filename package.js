@@ -10,17 +10,6 @@ var npmDependencies = {
     'yamljs': '0.2.8'
 };
 
-var packages = [
-    'http',
-    'webapp',
-    'tracker',
-    'promise',
-    'ecmascript',
-    'underscore',
-    'universe:utilities@2.3.2',
-    'isobuild:compiler-plugin@1.0.0'
-]
-
 Package.registerBuildPlugin({
     name: 'UniverseI18n',
     use: ['ecmascript', 'caching-compiler@1.0.3', 'underscore'],
@@ -33,7 +22,16 @@ Npm.depends(npmDependencies);
 Package.onUse(function (api) {
     api.versionsFrom('1.3');
 
-    api.use(packages);
+    api.use([
+        'http',
+        'webapp',
+        'tracker',
+        'promise',
+        'ecmascript',
+        'underscore',
+        'universe:utilities@2.3.2',
+        'isobuild:compiler-plugin@1.0.0'
+    ]);
 
     api.mainModule('lib/i18n.js');
 

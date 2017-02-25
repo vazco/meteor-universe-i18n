@@ -9,11 +9,11 @@ describe('universe-i18n', function () {
         expect(i18n.__('common.name')).to.equal('json');
     });
 
-    it('should be able to set locale', function () {
-        expect(i18n.setLocale('de-DE')).to.be.ok;
+    it('should be able to set locale', async function () {
+        await i18n.setLocale('de-DE')
         expect(i18n.getLocale()).to.equal('de-DE');
         expect(i18n.setLocale('pl-PL')).to.be.ok;
-        expect(i18n.getLocale()).to.equal('pl-PL').and.not.equal('de-DE');
+        expect(i18n.getLocale()).to.equal('pl-PL');
     });
 
     it('should be able to set/get translations', function () {
@@ -62,7 +62,6 @@ describe('universe-i18n', function () {
         expect(i18n.onceChangeLocale(callback)).to.equal(undefined);
 
         const result = await i18n.setLocale('pl-PL');
-        // expect(result).to.be.ok;
 
         expect(callback).to.have.been.calledOnce;
         expect(callback).to.have.been.calledWith('pl-PL');

@@ -8,6 +8,7 @@ i18n.loadLocale = (localeName, options) => {
     localeName = locales[localeName.toLowerCase()]? locales[localeName.toLowerCase()][0] : localeName;
 
     let url = host  + pathOnHost + localeName;
+
     if (fresh) {
         url += '?ts='+(new Date().getTime());
     } else {
@@ -45,37 +46,6 @@ i18n.loadLocale = (localeName, options) => {
         });
     }
     return promise;
-};
-
-i18n.checkTranslationsAvailability = (locale, options) => {
-    const {
-        host = i18n.options.hostUrl,
-        pathOnHost = i18n.options.pathOnHost,
-        availabilityPath = i18n.options.availabilityPath
-    } = options || {};
-
-    const request = new XMLHttpRequest();
-    const method = 'GET';
-    const url = `${host}${pathOnHost}${availabilityPath}${locale}`;
-    return new Promise(function(resolve, reject) {
-        request.open(method, url, true);
-        request.onreadystatechange = function () {
-            if(request.readyState === XMLHttpRequest.DONE) {
-                if (request.status === 200) {
-                    resolve();
-                } else {
-                    reject(new Error(`Wrong locale: ${locale}, translation does not exists.`));
-                }
-            }
-        };
-        request.onerror = function() {
-            reject(new Error(`Wrong locale: ${locale}, error occured while checking for translation.`));
-        };
-        request.ontimeout = function() {
-            reject(new Error(`Wrong locale: ${locale}, checking for translation timed out.`));
-        };
-        request.send();
-    });
 };
 
 // If translation file added manually before this package

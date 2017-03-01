@@ -4,8 +4,14 @@ describe('universe-i18n - client', function () {
         await i18n.setLocale('it-IT');
         expect(i18n.isLoaded('it-IT')).to.be.true;
         expect(i18n.getLocale()).to.equal('it-IT');
-        expect(i18n.getLanguages()).to.include(i18n.getLocale());
+    });
+
+    it('should list only available languages', async function () {
+        expect(i18n.isLoaded('zh-CN')).to.not.be.true;
+        await i18n.setLocale('zh-CN');
+        expect(i18n.isLoaded('zh-CN')).to.be.true;
+        expect(i18n.getLanguages()).to.not.include(i18n.getLocale());
     });
 });
 
-import '../i18n.tests';
+import '../../i18n.tests';

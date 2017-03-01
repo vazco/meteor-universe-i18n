@@ -58,8 +58,8 @@ Package.onTest(function(api) {
     ]);
     api.use('universe:i18n');
 
-    api.addFiles(['es-es.i18n.json', 'fr-fr.i18n.yml', 'it-it.i18n.yml']);
+    api.addFiles(['tests/es-es.i18n.json', 'tests/fr-fr.i18n.yml', 'tests/it-it.i18n.yml']);
 
-    api.mainModule('server/i18n.tests.js', 'server');
-    api.mainModule('client/i18n.tests.js', 'client');
+    api.mainModule('tests/server/i18n.tests.js', 'server');
+    api.mainModule('tests/client/i18n.tests.js', 'client');
 });

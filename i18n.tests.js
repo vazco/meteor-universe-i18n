@@ -1,26 +1,26 @@
-describe('universe-i18n', function () {
-    it('should support YAML files', async function () {
-        await i18n.setLocale('fr-FR')
+describe('universe-i18n', () => {
+    it('should support YAML files', async () => {
+        await i18n.setLocale('fr-FR');
         expect(i18n.__('common.name')).to.equal('yml');
     });
 
-    it('should support JSON files', async function () {
-        await i18n.setLocale('es-ES')
+    it('should support JSON files', async () => {
+        await i18n.setLocale('es-ES');
         expect(i18n.__('common.name')).to.equal('json');
     });
 
-    it('should be able to set locale', async function () {
-        await i18n.setLocale('de-DE')
+    it('should be able to set locale', async () => {
+        await i18n.setLocale('de-DE');
         expect(i18n.getLocale()).to.equal('de-DE');
         expect(i18n.setLocale('pl-PL')).to.be.ok;
         expect(i18n.getLocale()).to.equal('pl-PL');
     });
 
-    it('should be able to set/get translations', function () {
+    it('should be able to set/get translations', () => {
         expect(i18n.addTranslation('en-US', 'common', 'yes', 'Yes')).to.be.ok;
         expect(i18n.__('common.yes')).to.equal('Yes');
 
-        expect(i18n.addTranslation('en-US','common.no', 'No')).to.be.ok;
+        expect(i18n.addTranslation('en-US', 'common.no', 'No')).to.be.ok;
         expect(i18n.__('common.no')).to.equal('No');
 
         expect(i18n.addTranslation('en-US', 'common.ok', 'Ok')).to.be.ok;
@@ -38,36 +38,36 @@ describe('universe-i18n', function () {
         expect(i18n.__('common', 'firstAndThird', ['a', 'b', 'c'])).to.equal('First: a, Third: c');
     });
 
-    it('should be able to parse numbers', function () {
+    it('should be able to parse numbers', () => {
         expect(i18n.setLocale('en-US')).to.be.ok;
-        expect(i18n.parseNumber('7013217.715')).to.equal('7,013,217.715')
+        expect(i18n.parseNumber('7013217.715')).to.equal('7,013,217.715');
         expect(i18n.setLocale('pl-PL')).to.be.ok;
-        expect(i18n.parseNumber('16217 and 17217,715', 'en-US')).to.equal('16,217 and 17,217.715')
-        expect(i18n.parseNumber('7013217.715', 'ru-RU')).to.equal('7 013 217,715')
+        expect(i18n.parseNumber('16217 and 17217,715', 'en-US')).to.equal('16,217 and 17,217.715');
+        expect(i18n.parseNumber('7013217.715', 'ru-RU')).to.equal('7 013 217,715');
     });
 
-    it('should be able to get currency symbol and currency codes', function () {
+    it('should be able to get currency symbol and currency codes', () => {
         expect(i18n.getCurrencySymbol('en-US')).to.equal('$');
         expect(i18n.getCurrencySymbol('USD')).to.equal('$');
-        expect(i18n.getCurrencyCodes('en-US')).to.deep.equal(["USD", "USN", "USS"]);
+        expect(i18n.getCurrencyCodes('en-US')).to.deep.equal(['USD', 'USN', 'USS']);
 
         expect(i18n.getCurrencySymbol('pl-PL')).to.equal('zł');
         expect(i18n.getCurrencySymbol('PLN')).to.equal('zł');
-        expect(i18n.getCurrencyCodes('pl-PL')).to.deep.equal(["PLN"]);
+        expect(i18n.getCurrencyCodes('pl-PL')).to.deep.equal(['PLN']);
     });
 
-    it('should be able to listen on locale change', async function () {
+    it('should be able to listen on locale change', async () => {
         const callback = sinon.spy();
 
         expect(i18n.onceChangeLocale(callback)).to.equal(undefined);
 
-        const result = await i18n.setLocale('pl-PL');
+        await i18n.setLocale('pl-PL');
 
         expect(callback).to.have.been.calledOnce;
         expect(callback).to.have.been.calledWith('pl-PL');
     });
 
-    it('should include current language in available languages', async function () {
+    it('should include current language in available languages', async () => {
         await i18n.setLocale('en-US');
         expect(i18n.getLanguages()).to.include(i18n.getLocale());
     });

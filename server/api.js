@@ -63,7 +63,6 @@ function getJS (locale, namespace, isBefore) {
     if (isBefore) {
         return `var w=this||window;w.__uniI18nPre=w.__uniI18nPre||{};w.__uniI18nPre['${locale}'] = ${json}`;
     }
-
     return `(Package['universe:i18n'].i18n).addTranslations('${locale}', ${json});`;
 }
 

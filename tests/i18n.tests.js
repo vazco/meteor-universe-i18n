@@ -74,4 +74,24 @@ describe('universe-i18n', () => {
         await i18n.setLocale('en-US');
         expect(i18n.getLanguages()).to.include(i18n.getLocale());
     });
+
+    it('should be able to create translators', async () => {
+        const frenchTranslator = i18n.createTranslator('', 'fr-FR');
+        await i18n.setLocale('es-ES');
+        expect(i18n.__('common.name')).to.equal('json');
+        expect(frenchTranslator('common.name')).to.equal('yml');
+    });
+
+    it('should be able to set options', async () => {
+        i18n.setOptions({open: '{{', close: '}}'});
+
+        const params = {
+            common: {
+                hello: 'Hello {{name}}'
+            }
+        };
+        expect(i18n.addTranslations('en-US', params)).to.be.ok;
+        expect(i18n.getTranslation('common', 'hello', {name: 'World'})).to.equal('Hello World');
+        i18n.setOptions({open: '{$', close: '}'});
+    });
 });

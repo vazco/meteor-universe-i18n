@@ -1,5 +1,6 @@
 describe('universe-i18n - client', () => {
-    it('should load translations incrementally', async () => {
+    it('should load translations incrementally', async function() {
+        this.slow(100);
         expect(i18n.isLoaded('it-IT')).to.not.be.true;
         await i18n.setLocale('it-IT');
         expect(i18n.isLoaded('it-IT')).to.be.true;
@@ -13,5 +14,3 @@ describe('universe-i18n - client', () => {
         expect(i18n.getLanguages()).to.not.include(i18n.getLocale());
     });
 });
-
-import '../../i18n.tests';

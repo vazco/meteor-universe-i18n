@@ -1,15 +1,18 @@
 describe('universe-i18n', () => {
-    it('should support YAML files', async () => {
+    it('should support YAML files', async function() {
+        this.slow(100);
         await i18n.setLocale('fr-FR');
         expect(i18n.__('common.name')).to.equal('yml');
     });
 
-    it('should support JSON files', async () => {
+    it('should support JSON files', async function() {
+        this.slow(100);
         await i18n.setLocale('es-ES');
         expect(i18n.__('common.name')).to.equal('json');
     });
 
-    it('should be able to set locale', async () => {
+    it('should be able to set locale', async function() {
+        this.slow(100);
         await i18n.setLocale('de-DE');
         expect(i18n.getLocale()).to.equal('de-DE');
         expect(i18n.setLocale('pl-PL')).to.be.ok;

@@ -1,4 +1,4 @@
-describe('universe-i18n - client', () => {
+describe('universe-i18n - server', () => {
     it('should return object from getCache', () => {
         expect(i18n.getCache()).to.be.an('object');
         expect(i18n.getCache('en-US')).to.be.an('object');
@@ -17,6 +17,3 @@ describe('universe-i18n - client', () => {
         expect(cache.getYML('es-ES')).to.be.a('string');
     });
 });
-
-
-import '../../i18n.tests';

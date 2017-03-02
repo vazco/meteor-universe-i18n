@@ -58,8 +58,7 @@ Package.onTest(function(api) {
     ]);
     api.use('universe:i18n');
 
-    api.addFiles(['tests/es-es.i18n.json', 'tests/fr-fr.i18n.yml', 'tests/it-it.i18n.yml']);
-
-    api.mainModule('tests/server/i18n.tests.js', 'server');
-    api.mainModule('tests/client/i18n.tests.js', 'client');
+    api.addFiles(['tests/i18n.tests.js', 'tests/es-es.i18n.json', 'tests/fr-fr.i18n.yml', 'tests/it-it.i18n.yml']);
+    api.addFiles(['tests/i18n.tests.client.js'], 'client');
+    api.addFiles(['tests/i18n.tests.server.js'], 'server');
 });

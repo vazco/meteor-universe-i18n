@@ -48,3 +48,17 @@ Package.onUse(function (api) {
 });
 
 
+Package.onTest(function(api) {
+    api.use([
+        'ecmascript',
+        'lmieulet:meteor-coverage@1.1.4',
+        'practicalmeteor:chai',
+        'practicalmeteor:mocha',
+        'practicalmeteor:sinon'
+    ]);
+    api.use('universe:i18n');
+
+    api.addFiles(['tests/i18n.tests.js', 'tests/es-es.i18n.json', 'tests/fr-fr.i18n.yml', 'tests/it-it.i18n.yml']);
+    api.addFiles(['tests/i18n.tests.client.js'], 'client');
+    api.addFiles(['tests/i18n.tests.server.js'], 'server');
+});

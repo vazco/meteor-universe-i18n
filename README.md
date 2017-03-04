@@ -33,6 +33,7 @@ The package supports:
   - [Incremental loading of translations](https://github.com/vazco/meteor-universe-i18n/#incremental-loading-of-translations)
   - [API](https://github.com/vazco/meteor-universe-i18n/#api)
   - [Blaze support](https://github.com/vazco/meteor-universe-i18n/#blaze-support)
+  - [Integration with SimpleSchema](https://github.com/vazco/meteor-universe-i18n/blob/master/README.md#integration-with-simpleschema-package)
   - [Supported locales](https://github.com/vazco/meteor-universe-i18n/#supported-locales)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->

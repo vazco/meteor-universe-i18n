@@ -92,16 +92,16 @@ Keep in mind though that it will work on the client side only. Therefore, for th
 ```js
 import i18n from 'meteor/universe:i18n';
 
-i18n.addTranslation('en-US', 'common', 'no', 'No');
-i18n.addTranslation('en-US', 'common.ok', 'Ok');
+i18n.addTranslation('en-US', 'Common', 'no', 'No');
+i18n.addTranslation('en-US', 'Common.ok', 'Ok');
 
 i18n.addTranslations('en-US', {
-    common: {
+    Common: {
         hello: 'Hello {$name} {$0}!'
     }
 });
 
-i18n.addTranslations('en-US', 'common', {
+i18n.addTranslations('en-US', 'Common', {
     hello: 'Hello {$name} {$0}!'
 });
 ```
@@ -115,13 +115,13 @@ You can obtain translation strings by:
 ```js
 i18n.__(key);
 i18n.__(key, params);
-i18n.__(namespace, key, parameters);
-i18n.__(namespace, key, parameters);
+i18n.__(Namespace, key, parameters);
+i18n.__(Namespace, key, parameters);
 i18n.__(key, key, key, key, parameters);
 // same with "getTranslation", e.g.:
-i18n.getTranslation(key, key, key, key, parameters);
+i18n.getTranslation(Key, Key, Key, key, parameters);
 // namespaced translations
-var t = i18n.createTranslator(namespace);
+var t = i18n.createTranslator(Namespace);
 t(key, parameters);
 // different language translations
 var t2 = i18n.createTranslator('', 'fr-fr');
@@ -152,16 +152,16 @@ import i18n from 'meteor/universe:i18n';
 const T = i18n.createComponent();
 
 // later on...
-<T>common.no</T>
-<T>common.ok</T>
-<T name="World" {...[69]}>common.hello</T>
+<T>Common.no</T>
+<T>Common.ok</T>
+<T name="World" {...[69]}>Common.hello</T>
 ```
 
 ```jsx
 import i18n from 'meteor/universe:i18n';
 
-// an instance of a translate component in the "common" namespace
-const T = i18n.createComponent(i18n.createTranslator('common'));
+// an instance of a translate component in the "Common" namespace
+const T = i18n.createComponent(i18n.createTranslator('Common'));
 
 // later on...
 <T>ok</T>
@@ -211,6 +211,8 @@ someDir/en-us/someName.i18n.yml
 
 Translations in a translation file can be namespaced (depending on where they are located). A namespace can be set up only for a whole file, yet a file as such can add more deeply embedded structures.
 
+*Tip: A good practise is using PascalCase for naming of namespaces and for leafs use camelCase. This helps protect against conflicts namespace with string
+
 #### Translation in packages
 
 For example, translations files in packages are by default namespaced by their package name.
@@ -240,7 +242,7 @@ You can change a default namespace for a file by setting a prefix to this file u
 ```json
 // file en.json in the universe:profile package
 {
-    "_namespace": "common",
+    "_namespace": "Common",
     "userName": "User name"
 }
 ```
@@ -248,12 +250,12 @@ You can change a default namespace for a file by setting a prefix to this file u
 And then:
 
 ```js
-i18n.__('common', 'userName') // output: User name
-i18n.__('common.userName') // output: User name
+i18n.__('Common', 'userName') // output: User name
+i18n.__('Common.userName') // output: User name
 
 // in React:
 const T = i18n.createComponent();
-<T>common.userName</T>
+<T>Common.userName</T>
 ```
 
 *TIP:* You can also add translations from a package on the top-level by passing empty string '' in the key "_namespace".
@@ -267,7 +269,7 @@ For example:
 
 ```yml
 # file en_us.yml in an application space (not from a package)
-userName: User name
+userName: user name
 ```
 
 ```js
@@ -280,19 +282,19 @@ const T = i18n.createComponent();
 If you want to add translations under a namespace, you should define it in the key '_namespace'.
 
 ```yml
-_namespace: user.listing.item
+_namespace: User.Listing.Item
 userName: User name
 ```
 
 ```js
-i18n.__('user.listing.item.userName'); // output: User name
-i18n.__('user', 'listing', 'item.userName'); // output: User name
+i18n.__('User.Listing.Item.userName'); // output: User name
+i18n.__('User', 'Listing', 'Item.userName'); // output: User name
 // in React:
 const T = i18n.createComponent();
-<T>user.listing.item.userName</T>
+<T>User.Listing.Item.userName</T>
 // or:
-const T2 = i18n.createComponent('user.listing');
-<T2>item.userName</T2>
+const T2 = i18n.createComponent('User.Listing');
+<T2>Item.userName</T2>
 ```
 
 
@@ -472,6 +474,60 @@ getAllKeysForLocale(locale, exactlyThis = false)
 ## Blaze support
 
 [universe:i18n-blaze](https://atmospherejs.com/universe/i18n-blaze)
+
+## Integration with SimpleSchema package
+
+Add following-like code to main.js:
+
+```
+const registerSchemaMessages = () => {
+    SimpleSchema.messages({
+        'required': i18n.__('SimpleSchema.required')
+    });
+};
+
+i18n.onChangeLocale(registerSchemaMessages);
+registerSchemaMessages();
+```
+Put the default error messages somewhere in your project on both sides e.g.:
+
+```yml
+_locale: en
+_namespace: SimpleSchema
+
+required: '[label] is required'
+minString: '[label] must be at least [min] characters'
+maxString: '[label] cannot exceed [max] characters'
+minNumber: '[label] must be at least [min]'
+maxNumber: '[label] cannot exceed [max]'
+minNumberExclusive: '[label] must be greater than [min]'
+maxNumberExclusive: '[label] must be less than [max]'
+minDate: '[label] must be on or after [min]'
+maxDate: '[label] cannot be after [max]'
+badDate: '[label] is not a valid date'
+minCount: 'You must specify at least [minCount] values'
+maxCount: 'You cannot specify more than [maxCount] values'
+noDecimal: '[label] must be an integer'
+notAllowed: '[value] is not an allowed value'
+expectedString: '[label] must be a string'
+expectedNumber: '[label] must be a number'
+expectedBoolean: '[label] must be a boolean'
+expectedArray: '[label] must be an array'
+expectedObject: '[label] must be an object'
+expectedConstructor: '[label] must be a [type]'
+RegEx:
+  msg: '[label] failed regular expression validation'
+  Email: '[label] must be a valid e-mail address'
+  WeakEmail: '[label] must be a valid e-mail address'
+  Domain: '[label] must be a valid domain'
+  WeakDomain: '[label] must be a valid domain'
+  IP: '[label] must be a valid IPv4 or IPv6 address'
+  IPv4: '[label] must be a valid IPv4 address'
+  IPv6: '[label] must be a valid IPv6 address'
+  Url: '[label] must be a valid URL'
+  Id: '[label] must be a valid alphanumeric ID'
+keyNotInSchema: '[key] is not allowed by the schema'
+```
 
 
 ## Supported locales

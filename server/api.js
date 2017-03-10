@@ -10,7 +10,7 @@ i18n.getCache = function getCache(locale){
     if (locale){
         if (!cache[locale]) {
             cache[locale] = {
-                updatedAt: new Date(),
+                updatedAt: new Date().toUTCString(),
                 getYML,
                 getJSON,
                 getJS

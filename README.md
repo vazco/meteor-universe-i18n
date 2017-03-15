@@ -13,7 +13,7 @@ The package supports:
 - ECMAScript 6 modules
 - **incremental loading of translations** (Client does not need to download all translations at once)
 - remote loading of translations from a different host
-- dedicated translation strings editor (alpha version) [mac os](https://drive.google.com/open?id=0ByCHJxkqk5WjV3ZEcmRIVUdPcTQ), [win x64](https://drive.google.com/open?id=0ByCHJxkqk5WjcjNxdUFEbVZHSGs)
+- dedicated translation strings editor (alpha version) [mac os](https://drive.google.com/file/d/0ByCHJxkqk5WjUlJjTjJqVlAtSzg/view?usp=sharing), [win x64](https://drive.google.com/file/d/0ByCHJxkqk5WjX2VXMjZQUU9PU28/view?usp=sharing)
 
 **Table of Contents**
 

@@ -48,11 +48,13 @@ i18n.loadLocale = (localeName, options) => {
     return promise;
 };
 
+const w=this||window;
+
 // If translation file added manually before this package
-if (typeof __uniI18nPre === 'object') {
-    Object.keys(__uniI18nPre).map(i => {
-        if(__uniI18nPre[i]){
-            i18n.addTranslations(i, __uniI18nPre__[i]);
+if (typeof w.__uniI18nPre === 'object') {
+    Object.keys(w.__uniI18nPre).map(i => {
+        if (w.__uniI18nPre[i]) {
+            i18n.addTranslations(i, w.__uniI18nPre[i]);
         }
     });
 }

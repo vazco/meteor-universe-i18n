@@ -54,7 +54,7 @@ function getJSON (locale, namespace) {
 function getJS (locale, namespace, isBefore) {
     const json = getJSON(locale, namespace);
     if (json.length <= 2 && !isBefore) return '';
-    if (namespace && typeof namespace === 'string'){
+    if (namespace && typeof namespace === 'string') {
         if (isBefore) {
             return `var w=this||window;w.__uniI18nPre=w.__uniI18nPre||{};w.__uniI18nPre['${locale}.${namespace}'] = ${json}`;
         }

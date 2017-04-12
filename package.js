@@ -7,7 +7,7 @@ Package.describe({
 
 var npmDependencies = {
     'strip-json-comments': '2.0.1',
-    'yamljs': '0.2.8'
+    'yamljs': '0.2.9'
 };
 
 Package.registerBuildPlugin({

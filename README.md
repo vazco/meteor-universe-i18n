@@ -9,7 +9,7 @@ The package supports:
 - typographic notation of numbers
 - 353 locales (with basic informations: name, symbol of currency, rtl)
 - regional dialects inheritance mechanism (e.g. 'en-us' inherits from translations assigned to 'en')
-- react component `<T>ok</T>`
+- react component `<T>ok</T>` or `<T _translateProps={['title']}><div title="ok">Check title</div></T>`
 - ECMAScript 6 modules
 - **incremental loading of translations** (Client does not need to download all translations at once)
 - remote loading of translations from a different host
@@ -156,6 +156,10 @@ const T = i18n.createComponent();
 <T>Common.no</T>
 <T>Common.ok</T>
 <T name="World" {...[69]}>Common.hello</T>
+// translate component 
+<T _translateProps={['title', 'children']}>
+      <div title="Common.no">Common.ok</div>
+</T>
 ```
 
 ```jsx

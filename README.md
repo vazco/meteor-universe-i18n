@@ -156,7 +156,7 @@ const T = i18n.createComponent();
 <T>Common.no</T>
 <T>Common.ok</T>
 <T name="World" {...[69]}>Common.hello</T>
-// translate component 
+// translate component
 <T _translateProps={['title', 'children']}>
       <div title="Common.no">Common.ok</div>
 </T>

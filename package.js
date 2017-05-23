@@ -12,7 +12,7 @@ var npmDependencies = {
 
 Package.registerBuildPlugin({
     name: 'UniverseI18n',
-    use: ['ecmascript', 'caching-compiler@1.0.3', 'underscore'],
+    use: ['ecmascript', 'caching-compiler@1.1.9', 'underscore'],
     sources: ['builder.js'],
     npmDependencies: npmDependencies
 });

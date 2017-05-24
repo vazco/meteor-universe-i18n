@@ -1,5 +1,6 @@
 import i18n from '../lib/i18n';
 import locales from '../lib/locales';
+import {Meteor} from 'meteor/meteor';
 
 i18n.loadLocale = (localeName, options) => {
     const {fresh = false, async = false, silent = false,
@@ -62,3 +63,9 @@ if (typeof w.__uniI18nPre === 'object') {
 i18n.isLoaded = (locale = i18n.getLocale()) => {
     return i18n._isLoaded[locale];
 };
+
+Meteor.connection._stream.on('reset', () => {
+    if (i18n.options.sameLocaleOnServerConnection && i18n._locale) {
+        Meteor.call('universe.i18n.setServerLocaleForConnection', i18n._locale);
+    }
+});

@@ -1,6 +1,7 @@
 import i18n from '../lib/i18n';
 import {_} from 'meteor/underscore';
 import {Meteor} from 'meteor/meteor';
+import {check, Match} from 'meteor/check';
 import {DDP} from 'meteor/ddp';
 
 const _localesPerConnections = {};
@@ -46,6 +47,7 @@ i18n.setLocaleOnConnection = (locale, connectionId = i18n._getConnectionLocale()
 
 Meteor.methods({
     'universe.i18n.setServerLocaleForConnection' (locale) {
+        check(locale, Match.Any);
         if (typeof locale !== 'string' || !i18n.options.sameLocaleOnServerConnection) {
             return;
         }

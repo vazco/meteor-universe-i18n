@@ -86,7 +86,9 @@ function getLang () {
 i18n.setLocale(getLang());
 ```
 
-Keep in mind though that it will work on the client side only. Therefore, for the server side, you will need to get it from the 'accept-language' header.
+Keep in mind though that it will work on the client side and in server methods called from client (on the same connection).
+In other places where connection is not detected, you must provide it self.
+By the way, It's good option is also use 'accept-language' header to recognize client's locale on server side.
 
 ### Adding translations by methods
 
@@ -436,6 +438,13 @@ i18n.parseNumber(number, locale);
 // changes locale
 i18n.setLocale(locale, params);
 // this function on the client side returns a promise (but only if parameter `noDownload !== true`)
+// Called from client, it sets locale for connection on server side.
+// It mean that method invoked by client will be with client side locale.
+// You can turn off this synchronization by setting the global option `sameLocaleOnServerConnection: false`
+
+// Setting locale for connection (if `connectionId` is not provided system will try detect current connection id)
+i18n.setLocaleOnConnection(locale, connectionId=);
+// this function sets locale in all places, where connection can be detected (like meteor methods)
 
 // gets the current locale
 i18n.getLocale();

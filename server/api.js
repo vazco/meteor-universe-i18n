@@ -1,13 +1,14 @@
 import i18n from '../lib/i18n';
 import locales from '../lib/locales';
 import {_} from 'meteor/underscore';
-import {UniUtils} from 'meteor/universe:utilities';
+import {set} from '../lib/utilities';
 import YAML from 'js-yaml';
+import stripJsonComments from 'strip-json-comments';
+import URL from 'url';
 
-// const YAML = Npm.require('js-yaml');
-const stripJsonComments = Npm.require('strip-json-comments');
-const URL = Npm.require('url');
 const cache = {};
+
+const YAML_OPTIONS = {skipInvalid: true, indent: 2, schema: YAML.FAILSAFE_SCHEMA, noCompatMode: true, sortKeys: true};
 
 i18n.getCache = function getCache (locale) {
     if (locale) {
@@ -27,7 +28,7 @@ i18n.getCache = function getCache (locale) {
 function getDiff (locale, diffWith) {
     const keys = _.difference(i18n.getAllKeysForLocale(locale), i18n.getAllKeysForLocale(diffWith));
     const diffLoc = {};
-    keys.forEach(key => UniUtils.set(diffLoc, key, i18n.getTranslation(key)));
+    keys.forEach(key => set(diffLoc, key, i18n.getTranslation(key)));
     return diffLoc;
 }
 
@@ -36,18 +37,18 @@ function getYML (locale, namespace, diffWith) {
         if (!cache[locale]['_yml' + namespace]) {
             let translations = i18n.getTranslations(namespace, locale) || {};
             translations = _.extend({_namespace: namespace}, translations);
-            cache[locale]['_yml' + namespace] = YAML.safeDump(translations, {indent: 4});
+            cache[locale]['_yml' + namespace] = YAML.dump(translations, YAML_OPTIONS);
         }
         return cache[locale]['_yml' + namespace];
     }
     if (diffWith && typeof diffWith === 'string') {
         if (!cache[locale]['_yml_diff_' + diffWith]) {
-            cache[locale]['_yml_diff_' + diffWith] = YAML.safeDump(getDiff(locale, diffWith), {indent: 4});
+            cache[locale]['_yml_diff_' + diffWith] = YAML.dump(getDiff(locale, diffWith), YAML_OPTIONS);
         }
         return cache[locale]['_yml_diff_' + diffWith];
     }
     if (!cache[locale]._yml) {
-        cache[locale]._yml = YAML.safeDump(i18n._translations[locale] || {}, {indent: 4});
+        cache[locale]._yml = YAML.dump(i18n._translations[locale] || {}, YAML_OPTIONS);
     }
     return cache[locale]._yml;
 }
@@ -63,7 +64,7 @@ function getJSON (locale, namespace, diffWith) {
     }
     if (diffWith && typeof diffWith === 'string') {
         if (!cache[locale]['_json_diff_' + diffWith]) {
-            cache[locale]['_json_diff_' + diffWith] = YAML.safeDump(getDiff(locale, diffWith), {indent: 4});
+            cache[locale]['_json_diff_' + diffWith] = YAML.safeDump(getDiff(locale, diffWith), {indent: 2});
         }
         return cache[locale]['_json_diff_' + diffWith];
     }

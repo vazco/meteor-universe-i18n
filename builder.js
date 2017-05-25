@@ -1,5 +1,7 @@
 import  stripJsonComments from 'strip-json-comments';
 import {CachingCompiler} from 'meteor/caching-compiler';
+import Utils from './lib/utilities';
+
 import YAML from 'js-yaml';
 
 class UniverseI18nBuilder extends CachingCompiler {
@@ -82,11 +84,28 @@ class UniverseI18nBuilder extends CachingCompiler {
         const namespace = typeof translations._namespace === 'string' ? translations._namespace : packageName || '';
         delete translations._locale;
         delete translations._namespace;
+        if (translations._splitKey) {
+            this.splitKeys(translations);
+        }
         return {
             locale,
             ts: `Package['universe:i18n'].i18n._ts = Math.max(Package['universe:i18n'].i18n._ts, ${Date.now()});`,
             data:`Package['universe:i18n'].i18n.addTranslations('${localesNames[locale]}','${namespace}',${JSON.stringify(translations)});`
         };
+    }
+
+    splitKeys (translations) {
+        const _splitKeys = translations._splitKey;
+        delete translations._splitKey;
+        for (let {node, key, parent} of new Utils.RecursiveIterator(translations)) {
+            if (key.indexOf(_splitKeys) !== -1) {
+                const path = key.split(_splitKeys);
+                if (path.every(prop => prop.length)) {
+                    delete parent[key];
+                    Utils.set(parent, path.join('.'), node);
+                }
+            }
+        }
     }
 
     addCompileResult (file, {locale, data, ts}) {
@@ -111,9 +130,9 @@ Plugin.registerCompiler({
     extensions: ['i18n.json', 'i18n.yml']
 }, () => new UniverseI18nBuilder());
 
-function getSourcePath (filePath, packageName) {
-    return packageName? `\nPackage: ${packageName}\n File: ${filePath}`: `File: ${filePath}`;
-}
+// function getSourcePath (filePath, packageName) {
+//     return packageName? `\nPackage: ${packageName}\n File: ${filePath}`: `File: ${filePath}`;
+// }
 
 function getLocaleFromPath (path) {
     path = path.toLowerCase();

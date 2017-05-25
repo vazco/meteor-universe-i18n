@@ -2,8 +2,9 @@ import i18n from '../lib/i18n';
 import locales from '../lib/locales';
 import {_} from 'meteor/underscore';
 import {UniUtils} from 'meteor/universe:utilities';
+import YAML from 'js-yaml';
 
-const YAML = Npm.require('yamljs');
+// const YAML = Npm.require('js-yaml');
 const stripJsonComments = Npm.require('strip-json-comments');
 const URL = Npm.require('url');
 const cache = {};
@@ -35,18 +36,18 @@ function getYML (locale, namespace, diffWith) {
         if (!cache[locale]['_yml' + namespace]) {
             let translations = i18n.getTranslations(namespace, locale) || {};
             translations = _.extend({_namespace: namespace}, translations);
-            cache[locale]['_yml' + namespace] = YAML.stringify(translations, 4);
+            cache[locale]['_yml' + namespace] = YAML.safeDump(translations, {indent: 4});
         }
         return cache[locale]['_yml' + namespace];
     }
     if (diffWith && typeof diffWith === 'string') {
         if (!cache[locale]['_yml_diff_' + diffWith]) {
-            cache[locale]['_yml_diff_' + diffWith] = YAML.stringify(getDiff(locale, diffWith), 4);
+            cache[locale]['_yml_diff_' + diffWith] = YAML.safeDump(getDiff(locale, diffWith), {indent: 4});
         }
         return cache[locale]['_yml_diff_' + diffWith];
     }
     if (!cache[locale]._yml) {
-        cache[locale]._yml = YAML.stringify(i18n._translations[locale] || {}, 4);
+        cache[locale]._yml = YAML.safeDump(i18n._translations[locale] || {}, {indent: 4});
     }
     return cache[locale]._yml;
 }
@@ -62,7 +63,7 @@ function getJSON (locale, namespace, diffWith) {
     }
     if (diffWith && typeof diffWith === 'string') {
         if (!cache[locale]['_json_diff_' + diffWith]) {
-            cache[locale]['_json_diff_' + diffWith] = YAML.stringify(getDiff(locale, diffWith), 4);
+            cache[locale]['_json_diff_' + diffWith] = YAML.safeDump(getDiff(locale, diffWith), {indent: 4});
         }
         return cache[locale]['_json_diff_' + diffWith];
     }

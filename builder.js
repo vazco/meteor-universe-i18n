@@ -1,11 +1,12 @@
-var stripJsonComments = Npm.require('strip-json-comments');
-var YAML = Npm.require('yamljs');
+import  stripJsonComments from 'strip-json-comments';
+import {CachingCompiler} from 'meteor/caching-compiler';
+import YAML from 'js-yaml';
 
 class UniverseI18nBuilder extends CachingCompiler {
     constructor () {
         super({
-            compilerName: 'UniverseI18n',
-            defaultCacheSize: 1024 * 1024 * 10
+            compilerName: 'Universe I18n',
+            defaultCacheSize: 1024 * 1024 * 15
         });
         if (process.env.UNIVERSE_I18N_LOCALES) {
             this.localesInClientBundle = process.env.UNIVERSE_I18N_LOCALES.split(',');
@@ -26,8 +27,9 @@ class UniverseI18nBuilder extends CachingCompiler {
         return JSON.stringify([
             file.getSourceHash(),
             file.getPathInPackage(),
+            file.getPackageName(),
             file.getFileOptions()
-        ])
+        ]);
     }
 
     compileResultSize ({data = ''}) {
@@ -49,42 +51,42 @@ class UniverseI18nBuilder extends CachingCompiler {
                 translations = JSON.parse(stripJsonComments(source));
             } catch (e) {
                 file.error({
-                    message: 'Cannot parse json file: ' + e.toString,
-                    sourcePath: filePath
+                    message: `Parsing Error: ${e.message}\n`
                 });
                 return;
             }
         } else {
             try {
-                translations = YAML.parse(source);
+                translations = YAML.load(source, {
+                    schema: YAML.FAILSAFE_SCHEMA,
+                    onWarning: console.warn.bind(console)
+                });
             } catch (e) {
                 file.error({
-                    message: 'Cannot parse yaml file: ' + e.toString,
-                    sourcePath: filePath
+                    message:  `Parsing Error: ${e.message}\n`
                 });
                 return;
             }
         }
 
-        var locale = translations._locale || getLocaleFromPath(filePath);
+        let locale = translations._locale || getLocaleFromPath(filePath);
         if (!locale) {
             file.error({
-                message: 'Cannot find localization for file: ' +
-                file + (packageName ? 'in package: ' + packageName : '') +
-                '. Please change file name or set _locale key in file',
-                sourcePath: filePath
+                message: `Cannot find localization for file: ${file} ${(
+                    packageName ? 'in package: ' + packageName : ''
+                )}. Please change file name or set _locale key in file`
             });
             return;
         }
         locale = locale.toLowerCase();
-        var namespace = typeof translations._namespace === 'string' ? translations._namespace : packageName || '';
+        const namespace = typeof translations._namespace === 'string' ? translations._namespace : packageName || '';
         delete translations._locale;
         delete translations._namespace;
         return {
             locale,
             ts: `Package['universe:i18n'].i18n._ts = Math.max(Package['universe:i18n'].i18n._ts, ${Date.now()});`,
             data:`Package['universe:i18n'].i18n.addTranslations('${localesNames[locale]}','${namespace}',${JSON.stringify(translations)});`
-        }
+        };
     }
 
     addCompileResult (file, {locale, data, ts}) {
@@ -109,6 +111,9 @@ Plugin.registerCompiler({
     extensions: ['i18n.json', 'i18n.yml']
 }, () => new UniverseI18nBuilder());
 
+function getSourcePath (filePath, packageName) {
+    return packageName? `\nPackage: ${packageName}\n File: ${filePath}`: `File: ${filePath}`;
+}
 
 function getLocaleFromPath (path) {
     path = path.toLowerCase();

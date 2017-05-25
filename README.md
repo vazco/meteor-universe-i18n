@@ -430,6 +430,9 @@ i18n.setOptions({
 
     // (on the server side only) gives you the possibility to add/change response headers
     translationsHeaders = {'Cache-Control':'max-age=2628000'}
+    
+    // synchronizes server connection with locale on client. (method invoked by client will be with client side locale)
+    sameLocaleOnServerConnection: true
 });
 
 // formats numbers for locale (locale is by default set to the current one)

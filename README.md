@@ -176,9 +176,15 @@ const T = i18n.createComponent(i18n.createTranslator('Common'));
 <T _locale='pl-PL'>hello</T>
 // overriding the default DOM element 'span' with 'h1'
 <T _tagType='h1'>hello</T>
+// getting something from different namespace (e.g. Different.hello instead of Common.hello)
+<T _namespace='Diffrent'>hello</T>
 // providing props to the element
 <T _props={{ className: 'text-center', style: { color: '#f33' }}}>hello</T>
 ```
+
+Take in mind, that on client side strings are sanitized to PCDATA.
+*TIP:* To prevent sensitization you can pass `_purify={false}` on `<T>` component.
+
 
 ### Formatting numbers
 
@@ -219,6 +225,28 @@ someDir/en-us/someName.i18n.yml
 Translations in a translation file can be namespaced (depending on where they are located). A namespace can be set up only for a whole file, yet a file as such can add more deeply embedded structures.
 
 *Tip: A good practise is using PascalCase for naming of namespaces and for leafs use camelCase. This helps protect against conflicts namespace with string
+
+#### Splitting keys in file 
+
+Comma-separated or `x`-separated keys in file e.g.:
+```yml
+_splitKey: '.'
+Chapter.title: Title
+Chapter.xxx: XXX
+```
+or
+```yml
+_splitKey: ':'
+Chapter:title: Title
+Chapter:xxx: XXX
+```
+Will be loaded as following structure:
+
+```yml
+Chapter:
+    title: Title
+    xxx: XXX
+```
 
 #### Translation in packages
 
@@ -389,8 +417,8 @@ i18n.createComponent(translator, locale, reactjs, type);
 //    reactjs (optional, by default it tries to get React from a global variable) - you can pass a React object if it is not available in the global scope
 //    type (optional, by default it uses <span> to render the content) - sets a DOM element that will be rendered, e.g. 'li', 'div' or 'h1'.
 
-// creates a namespaced translator
-i18n.createTranslator(namespace, locale);
+// creates a namespaced translator. Options: {_locale, _purify}
+i18n.createTranslator(namespace, options);
 
 // creates a reactive translator for autoruns
 i18n.createReactiveTranslator(namespace, locale);
@@ -403,7 +431,7 @@ i18n.addTranslation(locale, namespace, key, ..., translation);
 // adds translations (same as addTranslation)
 i18n.addTranslations(locale, namespace, translationsMap);
 
-// gets a translation
+// gets a translation in params (_locale, _purify)
 i18n.getTranslation(namespace, key, ..., params);
 i18n.__(namespace, key,..., params);
 
@@ -413,23 +441,27 @@ i18n.getTranslations(namespace, locale);
 // options
 i18n.setOptions({
     // default locale
-    defaultLocale: 'en-US'
+    defaultLocale: 'en-US',
 
     // opens string
     open: '{$',
 
     // closes string
     close: '}',
-
+    
+    // cleanups untrust/unknown tags, to secure your application against XSS attacks.
+    // at browser side, default policy is to sanitize strings as a PCDATA
+    purify: <FUNCTION>, // On server side as a default option is that nothing is purifying (but you can provide function for that)
+    
     // decides whether to show when there's no translation in the current and default language
-    hideMissing: false
+    hideMissing: false,
 
     // url to the host with translations (default: Meteor.absoluteUrl())
     // useful when you want to load translations from a different host
     hostUrl: 'http://current.host.url/',
 
     // (on the server side only) gives you the possibility to add/change response headers
-    translationsHeaders = {'Cache-Control':'max-age=2628000'}
+    translationsHeaders = {'Cache-Control':'max-age=2628000'},
     
     // synchronizes server connection with locale on client. (method invoked by client will be with client side locale)
     sameLocaleOnServerConnection: true
@@ -551,6 +583,12 @@ keyNotInSchema: '[key] is not allowed by the schema'
 *(predefined for parseNumber, currency, names, native names)*
 ```
 af, af-ZA, am, am-ET, ar, ar-AE, ar-BH, ar-DZ, ar-EG, ar-IQ, ar-JO, ar-KW, ar-LB, ar-LY, ar-MA, ar-OM, ar-QA, ar-SA, ar-SY, ar-TN, ar-YE, arn, arn-CL, as, as-IN, az, az-Cyrl, az-Cyrl-AZ, az-Latn, az-Latn-AZ, ba, ba-RU, be, be-BY, bg, bg-BG, bn, bn-BD, bn-IN, bo, bo-CN, br, br-FR, bs, bs-Cyrl, bs-Cyrl-BA, bs-Latn, bs-Latn-BA, ca, ca-ES, co, co-FR, cs, cs-CZ, cy, cy-GB, da, da-DK, de, de-AT, de-CH, de-DE, de-LI, de-LU, dsb, dsb-DE, dv, dv-MV, el, el-GR, en, en-029, en-AU, en-BZ, en-CA, en-GB, en-IE, en-IN, en-JM, en-MY, en-NZ, en-PH, en-SG, en-TT, en-US, en-ZA, en-ZW, es, es-AR, es-BO, es-CL, es-CO, es-CR, es-DO, es-EC, es-ES, es-GT, es-HN, es-MX, es-NI, es-PA, es-PE, es-PR, es-PY, es-SV, es-US, es-UY, es-VE, et, et-EE, eu, eu-ES, fa, fa-IR, fi, fi-FI, fil, fil-PH, fo, fo-FO, fr, fr-BE, fr-CA, fr-CH, fr-FR, fr-LU, fr-MC, fy, fy-NL, ga, ga-IE, gd, gd-GB, gl, gl-ES, gsw, gsw-FR, gu, gu-IN, ha, ha-Latn, ha-Latn-NG, he, he-IL, hi, hi-IN, hr, hr-BA, hr-HR, hsb, hsb-DE, hu, hu-HU, hy, hy-AM, id, id-ID, ig, ig-NG, ii, ii-CN, is, is-IS, it, it-CH, it-IT, iu, iu-Cans, iu-Cans-CA, iu-Latn, iu-Latn-CA, ja, ja-JP, ka, ka-GE, kk, kk-KZ, kl, kl-GL, km, km-KH, kn, kn-IN, ko, ko-KR, kok, kok-IN, ky, ky-KG, lb, lb-LU, lo, lo-LA, lt, lt-LT, lv, lv-LV, mi, mi-NZ, mk, mk-MK, ml, ml-IN, mn, mn-Cyrl, mn-MN, mn-Mong, mn-Mong-CN, moh, moh-CA, mr, mr-IN, ms, ms-BN, ms-MY, mt, mt-MT, nb, nb-NO, ne, ne-NP, nl, nl-BE, nl-NL, nn, nn-NO, no, nso, nso-ZA, oc, oc-FR, or, or-IN, pa, pa-IN, pl, pl-PL, prs, prs-AF, ps, ps-AF, pt, pt-BR, pt-PT, qut, qut-GT, quz, quz-BO, quz-EC, quz-PE, rm, rm-CH, ro, ro-RO, ru, ru-RU, rw, rw-RW, sa, sa-IN, sah, sah-RU, se, se-FI, se-NO, se-SE, si, si-LK, sk, sk-SK, sl, sl-SI, sma, sma-NO, sma-SE, smj, smj-NO, smj-SE, smn, smn-FI, sms, sms-FI, sq, sq-AL, sr, sr-Cyrl, sr-Cyrl-BA, sr-Cyrl-CS, sr-Cyrl-ME, sr-Cyrl-RS, sr-Latn, sr-Latn-BA, sr-Latn-CS, sr-Latn-ME, sr-Latn-RS, sv, sv-FI, sv-SE, sw, sw-KE, syr, syr-SY, ta, ta-IN, te, te-IN, tg, tg-Cyrl, tg-Cyrl-TJ, th, th-TH, tk, tk-TM, tn, tn-ZA, tr, tr-TR, tt, tt-RU, tzm, tzm-Latn, tzm-Latn-DZ, ug, ug-CN, uk, uk-UA, ur, ur-PK, uz, uz-Cyrl, uz-Cyrl-UZ, uz-Latn, uz-Latn-UZ, vi, vi-VN, wo, wo-SN, xh, xh-ZA, yo, yo-NG, zh, zh-CHS, zh-CHT, zh-CN, zh-Hans, zh-Hant, zh-HK, zh-MO, zh-SG, zh-TW, zu, zu-ZA
+```
+
+## Running Tests
+
+```bash
+meteor test-packages --driver-package practicalmeteor:mocha universe:i18n
 ```
 
 ##  License MIT

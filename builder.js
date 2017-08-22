@@ -485,7 +485,7 @@ var localesNames = {
     "tzm-latn": "tzm-Latn",
     "ug-cn": "ug-CN",
     "ug": "ug",
-    "ua": "ua",
+    "ua": "ua", //not iso639-2 but often used
     "uk-ua": "uk-UA",
     "uk": "uk",
     "ur-pk": "ur-PK",

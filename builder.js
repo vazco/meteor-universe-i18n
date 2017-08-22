@@ -485,6 +485,7 @@ var localesNames = {
     "tzm-latn": "tzm-Latn",
     "ug-cn": "ug-CN",
     "ug": "ug",
+    "ua": "ua",
     "uk-ua": "uk-UA",
     "uk": "uk",
     "ur-pk": "ur-PK",

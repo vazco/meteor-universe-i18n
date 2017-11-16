@@ -1,4 +1,4 @@
-<a href="http://unicms.io"><img src="http://unicms.io/banners/standalone.png" /></a>
+<a href="http://unicms.io"><img src="https://vazco.eu/universe-banner.png" /></a>
 # Universe i18n
 Internationalization package that offers much better performance than others (as it depends, if used with React, on a simple event emitter rather than much heavier Tracker dependency).
 

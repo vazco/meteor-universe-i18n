@@ -8,7 +8,7 @@ class UniverseI18nBuilder extends CachingCompiler {
     constructor () {
         super({
             compilerName: 'Universe I18n',
-            defaultCacheSize: 1024 * 1024 * 15
+            defaultCacheSize: 1024 * 1024
         });
         if (process.env.UNIVERSE_I18N_LOCALES) {
             this.localesInClientBundle = process.env.UNIVERSE_I18N_LOCALES.split(',');
@@ -26,12 +26,7 @@ class UniverseI18nBuilder extends CachingCompiler {
     }
 
     getCacheKey (file) {
-        return JSON.stringify([
-            file.getSourceHash(),
-            file.getPathInPackage(),
-            file.getPackageName(),
-            file.getFileOptions()
-        ]);
+        return file.getSourceHash();
     }
 
     compileResultSize ({data = ''}) {

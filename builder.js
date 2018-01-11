@@ -1,14 +1,13 @@
 import  stripJsonComments from 'strip-json-comments';
 import {CachingCompiler} from 'meteor/caching-compiler';
 import Utils from './lib/utilities';
-
 import YAML from 'js-yaml';
 
 class UniverseI18nBuilder extends CachingCompiler {
     constructor () {
         super({
             compilerName: 'Universe I18n',
-            defaultCacheSize: 1024 * 1024
+            defaultCacheSize: 1024 * 1024 * 10
         });
         if (process.env.UNIVERSE_I18N_LOCALES) {
             this.localesInClientBundle = process.env.UNIVERSE_I18N_LOCALES.split(',');
@@ -26,7 +25,7 @@ class UniverseI18nBuilder extends CachingCompiler {
     }
 
     getCacheKey (file) {
-        return file.getSourceHash();
+        return file.getSourceHash() + file.getArch();
     }
 
     compileResultSize ({data = ''}) {

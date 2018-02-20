@@ -54,7 +54,7 @@ import i18n from 'meteor/universe:i18n';
 ### Tutorials
 
 - [Meteor Guide](https://guide.meteor.com/ui-ux.html#universe-i18n)
-- [Internationalizing Meteor with Universe:i18n](http://www.sonicviz.com/wp/2016/10/23/internationalizing-meteor/)
+- [Internationalizing Meteor with Universe:i18n](http://sonicviz.com/2016/10/23/internationalizing-meteor/)
 
 ### Setting/getting locale
 

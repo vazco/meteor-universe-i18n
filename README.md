@@ -18,7 +18,8 @@ The package supports:
 **Table of Contents**
 
 - [Universe i18n](https://github.com/vazco/meteor-universe-i18n/#universe-i18n)
-  - [Instalation](https://github.com/vazco/meteor-universe-i18n/#instalation)
+  - [Installation](https://github.com/vazco/meteor-universe-i18n/#installation)
+    - [Typescript](https://github.com/vazco/meteor-universe-i18n/#typescript)
   - [Usage](https://github.com/vazco/meteor-universe-i18n/#usage)
     - [Setting/getting locale](https://github.com/vazco/meteor-universe-i18n/#settinggetting-locale)
     - [Adding translations by methods](https://github.com/vazco/meteor-universe-i18n/#adding-translations-my-methods)
@@ -39,9 +40,14 @@ The package supports:
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 
-## Instalation
+## Installation
 ```sh
 $ meteor add universe:i18n
+```
+
+### Typescript
+```sh
+$ meteor npm install --save @types/meteor-universe-i18n
 ```
 
 ## Usage

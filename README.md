@@ -1,5 +1,9 @@
+<h1 align="center">
+    <a href="https://github.com/vazco">vazco</a>/Universe i18n
+</h1>
+
 <a href="http://vazco.eu"><img src="https://vazco.eu/universe-banner.png" /></a>
-# Universe i18n
+
 Internationalization package that offers much better performance than others (as it depends, if used with React, on a simple event emitter rather than much heavier Tracker dependency).
 
 The package supports:
@@ -235,7 +239,7 @@ Translations in a translation file can be namespaced (depending on where they ar
 
 *Tip: A good practise is using PascalCase for naming of namespaces and for leafs use camelCase. This helps protect against conflicts namespace with string
 
-#### Splitting keys in file 
+#### Splitting keys in file
 
 Comma-separated or `x`-separated keys in file e.g.:
 ```yml
@@ -457,11 +461,11 @@ i18n.setOptions({
 
     // closes string
     close: '}',
-    
+
     // cleanups untrust/unknown tags, to secure your application against XSS attacks.
     // at browser side, default policy is to sanitize strings as a PCDATA
     purify: <FUNCTION>, // On server side as a default option is that nothing is purifying (but you can provide function for that)
-    
+
     // decides whether to show when there's no translation in the current and default language
     hideMissing: false,
 
@@ -471,7 +475,7 @@ i18n.setOptions({
 
     // (on the server side only) gives you the possibility to add/change response headers
     translationsHeaders = {'Cache-Control':'max-age=2628000'},
-    
+
     // synchronizes server connection with locale on client. (method invoked by client will be with client side locale)
     sameLocaleOnServerConnection: true
 });
@@ -600,4 +604,8 @@ af, af-ZA, am, am-ET, ar, ar-AE, ar-BH, ar-DZ, ar-EG, ar-IQ, ar-JO, ar-KW, ar-LB
 meteor test-packages --driver-package practicalmeteor:mocha universe:i18n
 ```
 
-##  License MIT
+## License
+
+<img src="https://vazco.eu/banner.png" align="right">
+
+**Like every package maintained by [Vazco](https://vazco.eu/), Universe i18n is [MIT licensed](https://github.com/vazco/uniforms/blob/master/LICENSE).**

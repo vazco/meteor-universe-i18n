@@ -3,7 +3,7 @@ import locales from '../lib/locales';
 import {Meteor} from 'meteor/meteor';
 
 i18n.loadLocale = (localeName, options) => {
-    const {fresh = false, async = false, silent = false,
+    const {fresh = false, silent = false,
         host = i18n.options.hostUrl, pathOnHost = i18n.options.pathOnHost} = options || {};
 
     localeName = locales[localeName.toLowerCase()]? locales[localeName.toLowerCase()][0] : localeName;
@@ -23,8 +23,9 @@ i18n.loadLocale = (localeName, options) => {
         }
         script = document.createElement('script');
         script.type = 'text/javascript';
-        if (async) {
-            script.async = async;
+        // async can't be destructured as it is a reserved keyword for MS Edge (see issue #98)
+        if (options && options.async) {
+            script.async = options.async;
         }
         script.src = url;
         script.addEventListener('load', function() {

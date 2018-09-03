@@ -614,7 +614,7 @@ af, af-ZA, am, am-ET, ar, ar-AE, ar-BH, ar-DZ, ar-EG, ar-IQ, ar-JO, ar-KW, ar-LB
 ## Running Tests
 
 ```bash
-meteor test-packages --driver-package practicalmeteor:mocha universe:i18n
+meteor test-packages --driver-package cultofcoders:mocha universe:i18n
 ```
 
 ## License

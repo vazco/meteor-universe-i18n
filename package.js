@@ -1,6 +1,6 @@
 Package.describe({
     name: 'universe:i18n',
-    version: '1.16.1',
+    version: '1.17.0',
     summary: 'Lightweight i18n, YAML & JSON translation files, React component, incremental & remote loading',
     git: 'https://github.com/vazco/meteor-universe-i18n'
 });
@@ -55,7 +55,7 @@ Package.onTest(function(api) {
         'ecmascript',
         'lmieulet:meteor-coverage@1.1.4',
         'practicalmeteor:chai',
-        'practicalmeteor:mocha',
+        'cultofcoders:mocha',
         'practicalmeteor:sinon'
     ]);
     api.use('universe:i18n');

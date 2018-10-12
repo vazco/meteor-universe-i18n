@@ -6,7 +6,7 @@ WebApp.connectHandlers.use('/universe/locale/', function(req, res, next) {
 
     const {pathname, query} = url.parse(req.url, true);
     const {type, namespace, preload=false, attachment=false, diff=false} = query || {};
-    if (type && !_.contains(['yml', 'json', 'js'], type)) {
+    if (type && !['yml', 'json', 'js'].includes(type)) {
         res.writeHead(415);
         return res.end();
     }
@@ -27,22 +27,16 @@ WebApp.connectHandlers.use('/universe/locale/', function(req, res, next) {
     }
     switch (type) {
         case 'json':
-            res.writeHead(200, _.extend(
-                {'Content-Type': 'application/json; charset=utf-8'},
-                i18n.options.translationsHeaders, headerPart
-            ));
+            res.writeHead(200, {'Content-Type': 'application/json; charset=utf-8',
+              ...i18n.options.translationsHeaders, ...headerPart});
             return res.end(cache.getJSON(locale, namespace, diff));
         case 'yml':
-            res.writeHead(200, _.extend(
-                {'Content-Type': 'text/yaml; charset=utf-8'},
-                i18n.options.translationsHeaders, headerPart
-            ));
+            res.writeHead(200, {'Content-Type': 'text/yaml; charset=utf-8',
+              ...i18n.options.translationsHeaders, ...headerPart});
             return res.end(cache.getYML(locale, namespace, diff));
         default:
-            res.writeHead(200, _.extend(
-                {'Content-Type': 'application/javascript; charset=utf-8'},
-                i18n.options.translationsHeaders, headerPart
-            ));
+            res.writeHead(200, {'Content-Type': 'application/javascript; charset=utf-8',
+              ...i18n.options.translationsHeaders, ...headerPart});
             return res.end(cache.getJS(locale, namespace, preload));
     }
 });

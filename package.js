@@ -31,7 +31,6 @@ Package.onUse(function (api) {
         'tracker',
         'promise',
         'ecmascript',
-        'underscore',
         'isobuild:compiler-plugin@1.0.0'
     ]);
 

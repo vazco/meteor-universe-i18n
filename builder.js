@@ -103,8 +103,8 @@ class UniverseI18nBuilder extends CachingCompiler {
     }
 
     addCompileResult (file, {locale, data, ts}) {
-        if (file.getArch() === 'web.browser' && !_.contains(this.localesInClientBundle, 'all')) {
-            if (!_.contains(this.localesInClientBundle, locale)) {
+        if (file.getArch() === 'web.browser' && !this.localesInClientBundle.includes('all')) {
+            if (!this.localesInClientBundle.includes(locale)) {
                 file.addJavaScript({
                     path: file.getPathInPackage() + '.js',
                     data: ts

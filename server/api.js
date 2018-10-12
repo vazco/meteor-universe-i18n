@@ -1,6 +1,5 @@
 import i18n from '../lib/i18n';
 import locales from '../lib/locales';
-import {_} from 'meteor/underscore';
 import {set} from '../lib/utilities';
 import YAML from 'js-yaml';
 import stripJsonComments from 'strip-json-comments';
@@ -26,7 +25,7 @@ i18n.getCache = function getCache (locale) {
 };
 
 function getDiff (locale, diffWith) {
-    const keys = _.difference(i18n.getAllKeysForLocale(locale), i18n.getAllKeysForLocale(diffWith));
+    const keys = [i18n.getAllKeysForLocale(locale), i18n.getAllKeysForLocale(diffWith)].reduce((a,b) => a.filter(c => !b.includes(c)));
     const diffLoc = {};
     keys.forEach(key => set(diffLoc, key, i18n.getTranslation(key)));
     return diffLoc;
@@ -36,7 +35,7 @@ function getYML (locale, namespace, diffWith) {
     if (namespace && typeof namespace === 'string') {
         if (!cache[locale]['_yml' + namespace]) {
             let translations = i18n.getTranslations(namespace, locale) || {};
-            translations = _.extend({_namespace: namespace}, translations);
+            translations = {_namespace: namespace, ...translations};
             cache[locale]['_yml' + namespace] = YAML.dump(translations, YAML_OPTIONS);
         }
         return cache[locale]['_yml' + namespace];
@@ -57,7 +56,7 @@ function getJSON (locale, namespace, diffWith) {
     if (namespace && typeof namespace === 'string') {
         if (!cache[locale]['_json' + namespace]) {
             let translations = i18n.getTranslations(namespace, locale) || {};
-            translations = _.extend({_namespace: namespace}, translations);
+            translations = {_namespace: namespace, ...translations};
             cache[locale]['_json' + namespace] = JSON.stringify(translations);
         }
         return cache[locale]['_json' + namespace];

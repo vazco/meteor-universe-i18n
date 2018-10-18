@@ -25,13 +25,12 @@ Package.onUse(function (api) {
 
     api.use([
         'ddp',
-        'http',
+        'fetch',
         'check',
         'webapp',
         'tracker',
         'promise',
         'ecmascript',
-        'underscore',
         'isobuild:compiler-plugin@1.0.0'
     ]);
 

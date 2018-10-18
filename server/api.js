@@ -1,6 +1,5 @@
 import i18n from '../lib/i18n';
 import locales from '../lib/locales';
-import {_} from 'meteor/underscore';
 import {set} from '../lib/utilities';
 import YAML from 'js-yaml';
 import stripJsonComments from 'strip-json-comments';
@@ -26,7 +25,7 @@ i18n.getCache = function getCache (locale) {
 };
 
 function getDiff (locale, diffWith) {
-    const keys = _.difference(i18n.getAllKeysForLocale(locale), i18n.getAllKeysForLocale(diffWith));
+    const keys = [i18n.getAllKeysForLocale(locale), i18n.getAllKeysForLocale(diffWith)].reduce((a,b) => a.filter(c => !b.includes(c)));
     const diffLoc = {};
     keys.forEach(key => set(diffLoc, key, i18n.getTranslation(key)));
     return diffLoc;
@@ -36,7 +35,7 @@ function getYML (locale, namespace, diffWith) {
     if (namespace && typeof namespace === 'string') {
         if (!cache[locale]['_yml' + namespace]) {
             let translations = i18n.getTranslations(namespace, locale) || {};
-            translations = _.extend({_namespace: namespace}, translations);
+            translations = {_namespace: namespace, ...translations};
             cache[locale]['_yml' + namespace] = YAML.dump(translations, YAML_OPTIONS);
         }
         return cache[locale]['_yml' + namespace];
@@ -57,7 +56,7 @@ function getJSON (locale, namespace, diffWith) {
     if (namespace && typeof namespace === 'string') {
         if (!cache[locale]['_json' + namespace]) {
             let translations = i18n.getTranslations(namespace, locale) || {};
-            translations = _.extend({_namespace: namespace}, translations);
+            translations = {_namespace: namespace, ...translations};
             cache[locale]['_json' + namespace] = JSON.stringify(translations);
         }
         return cache[locale]['_json' + namespace];
@@ -96,7 +95,7 @@ i18n.setOptions({
     }
 });
 
-i18n.loadLocale = (localeName, {
+i18n.loadLocale = async (localeName, {
     host = i18n.options.hostUrl, pathOnHost = i18n.options.pathOnHost,
     queryParams = {}, fresh = false, silent = false
 } = {}) => {
@@ -106,30 +105,23 @@ i18n.loadLocale = (localeName, {
         queryParams.ts = (new Date().getTime());
     }
     let url = URL.resolve(host, pathOnHost + localeName);
-    const promise = new Promise(function (resolve, reject) {
-        HTTP.get(url, {params: queryParams}, (error, result) => {
-            const {content} = result || {};
-            if (error || !content) {
-                return reject(error || 'missing content');
-            }
-            try {
-                i18n.addTranslations(localeName, JSON.parse(stripJsonComments(content)));
-                delete cache[localeName];
-            } catch (e) {
-                return reject(e);
-            }
-            resolve();
-        });
-    });
-    if (!silent) {
-        promise.then(() => {
+    try {
+        const data = await fetch(url, {method: "GET"});
+        const json = await data.json();
+        const {content} = json || {};
+        if (!content) {
+            return console.error('missing content');
+        }
+        i18n.addTranslations(localeName, JSON.parse(stripJsonComments(content)));
+        delete cache[localeName];
+        if (!silent) {
             const locale = i18n.getLocale();
             //If current locale is changed we must notify about that.
             if (locale.indexOf(localeName) === 0 || i18n.options.defaultLocale.indexOf(localeName) === 0) {
-                i18n._emitChange();
+              i18n._emitChange();
             }
-        });
+        }
+    }catch(err){
+        console.error(err);
     }
-    promise.catch(console.error.bind(console));
-    return promise;
 };

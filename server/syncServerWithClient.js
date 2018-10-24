@@ -1,5 +1,4 @@
 import i18n from '../lib/i18n';
-import {_} from 'meteor/underscore';
 import {Meteor} from 'meteor/meteor';
 import {check, Match} from 'meteor/check';
 import {DDP} from 'meteor/ddp';

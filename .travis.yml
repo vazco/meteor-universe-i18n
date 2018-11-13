@@ -17,6 +17,7 @@ cache:
     - ".npm"
     - ".meteor"
     - "~/.meteor"
+    - "~/test"
     - "~/test/node_modules"
 
 notifications:

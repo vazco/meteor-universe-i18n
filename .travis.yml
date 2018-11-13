@@ -27,15 +27,14 @@ before_script:
   - sleep 3
 
 install:
+  - meteor npm i -g selenium-webdriver@3.6.0 chromedriver simpl-schema
   - cd $HOME
   - meteor create --bare test || true
   - cd test
   - mkdir packages || rm /packages/universe_i18n || true
   - meteor --version
-  - meteor npm i selenium-webdriver@3.6.0 chromedriver simpl-schema
-  - meteor npm i chromedriver simpl-schema
-  - meteor npm i simpl-schema
   - meteor add jquery --allow-incompatible-update || true
+  - meteor whoami
 
 
 script:

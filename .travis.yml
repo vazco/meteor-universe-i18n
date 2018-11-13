@@ -31,7 +31,7 @@ install:
   - cd $HOME
   - meteor create --bare test || true
   - cd test
-  - meteor npm i -g selenium-webdriver@3.6.0 chromedriver simpl-schema
+  - meteor npm i selenium-webdriver@3.6.0 chromedriver simpl-schema
   - mkdir packages || rm /packages/universe_i18n || true
   - meteor --version
   - meteor add jquery --allow-incompatible-update || true
@@ -40,7 +40,7 @@ script:
   - cd $TRAVIS_BUILD_DIR
   - export TEST_BROWSER_DRIVER=chrome
   - export UNIVERSE_I18N_LOCALES="en-US"
-  - meteor npm i -g selenium-webdriver@3.6.0 chromedriver simpl-schema
+  - meteor npm i selenium-webdriver@3.6.0 chromedriver simpl-schema
   - meteor test-packages ./ --once --driver-package="meteortesting:mocha" --test-app-path="$HOME/test"
 
 deploy:

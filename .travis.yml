@@ -29,12 +29,13 @@ before_script:
 
 script:
   - cd $HOME
-  - meteor create --bare test
+  - meteor create --bare test || true
   - cd test
-  - mkdir packages
+  - mkdir packages || true
   - meteor --version
-  - meteor add jquery universe:i18n
-  - meteor npm i --save selenium-webdriver@3.6.0 chromedriver@2.36.0 simpl-schema
+  - meteor add jquery
+  - meteor add universe:i18n --allow-incompatible-update
+  - meteor npm i --save selenium-webdriver@3.6.0 chromedriver simpl-schema
   - cd $TRAVIS_BUILD_DIR
   - export TEST_BROWSER_DRIVER=chrome
   - export UNIVERSE_I18N_LOCALES="en-US"

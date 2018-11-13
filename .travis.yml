@@ -9,8 +9,8 @@ node_js:
   - "10.13.0"
 
 before_install:
-  - curl https://install.meteor.com | /bin/sh
   - export PATH="$HOME/.meteor:$PATH"
+  - which meteor || curl https://install.meteor.com | /bin/sh
 
 cache:
   directories:

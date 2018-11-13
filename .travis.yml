@@ -27,16 +27,20 @@ before_script:
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3
 
-script:
+install:
   - cd $HOME
   - meteor create --bare test || true
   - cd test
-  - mkdir packages || true
+  - mkdir packages || rm /packages/universe_i18n || true
+  - ln -s $TRAVIS_BUILD_DIR ./packages/universe_i18n
   - meteor --version
   - meteor add jquery
   - meteor add universe:i18n --allow-incompatible-update
   - meteor npm i --save selenium-webdriver@3.6.0 chromedriver simpl-schema
+
+
+script:
   - cd $TRAVIS_BUILD_DIR
   - export TEST_BROWSER_DRIVER=chrome
   - export UNIVERSE_I18N_LOCALES="en-US"
-  - meteor test-packages ./ --settings ./tests/settings.coverage.json --once --driver-package meteortesting:mocha --test-app-path="$HOME/test"
+  - meteor test-packages universe:i18n --once --driver-package meteortesting:mocha

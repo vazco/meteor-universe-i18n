@@ -35,12 +35,15 @@ install:
   - ln -s $TRAVIS_BUILD_DIR ./packages/universe_i18n
   - meteor --version
   - meteor add jquery
+  - meteor npm i selenium-webdriver@3.6.0 chromedriver simpl-schema
+  - meteor npm i chromedriver simpl-schema
+  - meteor npm i simpl-schema
   - meteor add universe:i18n --allow-incompatible-update
-  - meteor npm i --save selenium-webdriver@3.6.0 chromedriver simpl-schema
 
 
 script:
-  - cd $TRAVIS_BUILD_DIR
+  - cd $HOME
+  - cd test
   - export TEST_BROWSER_DRIVER=chrome
   - export UNIVERSE_I18N_LOCALES="en-US"
   - meteor test-packages universe:i18n --once --driver-package meteortesting:mocha

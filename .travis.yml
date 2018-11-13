@@ -37,10 +37,9 @@ install:
   - meteor --version
 
 script:
-  - cd $TRAVIS_BUILD_DIR
+  - cd "$HOME/test"
   - export TEST_BROWSER_DRIVER=chrome
   - export UNIVERSE_I18N_LOCALES="en-US"
-  - meteor npm i selenium-webdriver@3.6.0 chromedriver simpl-schema
   - meteor test-packages ./ --once --driver-package="meteortesting:mocha" --test-app-path="$HOME/test"
 
 deploy:

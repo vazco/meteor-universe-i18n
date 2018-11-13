@@ -52,4 +52,4 @@ deploy:
   provider: script
   script: $TRAVIS_BUILD_DIR/publish.sh
   on:
-    branch: release
+    branch: master

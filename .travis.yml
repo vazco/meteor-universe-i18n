@@ -34,8 +34,6 @@ install:
   - mkdir packages || rm /packages/universe_i18n || true
   - meteor --version
   - meteor add jquery --allow-incompatible-update || true
-  - meteor whoami
-
 
 script:
   - cd $TRAVIS_BUILD_DIR

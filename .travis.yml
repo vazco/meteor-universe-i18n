@@ -38,9 +38,10 @@ install:
 
 script:
   - cd "$HOME/test"
+  - ln -s $TRAVIS_BUILD_DIR ./packages/universe_i18n
   - export TEST_BROWSER_DRIVER=chrome
   - export UNIVERSE_I18N_LOCALES="en-US"
-  - meteor test-packages ./ --once --driver-package="meteortesting:mocha" --test-app-path="$HOME/test"
+  - meteor test-packages universe:i18n --once --driver-package="meteortesting:mocha"
 
 deploy:
   provider: script

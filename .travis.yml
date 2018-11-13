@@ -32,11 +32,10 @@ script:
   - meteor create --bare test
   - cd test
   - mkdir packages
-  - echo $TRAVIS_BUILD_DIR
-  - ln -s $TRAVIS_BUILD_DIR ./packages/universe_i18n
   - meteor --version
   - meteor add jquery universe:i18n
   - meteor npm i --save selenium-webdriver@3.6.0 chromedriver@2.36.0 simpl-schema
+  - cd $TRAVIS_BUILD_DIR
   - export TEST_BROWSER_DRIVER=chrome
   - export UNIVERSE_I18N_LOCALES="en-US"
-  - meteor test-packages --settings packages/universe_i18n/tests/settings.coverage.json --once --driver-package cultofcoders:mocha universe:i18n
+  - meteor test-packages ./ --settings ./tests/settings.coverage.json --once --driver-package cultofcoders:mocha --test-app-path="$HOME/test"

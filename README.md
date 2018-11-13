@@ -21,7 +21,7 @@ Internationalization package that offers much better performance than others (as
 
 The package supports:
 - namespacing of translation strings
-- **YAML** and **JSON** file formats
+- **YAML** file formats
 - both types of parameters (named and positional)
 - typographic notation of numbers
 - 353 locales (with basic informations: name, symbol of currency, rtl)

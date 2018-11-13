@@ -55,7 +55,7 @@ Package.onTest(function(api) {
         'ecmascript',
         'lmieulet:meteor-coverage@1.1.4',
         'practicalmeteor:chai',
-        'cultofcoders:mocha',
+        'meteortesting:mocha',
         'practicalmeteor:sinon'
     ]);
     api.use('universe:i18n');

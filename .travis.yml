@@ -15,8 +15,9 @@ before_install:
 cache:
   directories:
     - ".npm"
-    - ".meteor"
-    - "node_modules"
+    - "~/.meteor"
+    - "~/test/.meteor"
+    - "~/test/node_modules"
 
 notifications:
   email: false
@@ -27,7 +28,7 @@ before_script:
   - sleep 3
 
 script:
-  - cd /tmp
+  - cd $HOME
   - meteor create --bare test
   - cd test
   - mkdir packages

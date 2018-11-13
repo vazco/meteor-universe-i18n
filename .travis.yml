@@ -6,7 +6,7 @@ addons:
 language: node_js
 
 node_js:
-  - "8.9.1"
+  - "10.13.0"
 
 before_install:
   - curl https://install.meteor.com | /bin/sh
@@ -14,7 +14,8 @@ before_install:
 
 cache:
   directories:
-    - ~/.npm
+    - ".npm"
+    - ".meteor"
     - "node_modules"
 
 notifications:
@@ -26,9 +27,13 @@ before_script:
   - sleep 3
 
 script:
+  - cd ~
   - meteor create --bare test
   - cd test
+  - mkdir packages
+  - echo $TRAVIS_BUILD_DIR
+  - ln -s $TRAVIS_BUILD_DIR ./packages/i18n
   - meteor --version
-  - meteor add jquery
+  - meteor add jquery universe:i18n
   - meteor npm i --save selenium-webdriver@3.6.0 chromedriver@2.36.0 simpl-schema
-  - METEOR_PACKAGE_DIRS="../" TEST_BROWSER_DRIVER=chrome meteor test-packages --once --driver-package meteortesting:mocha ../
+  - TEST_BROWSER_DRIVER=chrome meteor test-packages --once --driver-package meteortesting:mocha ./

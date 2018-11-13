@@ -31,7 +31,7 @@ install:
   - cd $HOME
   - meteor create --bare test || true
   - cd test
-  - meteor npm i --save selenium-webdriver@3.6.0 chromedriver simpl-schema
+  - meteor npm i --save selenium-webdriver@3.6.0 chromedriver simpl-schema jquery
   - mkdir packages || rm /packages/universe_i18n || true
   - meteor add jquery --allow-incompatible-update || true
   - ln -s $TRAVIS_BUILD_DIR ./packages/universe_i18n

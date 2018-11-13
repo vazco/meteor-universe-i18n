@@ -48,3 +48,9 @@ script:
   - export TEST_BROWSER_DRIVER=chrome
   - export UNIVERSE_I18N_LOCALES="en-US"
   - meteor test-packages universe:i18n --once --driver-package meteortesting:mocha
+
+deploy:
+  provider: script
+  script: $TRAVIS_BUILD_DIR/publish.sh
+  on:
+    branch: release

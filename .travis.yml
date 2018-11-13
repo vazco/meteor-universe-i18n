@@ -18,7 +18,6 @@ cache:
     - ".meteor"
     - "~/.meteor"
     - "~/test"
-    - "~/test/node_modules"
 
 notifications:
   email: false
@@ -32,10 +31,10 @@ install:
   - cd $HOME
   - meteor create --bare test || true
   - cd test
-  - meteor npm i selenium-webdriver@3.6.0 chromedriver simpl-schema
+  - meteor npm i --save selenium-webdriver@3.6.0 chromedriver simpl-schema
   - mkdir packages || rm /packages/universe_i18n || true
-  - meteor --version
   - meteor add jquery --allow-incompatible-update || true
+  - meteor --version
 
 script:
   - cd $TRAVIS_BUILD_DIR

@@ -40,13 +40,10 @@ install:
 
 
 script:
-  - cd $HOME
-  - cd test
-  - ln -s $TRAVIS_BUILD_DIR ./packages/universe_i18n
-  - meteor add universe:i18n --allow-incompatible-update
+  - cd $TRAVIS_BUILD_DIR
   - export TEST_BROWSER_DRIVER=chrome
   - export UNIVERSE_I18N_LOCALES="en-US"
-  - meteor test-packages universe:i18n --once --driver-package meteortesting:mocha
+  - meteor test-packages universe:i18n --once --driver-package="meteortesting:mocha" --test-app-path="$HOME/test"
 
 deploy:
   provider: script

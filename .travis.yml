@@ -37,4 +37,6 @@ script:
   - meteor --version
   - meteor add jquery universe:i18n
   - meteor npm i --save selenium-webdriver@3.6.0 chromedriver@2.36.0 simpl-schema
-  - TEST_BROWSER_DRIVER=chrome meteor test-packages --once --driver-package meteortesting:mocha universe:i18n
+  - export TEST_BROWSER_DRIVER=chrome
+  - export UNIVERSE_I18N_LOCALES="en-US"
+  - meteor test-packages --settings packages/universe_i18n/tests/settings.coverage.json --once --driver-package cultofcoders:mocha universe:i18n

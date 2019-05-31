@@ -9,19 +9,6 @@ class UniverseI18nBuilder extends CachingCompiler {
             compilerName: 'Universe I18n',
             defaultCacheSize: 1024 * 1024 * 10
         });
-        if (process.env.UNIVERSE_I18N_LOCALES) {
-            this.localesInClientBundle = process.env.UNIVERSE_I18N_LOCALES.split(',');
-        } else {
-        	this.localesInClientBundle = ['en-us'];
-        }
-        let lcb = [];
-        this.localesInClientBundle = this.localesInClientBundle.map(loc => {
-            loc = loc.toLowerCase().trim();
-            const loc2 = loc.replace(/\-.+$/, '');
-            loc2 !== loc && lcb.push(loc2);
-            return loc;
-        });
-        this.localesInClientBundle.push(...lcb);
     }
 
     getCacheKey (file) {
@@ -103,15 +90,6 @@ class UniverseI18nBuilder extends CachingCompiler {
     }
 
     addCompileResult (file, {locale, data, ts}) {
-        if (file.getArch() === 'web.browser' && !this.localesInClientBundle.includes('all')) {
-            if (!this.localesInClientBundle.includes(locale)) {
-                file.addJavaScript({
-                    path: file.getPathInPackage() + '.js',
-                    data: ts
-                });
-                return;
-            }
-        }
         file.addJavaScript({
             path: file.getPathInPackage() + '.js',
             sourcePath: file.getPathInPackage(),

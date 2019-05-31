@@ -28,7 +28,7 @@ The package supports:
 - regional dialects inheritance mechanism (e.g. 'en-us' inherits from translations assigned to 'en')
 - react component `<T>ok</T>` or `<T _translateProps={['title']}><div title="ok">here</div></T>`
 - ECMAScript 6 modules
-- **incremental loading of translations** (Client does not need to download all translations at once)
+- **supports dynamic imports** (Client does not need to download all translations at once)
 - remote loading of translations from a different host
 - dedicated translation strings editor (alpha version) [mac os](https://drive.google.com/file/d/0ByCHJxkqk5WjUlJjTjJqVlAtSzg/view?usp=sharing), [win x64](https://drive.google.com/file/d/0ByCHJxkqk5WjX2VXMjZQUU9PU28/view?usp=sharing)
 
@@ -48,7 +48,6 @@ The package supports:
     - [Namespace](https://github.com/vazco/meteor-universe-i18n/#namespace)
       - [Translation in packages](https://github.com/vazco/meteor-universe-i18n/#translation-in-packages)
       - [Translation in application](https://github.com/vazco/meteor-universe-i18n/#translation-in-application)
-  - [Incremental loading of translations](https://github.com/vazco/meteor-universe-i18n/#incremental-loading-of-translations)
   - [API](https://github.com/vazco/meteor-universe-i18n/#api)
   - [Blaze support](https://github.com/vazco/meteor-universe-i18n/#blaze-support)
   - [Integration with SimpleSchema](https://github.com/vazco/meteor-universe-i18n/blob/master/README.md#integration-with-simpleschema-package)
@@ -120,6 +119,8 @@ By the way, It's good option is also use 'accept-language' header to recognize c
 
 ```js
 import i18n from 'meteor/universe:i18n';
+import './en.i18n.yml';
+import './en-US.i18n.yml';
 
 i18n.addTranslation('en-US', 'Common', 'no', 'No');
 i18n.addTranslation('en-US', 'Common.ok', 'Ok');
@@ -374,41 +375,6 @@ i18n.offChangeLocale (fn)
 i18n.onceChangeLocale (fn)
 ```
 
-
-## Incremental loading of translations
-
-Since version 1.3.0, the package, unless configured otherwise, adds only the default language (en-us) to the project bundle for the client side.
-
-This means that the browser does not download unnecessary languages. If a user changes the current locale, translations for a new locale will be downloaded on demand.
-
-If you want to add all or selected translations to the production bundle, you need to set the environment variable `UNIVERSE_I18N_LOCALES` accordingly:
-
-- `UNIVERSE_I18N_LOCALES = all` for bundling all translations strings
-- one or more locales as codes to attach them in the bundle (as a separator you should use a `,`)
-
-e.g. `UNIVERSE_I18N_LOCALES = 'de-CH, pl'`
-
-- [How to set an environment variable](http://www.schrodinger.com/kb/1842)
-- Note: If you want to use this flag, it is very important to do this before Meteor prepares a bundle (after that, setting this variable will have no effect).
-
-**Again how it works:**
-If a user will change the current locale to the one unattached to the client bundle, translations for a new locale will be downloaded on demand. Therefore, whenever `i18n.setLocale('de-CH')` is called and the language is unattached to the client bundle, i18n will try to download it from the server (you can customize url of a host for getting translations, but the default is equal to what Meteor.absoluteUrl() returns).
-
-Additionally `i18n.setLocale()` returns a promise, e.g:
-
-```
-i18n.setLocale('en-AU').then(function () {
-    console.log('already is!');
-});
-```
-
-You can also listen to this event:
-```
-i18n.onChangeLocale (function(newLocale){
-    console.log(newLocale);
-})
-```
-
 ### Listing available languages
 
 You can use `i18n.getLanguages` to list all languages with at least one translation:
@@ -495,6 +461,9 @@ i18n.setOptions({
 
 // formats numbers for locale (locale is by default set to the current one)
 i18n.parseNumber(number, locale);
+
+// supports dynamic imports
+import('../fr.i18n.yml');
 
 // changes locale
 i18n.setLocale(locale, params);

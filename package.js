@@ -1,19 +1,19 @@
 Package.describe({
     name: 'universe:i18n',
     documentation: './atmosphere.md',
-    version: '1.30.0',
+    version: '1.31.0',
     summary: 'Lightweight i18n, YAML & JSON translation files, React component, incremental & remote loading',
     git: 'https://github.com/vazco/meteor-universe-i18n'
 });
 
 var npmDependencies = {
-    'strip-json-comments': '2.0.1',
-    'js-yaml': '3.12.0'
+    'strip-json-comments': '3.1.1',
+    'js-yaml': '3.14.0'
 };
 
 Package.registerBuildPlugin({
     name: 'UniverseI18n',
-    use: ['ecmascript', 'caching-compiler@1.1.9'],
+    use: ['ecmascript', 'caching-compiler@1.2.2'],
     sources: ['builder.js', 'lib/utilities.js'],
     npmDependencies: npmDependencies
 });
@@ -25,7 +25,7 @@ Package.onUse(function (api) {
 
     api.use([
         'ddp',
-        'fetch@0.1.0',
+        'fetch@0.1.1',
         'check',
         'webapp',
         'tracker',

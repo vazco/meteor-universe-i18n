@@ -21,7 +21,7 @@ Package.registerBuildPlugin({
 Npm.depends(npmDependencies);
 
 Package.onUse(function (api) {
-    api.versionsFrom('1.5');
+    api.versionsFrom('1.6');
 
     api.use([
         'ddp',

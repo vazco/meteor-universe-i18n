@@ -69,9 +69,9 @@ class UniverseI18nCompiler extends CachingCompiler {
     }
 
     const options = {
-      locale: getIfString(content.data, '_locale'),
-      namespace: getIfString(content.data, '_namespace'),
-      splitKey: getIfString(content.data, '_splitKey'),
+      locale: extractString(content.data, '_locale'),
+      namespace: extractString(content.data, '_namespace'),
+      splitKey: extractString(content.data, '_splitKey'),
     };
 
     const packageName = file.getPackageName();
@@ -125,7 +125,7 @@ function analyzePath(sourcePath: string) {
   return { locale, type };
 }
 
-function getIfString(data: JSON, key: string) {
+function extractString(data: JSON, key: string) {
   if (!isJSONObject(data) || !(key in data)) {
     return undefined;
   }

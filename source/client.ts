@@ -86,7 +86,7 @@ i18n.loadLocale = (locale, options) => {
   return promise;
 };
 
-const preloaded = (global as any).__uniI18nPre;
+const preloaded = (window as any).__uniI18nPre;
 if (typeof preloaded === 'object') {
   Object.entries(preloaded).map(([locale, translations]) => {
     if (translations) {

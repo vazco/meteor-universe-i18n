@@ -192,7 +192,7 @@ const i18n = {
           }
 
           if (Array.isArray(_translateProps)) {
-            const newProps: Record<string, unknown> = {};
+            const newProps: Record<string, string> = {};
             _translateProps.forEach(propName => {
               const prop = (item as any).props[propName];
               if (prop && typeof prop === 'string') {

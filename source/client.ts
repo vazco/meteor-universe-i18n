@@ -31,7 +31,12 @@ i18n._loadLocaleWithAncestors = (locale, options) => {
 
     const loadOptions = { ...options, silent: true };
     promise = locales.reduce(
-      (thunk, locale) => thunk.then(() => i18n.loadLocale(locale, loadOptions).then(() => {i18n._isLoaded[locale] = true;})),
+      (thunk, locale) =>
+        thunk.then(() =>
+          i18n.loadLocale(locale, loadOptions).then(() => {
+            i18n._isLoaded[locale] = true;
+          }),
+        ),
       promise,
     );
   }

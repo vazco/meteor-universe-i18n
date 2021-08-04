@@ -1,5 +1,4 @@
 import { EventEmitter } from 'events';
-
 import { Meteor } from 'meteor/meteor';
 import { Tracker } from 'meteor/tracker';
 
@@ -88,7 +87,7 @@ const i18n = {
   _normalizeWithAncestors(locale = '') {
     if (!(locale in i18n._normalizeWithAncestorsCache)) {
       const locales: string[] = [];
-      const parts = locale.toLowerCase().split(/[\-_]/);
+      const parts = locale.toLowerCase().split(/[-_]/);
       while (parts.length) {
         const locale = parts.join('-');
         if (locale in LOCALES) {
@@ -136,11 +135,12 @@ const i18n = {
     reactjs?: typeof import('react'),
     type?: React.ComponentType | string,
   ) {
-    const translator = typeof translatorSeed === 'string'
-      ? i18n.createTranslator(translatorSeed, locale)
-      : typeof translatorSeed === 'undefined'
-      ? i18n.createTranslator()
-      : translatorSeed;
+    const translator =
+      typeof translatorSeed === 'string'
+        ? i18n.createTranslator(translatorSeed, locale)
+        : translatorSeed === undefined
+        ? i18n.createTranslator()
+        : translatorSeed;
 
     if (!reactjs) {
       if (typeof React !== 'undefined') {
@@ -221,7 +221,7 @@ const i18n = {
       componentWillUnmount() {
         i18n._events.removeListener('changeLocale', this._invalidate);
       }
-    }
+    };
   },
   createReactiveTranslator(namespace?: string, locale?: string) {
     const translator = i18n.createTranslator(namespace, locale);
@@ -234,16 +234,19 @@ const i18n = {
     namespace?: string,
     options?: string | CreateTranslatorOptions,
   ) {
-    if (typeof options === 'string' && options) {
-      options = { _locale: options };
-    }
+    const finalOptions =
+      typeof options === 'string'
+        ? options === ''
+          ? {}
+          : { _locale: options }
+        : options;
 
-    return (...args: unknown[]) => {
+    return (...args: any[]) => {
       let _namespace = namespace;
       const finalArg = args.length - 1;
       if (typeof args[finalArg] === 'object') {
-        _namespace = (args[finalArg] as any)._namespace || _namespace;
-        args[finalArg] = { ...options as any, ...args[finalArg] as any };
+        _namespace = args[finalArg]._namespace || _namespace;
+        args[finalArg] = { ...finalOptions, ...args[finalArg] };
       } else if (options) {
         args.push(options);
       }
@@ -309,7 +312,7 @@ const i18n = {
   getLanguageNativeName(locale?: string) {
     return i18n._locales[i18n.normalize(locale ?? i18n.getLocale())!]?.[2];
   },
-  getLanguages(type = 'code') {
+  getLanguages(type: 'code' | 'name' | 'nativeName' = 'code') {
     const codes = Object.keys(i18n._translations);
     switch (type) {
       case 'code':
@@ -324,9 +327,7 @@ const i18n = {
   },
   getLocale() {
     return (
-      i18n._contextualLocale.get() ??
-      i18n._locale ??
-      i18n.options.defaultLocale
+      i18n._contextualLocale.get() ?? i18n._locale ?? i18n.options.defaultLocale
     );
   },
   getRefreshMixin() {
@@ -346,7 +347,7 @@ const i18n = {
     const maybeOptions = args[args.length - 1];
     const hasOptions = typeof maybeOptions === 'object' && !!maybeOptions;
     const keys = hasOptions ? args.slice(0, -1) : args;
-    const options = hasOptions ? maybeOptions as GetTranslationOptions : {};
+    const options = hasOptions ? (maybeOptions as GetTranslationOptions) : {};
 
     const key = keys.filter(key => key && typeof key === 'string').join('.');
     const { close, defaultLocale, hideMissing, open } = i18n.options;
@@ -358,9 +359,11 @@ const i18n = {
 
     let translation: unknown;
     [locale, defaultLocale].some(locale =>
-      i18n._normalizeWithAncestors(locale).some(locale =>
-        translation = get(i18n._translations, `${locale}.${key}`)
-      ),
+      i18n
+        ._normalizeWithAncestors(locale)
+        .some(
+          locale => (translation = get(i18n._translations, `${locale}.${key}`)),
+        ),
     );
 
     let string = translation ? `${translation}` : hideMissing ? '' : key;
@@ -378,7 +381,7 @@ const i18n = {
       locale = i18n.getLocale();
     }
 
-    const path = locale ? key ? `${locale}.${key}` : locale : key ?? '';
+    const path = locale ? (key ? `${locale}.${key}` : locale) : key ?? '';
     return get(i18n._translations, path) ?? {};
   },
   isLoaded(locale?: string) {
@@ -416,8 +419,8 @@ const i18n = {
   } as Options,
   parseNumber(number: number, locale?: string) {
     const numberAsString = String(number);
-    const normalizedLocale = i18n.normalize(locale ?? i18n.getLocale());
-    const separator = i18n._locales[normalizedLocale?.toLowerCase()!]?.[4];
+    const normalizedLocale = i18n.normalize(locale ?? i18n.getLocale())!;
+    const separator = i18n._locales[normalizedLocale.toLowerCase()]?.[4];
     const result = separator
       ? numberAsString.replace(
           /(\d+)[\.,]*(\d*)/gm,
@@ -428,7 +431,7 @@ const i18n = {
       : numberAsString;
     return result || '0';
   },
-  runWithLocale<T>(locale: string = '', fn: () => T): T {
+  runWithLocale<T>(locale = '', fn: () => T): T {
     return i18n._contextualLocale.withValue(i18n.normalize(locale), fn);
   },
   setLocale(locale: string, options?: SetLocaleOptions) {

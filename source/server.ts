@@ -1,13 +1,12 @@
 import type { NextHandleFunction } from 'connect';
 import Fibers from 'fibers';
 import YAML from 'js-yaml';
-import stripJsonComments from 'strip-json-comments';
-import URL from 'url';
-
 import { Match, check } from 'meteor/check';
 import { DDP } from 'meteor/ddp';
 import { Meteor } from 'meteor/meteor';
 import { WebApp } from 'meteor/webapp';
+import stripJsonComments from 'strip-json-comments';
+import URL from 'url';
 
 import { GetCacheEntry, GetCacheFunction, i18n } from './common';
 import './global';
@@ -39,8 +38,12 @@ function getJS(locale: string, namespace: string, isBefore?: boolean) {
   }
 
   return isBefore
-    ? `var w=this||window;w.__uniI18nPre=w.__uniI18nPre||{};w.__uniI18nPre['${locale}${namespace && typeof namespace === 'string' ? `.${namespace}` : ''}'] = ${json}`
-    : `(Package['universe:i18n'].i18n).addTranslations('${locale}', ${namespace && typeof namespace === 'string' ? `'${namespace}', ` : ''}${json});`;
+    ? `var w=this||window;w.__uniI18nPre=w.__uniI18nPre||{};w.__uniI18nPre['${locale}${
+        namespace && typeof namespace === 'string' ? `.${namespace}` : ''
+      }'] = ${json}`
+    : `(Package['universe:i18n'].i18n).addTranslations('${locale}', ${
+        namespace && typeof namespace === 'string' ? `'${namespace}', ` : ''
+      }${json});`;
 }
 
 function getCachedFormatter(
@@ -51,10 +54,11 @@ function getCachedFormatter(
     if (typeof namespace === 'string' && namespace) {
       return {
         key: `_${type}${namespace}`,
-        get: () => format({
-          _namespace: namespace,
-          ...i18n.getTranslations(namespace, locale) as object || {},
-        }),
+        get: () =>
+          format({
+            _namespace: namespace,
+            ...((i18n.getTranslations(namespace, locale) as object) || {}),
+          }),
       };
     }
 
@@ -67,7 +71,7 @@ function getCachedFormatter(
 
     return {
       key: `_${type}`,
-      get: () => format(i18n._translations[locale] as JSONObject || {}),
+      get: () => format((i18n._translations[locale] as JSONObject) || {}),
     };
   }
 
@@ -83,9 +87,8 @@ function getCachedFormatter(
 }
 
 const getJSON = getCachedFormatter('json', object => JSON.stringify(object));
-const getYML = getCachedFormatter(
-  'yml',
-  object => YAML.dump(object, {
+const getYML = getCachedFormatter('yml', object =>
+  YAML.dump(object, {
     indent: 2,
     noCompatMode: true,
     schema: YAML.FAILSAFE_SCHEMA,
@@ -96,7 +99,9 @@ const getYML = getCachedFormatter(
 
 i18n._formatgetters = { getJS, getJSON, getYML };
 
-const _publishConnectionId = new Meteor.EnvironmentVariable<string | undefined>();
+const _publishConnectionId = new Meteor.EnvironmentVariable<
+  string | undefined
+>();
 i18n._getConnectionId = connection => {
   let connectionId = connection?.id;
   try {
@@ -250,7 +255,9 @@ WebApp.connectHandlers.use('/universe/locale/', ((request, response, next) => {
         'Content-Type': 'application/javascript; charset=utf-8',
         ...headers,
       });
-      response.end(cache.getJS(locale, namespace as string, preload as boolean));
+      response.end(
+        cache.getJS(locale, namespace as string, preload as boolean),
+      );
       break;
   }
 }) as NextHandleFunction);
@@ -288,9 +295,8 @@ function patchPublish(publish: typeof Meteor.publish) {
       this,
       name,
       function (...args) {
-        return _publishConnectionId.withValue(
-          this?.connection?.id,
-          () => func.apply(this, args),
+        return _publishConnectionId.withValue(this?.connection?.id, () =>
+          func.apply(this, args),
         );
       },
       ...args,

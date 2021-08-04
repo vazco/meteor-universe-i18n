@@ -1,40 +1,40 @@
 export type JSON = boolean | null | number | string | JSON[] | JSONObject;
 export type JSONObject = { [key: string]: JSON };
 
-export function get(object: unknown, path: string) {
+type UnknownRecord = Record<string, unknown>;
+
+export function get(object: UnknownRecord, path: string) {
   const keys = path.split('.');
   const last = keys.pop()!;
 
-  let root = object as Record<string, unknown>;
   let key: string | undefined;
   while ((key = keys.shift())) {
-    if (typeof root !== 'object' || root === null) {
+    if (typeof object !== 'object' || object === null) {
       break;
     }
 
-    root = root[key] as Record<string, unknown>;
+    object = object[key] as UnknownRecord;
   }
 
-  return root?.[last];
+  return object?.[last];
 }
 
 export function isJSONObject(value: JSON): value is JSONObject {
   return !!value && typeof value === 'object';
 }
 
-export function set(object: unknown, path: string, value: unknown) {
+export function set(object: UnknownRecord, path: string, value: unknown) {
   const keys = path.split('.');
   const last = keys.pop()!;
 
-  let root = object as Record<string, unknown>;
   let key: string | undefined;
   while ((key = keys.shift())) {
-    if (root[key] === undefined) {
-      root[key] = {};
+    if (object[key] === undefined) {
+      object[key] = {};
     }
 
-    root = root[key] as Record<string, unknown>;
+    object = object[key] as UnknownRecord;
   }
 
-  root[last] = value;
+  object[last] = value;
 }

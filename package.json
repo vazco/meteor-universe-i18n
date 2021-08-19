@@ -1,0 +1,13 @@
+{
+  "private": true,
+  "scripts": {
+    "lint:js": "eslint .",
+    "lint:ts": "tsc"
+  },
+  "devDependencies": {
+    "@types/meteor": "1.4.76",
+    "@types/node": "16.4.10",
+    "@types/react": "17.0.15",
+    "eslint-config-vazco": "6.2.0"
+  }
+}

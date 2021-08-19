@@ -1,66 +1,64 @@
 Package.describe({
-    name: 'universe:i18n',
-    documentation: './atmosphere.md',
-    version: '1.31.0',
-    summary: 'Lightweight i18n, YAML & JSON translation files, React component, incremental & remote loading',
-    git: 'https://github.com/vazco/meteor-universe-i18n'
+  name: 'universe:i18n',
+  documentation: './atmosphere.md',
+  version: '1.31.0',
+  summary:
+    'Lightweight i18n, YAML & JSON translation files, React component, incremental & remote loading',
+  git: 'https://github.com/vazco/meteor-universe-i18n',
 });
 
-var npmDependencies = {
-    'strip-json-comments': '3.1.1',
-    'js-yaml': '3.14.0'
+const npmDependencies = {
+  'js-yaml': '4.1.0',
+  'strip-json-comments': '3.1.1',
 };
 
-Package.registerBuildPlugin({
-    name: 'UniverseI18n',
-    use: ['ecmascript', 'caching-compiler@1.2.2'],
-    sources: ['builder.js', 'lib/utilities.js'],
-    npmDependencies: npmDependencies
-});
-
 Npm.depends(npmDependencies);
+Package.registerBuildPlugin({
+  name: 'universe:i18n',
+  use: ['caching-compiler@1.2.2', 'tracker', 'typescript'],
+  sources: [
+    'source/common.ts',
+    'source/compiler.ts',
+    'source/locales.ts',
+    'source/utils.ts',
+  ],
+  npmDependencies,
+});
 
 Package.onUse(function (api) {
-    api.versionsFrom('1.6');
+  api.versionsFrom('2.0');
+  api.use([
+    'check',
+    'ddp',
+    'fetch@0.1.1',
+    'isobuild:compiler-plugin@1.0.0',
+    'promise',
+    'tracker',
+    'typescript',
+    'webapp',
+  ]);
 
-    api.use([
-        'ddp',
-        'fetch@0.1.1',
-        'check',
-        'webapp',
-        'tracker',
-        'promise',
-        'ecmascript',
-        'isobuild:compiler-plugin@1.0.0'
-    ]);
-
-    api.mainModule('lib/i18n.js');
-
-    api.addFiles([
-        'server/api.js',
-        'server/syncServerWithClient.js',
-        'server/handler.js'
-    ], 'server');
-
-    api.addFiles([
-        'client/api.js'
-    ], 'client');
-
-    api.export(['_i18n', 'i18n']);
+  api.mainModule('source/client.ts', 'client');
+  api.mainModule('source/server.ts', 'server');
+  api.export(['i18n', '_i18n']);
 });
 
+Package.onTest(function (api) {
+  api.use([
+    'lmieulet:meteor-coverage@1.1.4',
+    'meteortesting:mocha',
+    'practicalmeteor:chai',
+    'practicalmeteor:sinon',
+    'typescript',
+    'universe:i18n',
+  ]);
 
-Package.onTest(function(api) {
-    api.use([
-        'ecmascript',
-        'lmieulet:meteor-coverage@1.1.4',
-        'practicalmeteor:chai',
-        'meteortesting:mocha',
-        'practicalmeteor:sinon'
-    ]);
-    api.use('universe:i18n');
-
-    api.addFiles(['tests/i18n.tests.js', 'tests/es-es.i18n.json', 'tests/fr-fr.i18n.yml', 'tests/it-it.i18n.yml']);
-    api.addFiles(['tests/i18n.tests.client.js'], 'client');
-    api.addFiles(['tests/i18n.tests.server.js'], 'server');
+  api.addFiles([
+    'tests/common.ts',
+    'tests/data/es-es.i18n.json',
+    'tests/data/fr-fr.i18n.yml',
+    'tests/data/it-it.i18n.yml',
+  ]);
+  api.addFiles(['tests/client.ts'], 'client');
+  api.addFiles(['tests/server.ts'], 'server');
 });

@@ -1,7 +1,7 @@
 Package.describe({
   name: 'universe:i18n',
   documentation: './atmosphere.md',
-  version: '1.32.0',
+  version: '1.32.1',
   summary:
     'Lightweight i18n, YAML & JSON translation files, React component, incremental & remote loading',
   git: 'https://github.com/vazco/meteor-universe-i18n',

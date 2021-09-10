@@ -120,8 +120,10 @@ class UniverseI18nCompiler extends CachingCompiler {
 }
 
 function analyzePath(sourcePath: string) {
-  const type = path.extname(sourcePath);
-  const locale = path.basename(sourcePath, `.i18n${type}`);
+  const parsed = path.parse(sourcePath);
+  const type = parsed.ext;
+  const localeAsDirectory = parsed.dir.includes('i18n/');
+  const locale = localeAsDirectory ? parsed.dir.substring(parsed.dir.lastIndexOf('/') + 1) : path.basename(sourcePath, `.i18n${type}`)
   return { locale, type };
 }
 

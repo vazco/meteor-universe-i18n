@@ -75,10 +75,11 @@ class UniverseI18nCompiler extends CachingCompiler {
     };
 
     const packageName = file.getPackageName();
-    const locale = i18n.normalize(metadata.locale ?? options.locale ?? '');
+    const locale = i18n.normalize(options.locale ?? metadata.locale ?? '');
     if (!locale) {
-      const extra = packageName ? ` in package: "${packageName}"` : '';
-      file.error({ message: `Cannot find locale for file "${file}"${extra}.` });
+      const packageLocation = packageName ? ` in package "${packageName}"` : '';
+      const location = `"${sourcePath}"${packageLocation}`;
+      file.error({ message: `Cannot find locale for file ${location}.` });
       return null;
     }
 
@@ -121,8 +122,15 @@ class UniverseI18nCompiler extends CachingCompiler {
 
 function analyzePath(sourcePath: string) {
   const type = path.extname(sourcePath);
-  const locale = path.basename(sourcePath, `.i18n${type}`);
-  return { locale, type };
+  const parts = sourcePath.replace(`.i18n.${type}`, '').split(/[-./\\_]/g);
+  for (let length = parts.length; length; --length) {
+    const locale = i18n.normalize(parts.slice(-length).join('-'));
+    if (locale) {
+      return { locale, type };
+    }
+  }
+
+  return { locale: undefined, type };
 }
 
 function extractString(data: JSON, key: string) {

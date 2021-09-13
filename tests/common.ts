@@ -8,7 +8,25 @@ describe('universe-i18n', () => {
 
   it('should support JSON files', async () => {
     await i18n.setLocale('es-ES');
-    expect(i18n.__('common.name')).to.equal('json-es');
+    expect(i18n.__('common.name')).to.equal('json-es-es');
+  });
+
+  it('should support all kinds of translations files', async () => {
+    const cases = [
+      ['de-CH', 'yml-de-ch'],
+      ['el', 'yml-el'],
+      ['en-GB', 'json-en-gb'],
+      ['es-ES', 'json-es-es'],
+      ['fr', 'yml-fr'],
+      ['it-IT', 'yml-it-it'],
+      ['pl-PL', 'yml-pl-pl'],
+      ['tr', 'yml-tr'],
+    ];
+
+    for (const [locale, name] of cases) {
+      await i18n.setLocale(locale);
+      expect(i18n.__('common.name')).to.equal(name);
+    }
   });
 
   it('should be able to set locale', async () => {
@@ -91,14 +109,14 @@ describe('universe-i18n', () => {
   it('should be able to create translators', async () => {
     const frenchTranslator = i18n.createTranslator('', 'fr-FR');
     await i18n.setLocale('es-ES');
-    expect(i18n.__('common.name')).to.equal('json-es');
+    expect(i18n.__('common.name')).to.equal('json-es-es');
     expect(frenchTranslator('common.name')).to.equal('yml-fr');
   });
 
   it('should be able to create reactive translators', async () => {
     const frenchReactiveTranslator = i18n.createReactiveTranslator('', 'fr-FR');
     await i18n.setLocale('es-ES');
-    expect(i18n.__('common.name')).to.equal('json-es');
+    expect(i18n.__('common.name')).to.equal('json-es-es');
     expect(frenchReactiveTranslator('common.name')).to.equal('yml-fr');
   });
 

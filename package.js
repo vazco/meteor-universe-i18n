@@ -54,11 +54,15 @@ Package.onTest(function (api) {
   ]);
 
   api.addFiles([
-    'tests/common.ts',
+    'tests/data/de/ch.i18n.yml',
+    'tests/data/en_gb.i18n.json',
     'tests/data/es-es.i18n.json',
-    'tests/data/fr-fr.i18n.yml',
+    'tests/data/fr.i18n.yml',
     'tests/data/it-it.i18n.yml',
+    'tests/data/nest/el/y.i18n.yml',
+    'tests/data/pl-pl/x.i18n.yml',
+    'tests/data/z.i18n.yml',
   ]);
-  api.addFiles(['tests/client.ts'], 'client');
-  api.addFiles(['tests/server.ts'], 'server');
+  api.addFiles(['tests/client.ts', 'tests/common.ts'], 'client');
+  api.addFiles(['tests/server.ts', 'tests/common.ts'], 'server');
 });

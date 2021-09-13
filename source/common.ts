@@ -90,8 +90,8 @@ const i18n = {
       const parts = locale.toLowerCase().split(/[-_]/);
       while (parts.length) {
         const locale = parts.join('-');
-        if (locale in LOCALES) {
-          locales.push(LOCALES[locale][0]);
+        if (locale in i18n._locales) {
+          locales.push(i18n._locales[locale][0]);
         }
 
         parts.pop();
@@ -247,8 +247,8 @@ const i18n = {
       if (typeof args[finalArg] === 'object') {
         _namespace = args[finalArg]._namespace || _namespace;
         args[finalArg] = { ...finalOptions, ...args[finalArg] };
-      } else if (options) {
-        args.push(options);
+      } else if (finalOptions) {
+        args.push(finalOptions);
       }
 
       if (_namespace) {

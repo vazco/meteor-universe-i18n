@@ -94,6 +94,7 @@ class UniverseI18nCompiler extends CachingCompiler {
         `'${options.namespace ?? packageName ?? ''}',`,
         JSON.stringify(content.data),
         ');',
+        `Package['universe:i18n'].i18n._ts = Math.max(Package['universe:i18n'].i18n._ts, ${Date.now()});`
       ].join(''),
     };
   }

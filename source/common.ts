@@ -80,6 +80,10 @@ const i18n = {
     return Promise.resolve();
   },
   _locale: 'en',
+  _localeData(locale?: string) {
+    locale = i18n.normalize(locale ?? i18n.getLocale());
+    return locale && i18n._locales[locale.toLowerCase()];
+  },
   _locales: LOCALES,
   _logger(error: unknown) {
     console.error(error);
@@ -307,10 +311,10 @@ const i18n = {
     return SYMBOLS[code?.[0] || locale];
   },
   getLanguageName(locale?: string) {
-    return i18n._locales[i18n.normalize(locale ?? i18n.getLocale())!]?.[1];
+    return i18n._localeData(locale)?.[1];
   },
   getLanguageNativeName(locale?: string) {
-    return i18n._locales[i18n.normalize(locale ?? i18n.getLocale())!]?.[2];
+    return i18n._localeData(locale)?.[2];
   },
   getLanguages(type: 'code' | 'name' | 'nativeName' = 'code') {
     const codes = Object.keys(i18n._translations);
@@ -388,7 +392,7 @@ const i18n = {
     return i18n._isLoaded[locale ?? i18n.getLocale()];
   },
   isRTL(locale?: string) {
-    return i18n._locales[i18n.normalize(locale ?? i18n.getLocale())!]?.[3];
+    return i18n._localeData(locale)?.[3];
   },
   loadLocale(locale: string, options?: LoadLocaleOptions) {
     // Actual implementation is only on the client.

@@ -80,6 +80,11 @@ describe('universe-i18n', () => {
     expect(i18n.parseNumber('7013217.715', 'ru-RU')).to.equal('7 013 217,715');
   });
 
+  it('should return correct locale data', () => {
+    expect(i18n.getLanguageNativeName('pt')).to.equal('Português');
+    expect(i18n.getLanguageNativeName('pt-BR')).to.equal('Português (Brasil)');
+  });
+
   it('should be able to get currency symbol and currency codes', () => {
     expect(i18n.getCurrencySymbol('en-US')).to.equal('$');
     expect(i18n.getCurrencySymbol('USD')).to.equal('$');

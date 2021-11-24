@@ -370,6 +370,10 @@ const i18n = {
         ),
     );
 
+    if (typeof translation === 'object') {
+      return globalThis.JSON.stringify(translation);
+    }
+
     let string = translation ? `${translation}` : hideMissing ? '' : key;
     Object.entries(variables).forEach(([key, value]) => {
       const tag = open + key + close;

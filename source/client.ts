@@ -106,5 +106,11 @@ if (typeof preloaded === 'object') {
   }
 });
 
+const originalSetLocale = i18n.setLocale;
+i18n.setLocale = (locale, options, shouldVerifyLocale = false) =>
+shouldVerifyLocale && i18n.getLocale() === i18n.normalize(locale)
+    ? Promise.resolve()
+    : originalSetLocale.call(i18n, locale, options);
+
 export { i18n };
 export default i18n;

@@ -2,7 +2,7 @@ import { EventEmitter } from 'events';
 import { Meteor } from 'meteor/meteor';
 import { Tracker } from 'meteor/tracker';
 
-import { CURRENCIES, LOCALES } from './locales';
+import { LOCALES } from './locales';
 import { JSON, JSONObject, get, isJSONObject, set } from './utils';
 
 export interface CreateTranslatorOptions extends GetTranslationOptions {
@@ -292,16 +292,6 @@ const i18n = {
     return Object.keys(keys);
   },
   getCache: (() => ({})) as GetCacheFunction,
-  getCurrencyCodes(locale?: string) {
-    if (locale === undefined) {
-      locale = i18n.getLocale();
-    }
-
-    const countryCode = locale
-      .substr(locale.lastIndexOf('-') + 1)
-      .toUpperCase();
-    return CURRENCIES[countryCode];
-  },
   getLanguageName(locale?: string) {
     return i18n._localeData(locale)?.[1];
   },

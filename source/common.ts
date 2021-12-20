@@ -403,20 +403,6 @@ const i18n = {
     sameLocaleOnServerConnection: true,
     translationsHeaders: { 'Cache-Control': 'max-age=2628000' },
   } as Options,
-  parseNumber(number: number, locale?: string) {
-    const numberAsString = String(number);
-    const normalizedLocale = i18n.normalize(locale ?? i18n.getLocale())!;
-    const separator = i18n._locales[normalizedLocale.toLowerCase()]?.[4];
-    const result = separator
-      ? numberAsString.replace(
-          /(\d+)[\.,]*(\d*)/gm,
-          (_, integer, decimal) =>
-            format(+integer, separator[0]) +
-            (decimal ? separator[1] + decimal : ''),
-        )
-      : numberAsString;
-    return result || '0';
-  },
   runWithLocale<T>(locale = '', fn: () => T): T {
     return i18n._contextualLocale.withValue(i18n.normalize(locale), fn);
   },

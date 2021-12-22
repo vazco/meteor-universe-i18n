@@ -70,31 +70,6 @@ describe('universe-i18n', () => {
     );
   });
 
-  it('should be able to parse numbers', async () => {
-    await i18n.setLocale('en-US');
-    expect(i18n.parseNumber('7013217.715')).to.equal('7,013,217.715');
-    expect(i18n.setLocale('pl-PL')).to.be.ok;
-    expect(i18n.parseNumber('16217 and 17217,715', 'en-US')).to.equal(
-      '16,217 and 17,217.715',
-    );
-    expect(i18n.parseNumber('7013217.715', 'ru-RU')).to.equal('7 013 217,715');
-  });
-
-  it('should return correct locale data', () => {
-    expect(i18n.getLanguageNativeName('pt')).to.equal('Português');
-    expect(i18n.getLanguageNativeName('pt-BR')).to.equal('Português (Brasil)');
-  });
-
-  it('should be able to get currency symbol and currency codes', () => {
-    expect(i18n.getCurrencySymbol('en-US')).to.equal('$');
-    expect(i18n.getCurrencySymbol('USD')).to.equal('$');
-    expect(i18n.getCurrencyCodes('en-US')).to.deep.equal(['USD', 'USN', 'USS']);
-
-    expect(i18n.getCurrencySymbol('pl-PL')).to.equal('zł');
-    expect(i18n.getCurrencySymbol('PLN')).to.equal('zł');
-    expect(i18n.getCurrencyCodes('pl-PL')).to.deep.equal(['PLN']);
-  });
-
   it('should be able to listen on locale change', async () => {
     const callback = sinon.spy();
 
@@ -104,11 +79,6 @@ describe('universe-i18n', () => {
 
     expect(callback).to.have.been.calledOnce;
     expect(callback).to.have.been.calledWith('pl-PL');
-  });
-
-  it('should include current language in available languages', async () => {
-    await i18n.setLocale('en-US');
-    expect(i18n.getLanguages()).to.include(i18n.getLocale());
   });
 
   it('should be able to create translators', async () => {

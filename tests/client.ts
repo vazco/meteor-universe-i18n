@@ -7,7 +7,6 @@ describe('universe-i18n - client', () => {
     await i18n.setLocale(locale);
     expect(i18n.isLoaded(locale)).to.be.true;
     expect(i18n.getLocale()).to.equal(locale);
-    expect(i18n.getLanguages()).to.include(locale);
   });
 
   it('should list only available languages', async () => {
@@ -16,6 +15,5 @@ describe('universe-i18n - client', () => {
     await i18n.setLocale(locale);
     expect(i18n.isLoaded(locale)).to.be.true;
     expect(i18n.getLocale()).to.equal(locale);
-    expect(i18n.getLanguages()).to.not.include(locale);
   });
 });

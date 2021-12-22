@@ -2,7 +2,6 @@ import { EventEmitter } from 'events';
 import { Meteor } from 'meteor/meteor';
 import { Tracker } from 'meteor/tracker';
 
-import { LOCALES } from './locales';
 import { JSON, JSONObject, get, isJSONObject, set } from './utils';
 
 export interface CreateTranslatorOptions extends GetTranslationOptions {
@@ -80,24 +79,18 @@ const i18n = {
     return Promise.resolve();
   },
   _locale: 'en',
-  _localeData(locale?: string) {
-    locale = i18n.normalize(locale ?? i18n.getLocale());
-    return locale && i18n._locales[locale.toLowerCase()];
-  },
-  _locales: LOCALES,
   _logger(error: unknown) {
     console.error(error);
   },
   _normalizeWithAncestors(locale = '') {
+    
     if (!(locale in i18n._normalizeWithAncestorsCache)) {
       const locales: string[] = [];
-      const parts = locale.toLowerCase().split(/[-_]/);
+      let parts = locale.split(/[-_]/);
+      parts = [ parts[0]?.toLowerCase(), ...parts.slice(1)?.map(part => part.toUpperCase()) ];
       while (parts.length) {
         const locale = parts.join('-');
-        if (locale in i18n._locales) {
-          locales.push(i18n._locales[locale][0]);
-        }
-
+        locales.push(locale);
         parts.pop();
       }
 
@@ -292,24 +285,8 @@ const i18n = {
     return Object.keys(keys);
   },
   getCache: (() => ({})) as GetCacheFunction,
-  getLanguageName(locale?: string) {
-    return i18n._localeData(locale)?.[1];
-  },
-  getLanguageNativeName(locale?: string) {
-    return i18n._localeData(locale)?.[2];
-  },
-  getLanguages(type: 'code' | 'name' | 'nativeName' = 'code') {
-    const codes = Object.keys(i18n._translations);
-    switch (type) {
-      case 'code':
-        return codes;
-      case 'name':
-        return codes.map(i18n.getLanguageName);
-      case 'nativeName':
-        return codes.map(i18n.getLanguageNativeName);
-      default:
-        return [];
-    }
+  getLanguageCodes() {
+    return Object.keys(i18n._translations);
   },
   getLocale() {
     return (
@@ -372,9 +349,6 @@ const i18n = {
   },
   isLoaded(locale?: string) {
     return i18n._isLoaded[locale ?? i18n.getLocale()];
-  },
-  isRTL(locale?: string) {
-    return i18n._localeData(locale)?.[3];
   },
   loadLocale(locale: string, options?: LoadLocaleOptions) {
     // Actual implementation is only on the client.

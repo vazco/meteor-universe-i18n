@@ -10,7 +10,6 @@ import URL from 'url';
 
 import { GetCacheEntry, GetCacheFunction, i18n } from './common';
 import './global';
-import { LOCALES as locales } from './locales';
 import { JSONObject, set } from './utils';
 
 i18n.setOptions({ hostUrl: Meteor.absoluteUrl() });
@@ -147,8 +146,6 @@ i18n.loadLocale = async (
     silent = false,
   } = {},
 ) => {
-  localeName = locales[localeName.toLowerCase()]?.[0] ?? localeName;
-
   queryParams.type = 'json';
   if (fresh) {
     queryParams.ts = new Date().getTime();

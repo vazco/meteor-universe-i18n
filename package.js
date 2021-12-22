@@ -19,7 +19,6 @@ Package.registerBuildPlugin({
   sources: [
     'source/common.ts',
     'source/compiler.ts',
-    'source/locales.ts',
     'source/utils.ts',
   ],
   npmDependencies,

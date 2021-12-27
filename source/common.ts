@@ -47,6 +47,7 @@ export interface Options {
   purify: undefined | ((string: string) => string);
   sameLocaleOnServerConnection: boolean;
   translationsHeaders: Record<string, string>;
+  ignoreNoopLocaleChanges?: boolean;
 }
 
 export interface SetLocaleOptions extends LoadLocaleOptions {
@@ -444,6 +445,10 @@ const i18n = {
       const message = `Unrecognized locale "${locale}"`;
       i18n._logger(message);
       return Promise.reject(message);
+    }
+
+    if(i18n.options.ignoreNoopLocaleChanges && i18n.getLocale() === normalizedLocale){
+      return Promise.resolve()
     }
 
     i18n._locale = normalizedLocale;

@@ -42,12 +42,12 @@ export interface Options {
   defaultLocale: string;
   hideMissing: boolean;
   hostUrl: string;
+  ignoreNoopLocaleChanges: boolean;
   open: string;
   pathOnHost: string;
   purify: undefined | ((string: string) => string);
   sameLocaleOnServerConnection: boolean;
   translationsHeaders: Record<string, string>;
-  ignoreNoopLocaleChanges?: boolean;
 }
 
 export interface SetLocaleOptions extends LoadLocaleOptions {
@@ -416,6 +416,7 @@ const i18n = {
     defaultLocale: 'en',
     hideMissing: false,
     hostUrl: '/',
+    ignoreNoopLocaleChanges: false,
     open: '{$',
     pathOnHost: 'universe/locale/',
     purify: undefined,
@@ -447,8 +448,8 @@ const i18n = {
       return Promise.reject(message);
     }
 
-    if(i18n.options.ignoreNoopLocaleChanges && i18n.getLocale() === normalizedLocale){
-      return Promise.resolve()
+    if (i18n.options.ignoreNoopLocaleChanges && i18n.getLocale() === normalizedLocale) {
+      return Promise.resolve();
     }
 
     i18n._locale = normalizedLocale;

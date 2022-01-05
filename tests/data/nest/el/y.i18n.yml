@@ -1,3 +1,4 @@
-_namespace: ''
+_locale: el
+_namespace: ""
 common:
-    name: yml-el
+  name: yml-el

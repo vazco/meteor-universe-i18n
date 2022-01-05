@@ -1,3 +1,4 @@
-_namespace: ''
+_locale: de-ch
+_namespace: ""
 common:
-    name: yml-de-ch
+  name: yml-de-ch

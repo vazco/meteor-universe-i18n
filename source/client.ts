@@ -5,18 +5,6 @@ import './global';
 
 i18n.setOptions({ hostUrl: Meteor.absoluteUrl() });
 
-if (typeof document?.createElement === 'function') {
-  const textarea = document.createElement('textarea');
-  if (textarea) {
-    i18n.setOptions({
-      purify(str) {
-        textarea.innerHTML = str;
-        return textarea.innerHTML;
-      },
-    });
-  }
-}
-
 i18n._loadLocaleWithAncestors = (locale, options) => {
   if (i18n.options.sameLocaleOnServerConnection) {
     Meteor.call('universe.i18n.setServerLocaleForConnection', locale);

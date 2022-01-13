@@ -23,7 +23,6 @@ export interface GetCacheFunction {
 export interface GetTranslationOptions {
   _locale?: string;
   _namespace?: string;
-  purify?: (string: string) => string;
   [key: string]: unknown;
 }
 
@@ -43,7 +42,6 @@ export interface Options {
   hostUrl: string;
   open: string;
   pathOnHost: string;
-  purify: undefined | ((string: string) => string);
   sameLocaleOnServerConnection: boolean;
   translationsHeaders: Record<string, string>;
 }
@@ -316,7 +314,6 @@ const i18n = {
     const { close, defaultLocale, hideMissing, open } = i18n.options;
     const {
       _locale: locale = i18n.getLocale(),
-      purify = i18n.options.purify,
       ...variables
     } = options;
 
@@ -337,7 +334,7 @@ const i18n = {
       }
     });
 
-    return typeof purify === 'function' ? purify(string) : string;
+    return string;
   },
   getTranslations(key?: string, locale?: string) {
     if (locale === undefined) {
@@ -373,7 +370,6 @@ const i18n = {
     hostUrl: '/',
     open: '{$',
     pathOnHost: 'universe/locale/',
-    purify: undefined,
     sameLocaleOnServerConnection: true,
     translationsHeaders: { 'Cache-Control': 'max-age=2628000' },
   } as Options,

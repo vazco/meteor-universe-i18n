@@ -124,100 +124,6 @@ const i18n = {
 
     return i18n._translations;
   },
-  createComponent(
-    translatorSeed?: string | ((...args: unknown[]) => string),
-    locale?: string,
-    reactjs?: typeof import('react'),
-    type?: React.ComponentType | string,
-  ) {
-    const translator =
-      typeof translatorSeed === 'string'
-        ? i18n.createTranslator(translatorSeed, locale)
-        : translatorSeed === undefined
-        ? i18n.createTranslator()
-        : translatorSeed;
-
-    if (!reactjs) {
-      if (typeof React !== 'undefined') {
-        reactjs = React;
-      } else {
-        try {
-          reactjs = require('react');
-        } catch (error) {
-          // Ignore.
-        }
-      }
-
-      if (!reactjs) {
-        console.error('React is not detected!');
-      }
-    }
-
-    type Props = {
-      _containerType?: React.ComponentType | string;
-      _props?: {};
-      _tagType?: React.ComponentType | string;
-      _translateProps?: string[];
-      children?: React.ReactNode;
-    };
-
-    return class T extends reactjs!.Component<Props> {
-      static __ = translator;
-
-      _invalidate = () => this.forceUpdate();
-
-      render() {
-        const {
-          _containerType,
-          _props = {},
-          _tagType,
-          _translateProps,
-          children,
-          ...params
-        } = this.props;
-
-        const tagType = _tagType || type || 'span';
-        const items = reactjs!.Children.map(children, (item, index) => {
-          if (typeof item === 'string' || typeof item === 'number') {
-            return reactjs!.createElement(tagType, {
-              ..._props,
-              dangerouslySetInnerHTML: { __html: translator(item, params) },
-              key: `_${index}`,
-            } as any);
-          }
-
-          if (Array.isArray(_translateProps)) {
-            const newProps: Record<string, string> = {};
-            _translateProps.forEach(propName => {
-              const prop = (item as any).props[propName];
-              if (prop && typeof prop === 'string') {
-                newProps[propName] = translator(prop, params);
-              }
-            });
-
-            return reactjs!.cloneElement(item as any, newProps);
-          }
-
-          return item;
-        });
-
-        if (items?.length === 1) {
-          return items[0];
-        }
-
-        const containerType = _containerType || type || 'div';
-        return reactjs!.createElement(containerType, { ..._props }, items);
-      }
-
-      componentDidMount() {
-        i18n._events.on('changeLocale', this._invalidate);
-      }
-
-      componentWillUnmount() {
-        i18n._events.removeListener('changeLocale', this._invalidate);
-      }
-    };
-  },
   createReactiveTranslator(namespace?: string, locale?: string) {
     const translator = i18n.createTranslator(namespace, locale);
     return (...args: unknown[]) => {
@@ -290,19 +196,6 @@ const i18n = {
     return (
       i18n._contextualLocale.get() ?? i18n._locale ?? i18n.options.defaultLocale
     );
-  },
-  getRefreshMixin() {
-    return {
-      _localeChanged(this: React.Component, locale: string) {
-        this.setState({ locale });
-      },
-      componentWillMount() {
-        i18n.onChangeLocale(this._localeChanged);
-      },
-      componentWillUnmount() {
-        i18n.offChangeLocale(this._localeChanged);
-      },
-    };
   },
   getTranslation(...args: unknown[]) {
     const maybeOptions = args[args.length - 1];

@@ -110,17 +110,4 @@ describe('universe-i18n', () => {
     );
     i18n.setOptions({ open: '{$', close: '}' });
   });
-
-  it('should be able to create translation components', async () => {
-    const frenchTranslator = i18n.createTranslator('', 'fr-FR');
-    await i18n.setLocale('es-ES');
-    const Component = i18n.createComponent(frenchTranslator, 'fr-FR', {
-      Component: Object,
-      createElement: () => {},
-      PropTypes: { string: String },
-    });
-
-    expect(Component).to.be.a('Function');
-    expect(Component.__('common.name')).to.equal('yml-fr');
-  });
 });

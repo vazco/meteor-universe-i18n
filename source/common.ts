@@ -124,41 +124,6 @@ const i18n = {
 
     return i18n._translations;
   },
-  createReactiveTranslator(namespace?: string, locale?: string) {
-    const translator = i18n.createTranslator(namespace, locale);
-    return (...args: unknown[]) => {
-      i18n._deps.depend();
-      return translator(...args);
-    };
-  },
-  createTranslator(
-    namespace?: string,
-    options?: string | CreateTranslatorOptions,
-  ) {
-    const finalOptions =
-      typeof options === 'string'
-        ? options === ''
-          ? {}
-          : { _locale: options }
-        : options;
-
-    return (...args: any[]) => {
-      let _namespace = namespace;
-      const finalArg = args.length - 1;
-      if (typeof args[finalArg] === 'object') {
-        _namespace = args[finalArg]._namespace || _namespace;
-        args[finalArg] = { ...finalOptions, ...args[finalArg] };
-      } else if (finalOptions) {
-        args.push(finalOptions);
-      }
-
-      if (_namespace) {
-        args.unshift(_namespace);
-      }
-
-      return i18n.getTranslation(...args);
-    };
-  },
   getAllKeysForLocale(locale?: string, exactlyThis = false) {
     if (locale === undefined) {
       locale = i18n.getLocale();

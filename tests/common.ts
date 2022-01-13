@@ -81,20 +81,6 @@ describe('universe-i18n', () => {
     expect(callback).to.have.been.calledWith('pl-PL');
   });
 
-  it('should be able to create translators', async () => {
-    const frenchTranslator = i18n.createTranslator('', 'fr-FR');
-    await i18n.setLocale('es-ES');
-    expect(i18n.__('common.name')).to.equal('json-es-es');
-    expect(frenchTranslator('common.name')).to.equal('yml-fr');
-  });
-
-  it('should be able to create reactive translators', async () => {
-    const frenchReactiveTranslator = i18n.createReactiveTranslator('', 'fr-FR');
-    await i18n.setLocale('es-ES');
-    expect(i18n.__('common.name')).to.equal('json-es-es');
-    expect(frenchReactiveTranslator('common.name')).to.equal('yml-fr');
-  });
-
   it('should be able to set options', async () => {
     await i18n.setLocale('en-US');
     i18n.setOptions({ open: '{{', close: '}}' });

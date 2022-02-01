@@ -24,7 +24,7 @@ export interface GetCacheFunction {
 export interface GetTranslationOptions {
   _locale?: string;
   _namespace?: string;
-  purify?: (string: string) => string;
+  _purify?: (string: string) => string;
   [key: string]: unknown;
 }
 
@@ -358,7 +358,7 @@ const i18n = {
     const { close, defaultLocale, hideMissing, open } = i18n.options;
     const {
       _locale: locale = i18n.getLocale(),
-      purify = i18n.options.purify,
+      _purify: purify = i18n.options.purify,
       ...variables
     } = options;
 

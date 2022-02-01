@@ -357,7 +357,7 @@ const i18n = {
     const { close, defaultLocale, hideMissing, open } = i18n.options;
     const {
       _locale: locale = i18n.getLocale(),
-      _purify = i18n.options.purify,
+      _purify: purify = i18n.options.purify,
       ...variables
     } = options;
 
@@ -378,7 +378,7 @@ const i18n = {
       }
     });
 
-    return typeof _purify === 'function' ? _purify(string) : string;
+    return typeof purify === 'function' ? purify(string) : string;
   },
   getTranslations(key?: string, locale?: string) {
     if (locale === undefined) {

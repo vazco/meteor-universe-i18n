@@ -1,4 +1,3 @@
-_locale: pl-pl
-_namespace: ""
+_namespace: ''
 common:
-  name: yml-pl-pl
+    name: yml-pl-pl

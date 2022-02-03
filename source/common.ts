@@ -85,11 +85,13 @@ const i18n = {
     
     if (!(locale in i18n._normalizeWithAncestorsCache)) {
       const locales: string[] = [];
-      let parts = locale.split(/[-_]/);
-      parts = [ parts[0]?.toLowerCase(), ...parts.slice(1)?.map(part => part.toUpperCase()) ];
+      const parts = locale.toLowerCase().split(/[-_]/);
       while (parts.length) {
         const locale = parts.join('-');
-        locales.push(locale);
+        if (locale.match(/^[a-z]{2}$|^[a-z]{2}-[A-Z]{2}$/g)) {
+          locales.push(locale);
+        }
+
         parts.pop();
       }
 

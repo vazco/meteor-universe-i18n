@@ -61,8 +61,8 @@ class UniverseI18nCompiler extends CachingCompiler {
       return null;
     }
 
-    const fileType = path.extname(sourcePath);
-    const content = read(source, fileType);
+    const metadata = analyzePath(sourcePath);
+    const content = read(source, metadata.type);
     if (content.error) {
       file.error({ message: `Parsing Error: ${content.error.message}` });
       return null;
@@ -75,7 +75,7 @@ class UniverseI18nCompiler extends CachingCompiler {
     };
 
     const packageName = file.getPackageName();
-    const locale = i18n.normalize(options.locale ?? '');
+    const locale = i18n.normalize(options.locale ?? metadata.locale ?? '');
     if (!locale) {
       const packageLocation = packageName ? ` in package "${packageName}"` : '';
       const location = `"${sourcePath}"${packageLocation}`;
@@ -119,6 +119,19 @@ class UniverseI18nCompiler extends CachingCompiler {
     const path = `${sourcePath}.js`;
     return { path, sourcePath };
   }
+}
+
+function analyzePath(sourcePath: string) {
+  const type = path.extname(sourcePath);
+  const parts = sourcePath.replace(`.i18n.${type}`, '').split(/[-./\\_]/g);
+  for (let length = parts.length; length; --length) {
+    const locale = i18n.normalize(parts.slice(-length).join('-'));
+    if (locale) {
+      return { locale, type };
+    }
+  }
+
+  return { locale: undefined, type };
 }
 
 function extractString(data: JSON, key: string) {

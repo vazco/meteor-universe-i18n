@@ -17,20 +17,19 @@
 
 &nbsp;
 
-Internationalization package that offers much better performance than others (as it depends, if used with React, on a simple event emitter rather than much heavier Tracker dependency).
+Internationalization package that offers much better performance than others.
 
 The package supports:
+
 - namespacing of translation strings
 - **YAML** file formats
+- string interpolation
 - both types of parameters (named and positional)
 - typographic notation of numbers
-- 353 locales (with basic informations: name, symbol of currency, rtl)
-- regional dialects inheritance mechanism (e.g. 'en-us' inherits from translations assigned to 'en')
-- react component `<T>ok</T>` or `<T _translateProps={['title']}><div title="ok">here</div></T>`
+- regional dialects inheritance mechanism (e.g. 'en-US' inherits from translations assigned to 'en')
 - ECMAScript 6 modules
 - **supports dynamic imports** (Client does not need to download all translations at once)
 - remote loading of translations from a different host
-- dedicated translation strings editor (alpha version) [mac os](https://drive.google.com/file/d/0ByCHJxkqk5WjUlJjTjJqVlAtSzg/view?usp=sharing), [win x64](https://drive.google.com/file/d/0ByCHJxkqk5WjX2VXMjZQUU9PU28/view?usp=sharing)
 
 **Table of Contents**
 
@@ -39,73 +38,70 @@ The package supports:
     - [Typescript](https://github.com/vazco/meteor-universe-i18n/#typescript)
   - [Usage](https://github.com/vazco/meteor-universe-i18n/#usage)
     - [Setting/getting locale](https://github.com/vazco/meteor-universe-i18n/#settinggetting-locale)
-    - [Adding translations by methods](https://github.com/vazco/meteor-universe-i18n/#adding-translations-my-methods)
+    - [Adding translations by methods](https://github.com/vazco/meteor-universe-i18n/#adding-translations-by-methods)
     - [Getting translations](https://github.com/vazco/meteor-universe-i18n/#getting-translations)
-    - [Creating a React component](https://github.com/vazco/meteor-universe-i18n/#creating-react-component)
-    - [Formatting numbers](https://github.com/vazco/meteor-universe-i18n/#formatting-numbers)
   - [Translations files](https://github.com/vazco/meteor-universe-i18n/#translations-files)
     - [Recognition locale of translation](https://github.com/vazco/meteor-universe-i18n/#recognition-locale-of-translation)
     - [Namespace](https://github.com/vazco/meteor-universe-i18n/#namespace)
       - [Translation in packages](https://github.com/vazco/meteor-universe-i18n/#translation-in-packages)
       - [Translation in application](https://github.com/vazco/meteor-universe-i18n/#translation-in-application)
   - [API](https://github.com/vazco/meteor-universe-i18n/#api)
-  - [Blaze support](https://github.com/vazco/meteor-universe-i18n/#blaze-support)
+  - [Integration with React](https://github.com/vazco/meteor-universe-i18n/#react-integration)
+    - [Creating a React component](https://github.com/vazco/meteor-universe-i18n/#creating-react-component)
+  - [Integration with Blaze](https://github.com/vazco/meteor-universe-i18n/#blaze-integration)
   - [Integration with SimpleSchema](https://github.com/vazco/meteor-universe-i18n/blob/master/README.md#integration-with-simpleschema-package)
-  - [Supported locales](https://github.com/vazco/meteor-universe-i18n/#supported-locales)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-
 ## Installation
+
 ```sh
 $ meteor add universe:i18n
 ```
 
 ### Typescript
+
 ```sh
 $ meteor npm install --save @types/meteor-universe-i18n
 ```
 
 ## Usage
-The package is dedicated to work with React but you can use it without it as well.
 
 ```
 import i18n from 'meteor/universe:i18n';
 ```
 
-### Tutorials
-
-- [Meteor Guide](https://guide.meteor.com/ui-ux.html#universe-i18n)
-- [Internationalizing Meteor with Universe:i18n](http://sonicviz.com/2016/10/23/internationalizing-meteor/)
-
 ### Other links:
+
 - [mock universe i18n](https://github.com/logankoester/mock-meteor-universe-i18n)
 
 ### Setting/getting locale
 
 ```js
-i18n.setLocale('en-US', params)
-i18n.getLocale() //en-US
+i18n.setLocale("en-US", params);
+i18n.getLocale(); // en-US
 ```
 
 Params in setLocale are optional yet offer additional possibilities:
- - noDownload - disables downloading translation file on the client (client side)
- - silent - protects against broadcasting the refresh event (both sides)
- - async - downloads translation file in an async way (client side)
- - fresh - downloads fresh translations (ignores the browser cache)
+
+- noDownload - disables downloading translation file on the client (client side)
+- silent - protects against broadcasting the refresh event (both sides)
+- async - downloads translation file in an async way (client side)
+- fresh - downloads fresh translations (ignores the browser cache)
+<!-- TODO host, pathOnHost, queryParams ??? -->
 
 If you want to use the browser's locale, you can do it as follows:
 
 ```js
 // somewhere in the page layout (or possibly in the router?)
-function getLang () {
-    return (
-        navigator.languages && navigator.languages[0] ||
-        navigator.language ||
-        navigator.browserLanguage ||
-        navigator.userLanguage ||
-        'en-US'
-    );
+function getLang() {
+  return (
+    (navigator.languages && navigator.languages[0]) ||
+    navigator.language ||
+    navigator.browserLanguage ||
+    navigator.userLanguage ||
+    "en-US"
+  );
 }
 
 i18n.setLocale(getLang());
@@ -118,109 +114,60 @@ By the way, It's good option is also use 'accept-language' header to recognize c
 ### Adding translations by methods
 
 ```js
-import i18n from 'meteor/universe:i18n';
-import './en.i18n.yml';
-import './en-US.i18n.yml';
+import i18n from "meteor/universe:i18n";
+import "./en.i18n.yml";
+import "./en-US.i18n.yml";
 
-i18n.addTranslation('en-US', 'Common', 'no', 'No');
-i18n.addTranslation('en-US', 'Common.ok', 'Ok');
+i18n.addTranslation("en-US", "Common", "no", "No");
+i18n.addTranslation("en-US", "Common.ok", "Ok");
 
-i18n.addTranslations('en-US', {
-    Common: {
-        hello: 'Hello {$name} {$0}!'
-    }
+i18n.addTranslations("en-US", {
+  Common: {
+    hello: "Hello {$name} {$0}!",
+  },
 });
 
-i18n.addTranslations('en-US', 'Common', {
-    hello: 'Hello {$name} {$0}!'
+i18n.addTranslations("en-US", "Common", {
+  hello: "Hello {$name} {$0}!",
 });
 ```
 
 ### Getting translations
-You can obtain translation strings by:
-- creating an instance of the React component ( can be predefined for context )
-*(More on that in the next section)*
-- using i18n.getTranslation() or, quicker, calling i18n.__()
+
+You can obtain translation strings by using i18n.getTranslation() or, quicker, calling i18n.\_\_()
 
 ```js
 i18n.__(key);
 i18n.__(key, params);
-i18n.__(Namespace, key, parameters);
-i18n.__(Namespace, key, parameters);
-i18n.__(key, key, key, key, parameters);
+i18n.__(Namespace, key, params);
+i18n.__(Namespace, key, params);
+i18n.__(key, key, key, key, params);
+
 // same with "getTranslation", e.g.:
-i18n.getTranslation(Key, Key, Key, key, parameters);
-// namespaced translations
-var t = i18n.createTranslator(Namespace);
-t(key, parameters);
-// different language translations
-var t2 = i18n.createTranslator('', 'fr-fr');
-t2(key, parameters);
+i18n.getTranslation(key, key, key, key, params);
 ```
+
+### String Interpolation
 
 If needed, parameters can be passed as the last one of the function arguments, as an array or an object since they can be named or positional (ie. indexed). Additionally, for positional parameters it is irrelevant whether they are passed as an array or an object with keys '0', '1', '2'... Besides, 'positional' properties of such an object can be mixed with named ones.
 
 ```yml
- _namespace: ''
- hello: Hello {$name}!
- lengthOfArr: length {$length}
- items: The first item is {$0} and the last one is {$2}!
+_namespace: ""
+hello: Hello {$name}!
+lengthOfArr: length {$length}
+items: The first item is {$0} and the last one is {$2}!
 ```
 
 ```js
-i18n.__('hello', {name: 'Ania'}); // output: Hello Ania!
-i18n.__('lengthOfArr', {length:['a', 'b', 'c'].length}); // output: length 3
-i18n.__('items', ['a', 'b', 'c']); // output: The first item is a and the last one is c!
-```
-
-### Creating a React component
-
-```js
-import i18n from 'meteor/universe:i18n';
-
-// an instance of a translate component with the top-level context
-const T = i18n.createComponent();
-
-// later on...
-<T>Common.no</T>
-<T>Common.ok</T>
-<T name="World" {...[69]}>Common.hello</T>
-// translate component
-<T _translateProps={['title', 'children']}>
-      <div title="Common.ok">Common.ok</div>
-</T>
-```
-
-```jsx
-import i18n from 'meteor/universe:i18n';
-
-// an instance of a translate component in the "Common" namespace
-const T = i18n.createComponent(i18n.createTranslator('Common'));
-
-// later on...
-<T>ok</T>
-// overriding locale
-<T _locale='pl-PL'>hello</T>
-// overriding the default DOM element 'span' with 'h1'
-<T _tagType='h1'>hello</T>
-// getting something from different namespace (e.g. Different.hello instead of Common.hello)
-<T _namespace='Diffrent'>hello</T>
-// providing props to the element
-<T _props={{ className: 'text-center', style: { color: '#f33' }}}>hello</T>
+i18n.__("hello", { name: "Ania" }); // output: Hello Ania!
+i18n.__("lengthOfArr", { length: ["a", "b", "c"].length }); // output: length 3
+i18n.__("items", ["a", "b", "c"]); // output: The first item is a and the last one is c!
 ```
 
 Take in mind, that on client side strings are sanitized to PCDATA.
-*TIP:* To prevent sensitization you can pass `_purify={false}` on `<T>` component.
+_TIP:_ To prevent sensitization you can pass `_purify={false}` on `<T>` component.
 
-
-### Formatting numbers
-
-```js
-i18n.parseNumber('7013217.715'); // 7,013,217.715
-i18n.parseNumber('16217 and 17217,715'); // 16,217 and 17,217.715
-i18n.parseNumber('7013217.715', 'ru-RU'); // 7 013 217,715
-```
-
+<!-- TODO remove? -->
 
 ## Translations files
 
@@ -228,51 +175,43 @@ Instead of setting translations directly through i18n.addTranslation(s), you can
 
 ### Recognition locale of translation
 
-Files can be named freely as long as they have their respective locale declared under the key **'_locale'**.
+Files are recognized by the `_locale` value in a translation file.
 
 ```yml
-_locale: 'en-US',
+_locale: en-US
 title: Title
-```
-
-Otherwise, files should be named after their respective locales or placed in directories named accordingly.
-
-```bash
-en.i18n.yml
-en.i18n.json
-en_us.i18n.yml
-en-us.i18n.yml
-en/us.i18n.yml
-en-US/someName.i18n.yml
-someDir/en-us/someName.i18n.yml
 ```
 
 ### Namespace
 
 Translations in a translation file can be namespaced (depending on where they are located). A namespace can be set up only for a whole file, yet a file as such can add more deeply embedded structures.
 
-*Tip: A good practise is using PascalCase for naming of namespaces and for leafs use camelCase. This helps protect against conflicts namespace with string
+_Tip:_ A good practise is using PascalCase for naming of namespaces and for leafs use camelCase. This helps protect against conflicts namespace with string.
 
 #### Splitting keys in file
 
 Comma-separated or `x`-separated keys in file e.g.:
+
 ```yml
-_splitKey: '.'
+_splitKey: "."
 Chapter.title: Title
 Chapter.xxx: XXX
 ```
+
 or
+
 ```yml
-_splitKey: ':'
+_splitKey: ":"
 Chapter:title: Title
 Chapter:xxx: XXX
 ```
+
 Will be loaded as following structure:
 
 ```yml
 Chapter:
-    title: Title
-    xxx: XXX
+  title: Title
+  xxx: XXX
 ```
 
 #### Translation in packages
@@ -282,45 +221,34 @@ For example, translations files in packages are by default namespaced by their p
 ```json
 // file en.json in the universe:profile package
 {
-    "userName": "User name"
+  "_locale": "en",
+  "userName": "User name"
 }
 ```
 
 ```js
-import i18n from 'meteor/universe:i18n';
-
-i18n.__('universe:profile', 'userName') // output: User name
-
-// in React:
-const T = i18n.createComponent();
-<T>universe:profile.userName</T>
-// or:
-const T2 = i18n.createComponent(i18n.createTranslator('universe:profile'));
-<T2>userName</T2>
+i18n.__("universe:profile", "userName"); // output: User name
 ```
 
-You can change a default namespace for a file by setting a prefix to this file under the key "_namespace".
+You can change a default namespace for a file by setting a prefix to this file under the key "\_namespace".
 
 ```json
 // file en.json in the universe:profile package
 {
-    "_namespace": "Common",
-    "userName": "User name"
+  "_locale": "en-US",
+  "_namespace": "Common",
+  "userName": "User name"
 }
 ```
 
 And then:
 
 ```js
-i18n.__('Common', 'userName') // output: User name
-i18n.__('Common.userName') // output: User name
-
-// in React:
-const T = i18n.createComponent();
-<T>Common.userName</T>
+i18n.__("Common", "userName"); // output: User name
+i18n.__("Common.userName"); // output: User name
 ```
 
-*TIP:* You can also add translations from a package on the top-level by passing empty string '' in the key "_namespace".
+_TIP:_ You can also add translations from a package on the top-level by passing empty string `""` in the key "\_namespace".
 
 #### Translation in application
 
@@ -331,92 +259,45 @@ For example:
 
 ```yml
 # file en_us.yml in an application space (not from a package)
+_locale: en-US
 userName: user name
 ```
 
 ```js
-i18n.__('userName') //output: User name
-// in React:
-const T = i18n.createComponent();
-<T>userName</T>
+i18n.__("userName"); // output: User name
 ```
 
-If you want to add translations under a namespace, you should define it in the key '_namespace'.
+If you want to add translations under a namespace, you should define it in the key '\_namespace'.
 
 ```yml
+_locale: en-US
 _namespace: User.Listing.Item
 userName: User name
 ```
 
 ```js
-i18n.__('User.Listing.Item.userName'); // output: User name
-i18n.__('User', 'Listing', 'Item.userName'); // output: User name
-// in React:
-const T = i18n.createComponent();
-<T>User.Listing.Item.userName</T>
-// or:
-const T2 = i18n.createComponent('User.Listing');
-<T2>Item.userName</T2>
+i18n.__("User.Listing.Item.userName"); // output: User name
+i18n.__("User", "Listing", "Item.userName"); // output: User name
 ```
-
 
 ## Listener on language change
 
-```
+```js
 // adds a listener on language change
-i18n.onChangeLocale (function(newLocale){
-    console.log(newLocale);
-})
+i18n.onChangeLocale(function (newLocale) {
+  console.log(newLocale);
+});
 
 // removes a listener
-i18n.offChangeLocale (fn)
+i18n.offChangeLocale(fn);
 
 // does something on the first language change and then stops the listener
-i18n.onceChangeLocale (fn)
+i18n.onceChangeLocale(fn);
 ```
-
-### Listing available languages
-
-You can use `i18n.getLanguages` to list all languages with at least one translation:
-```javascript
-i18n.getLanguages() // ['en', 'de']
-i18n.getLanguages('name') // ['English', 'German']
-```
-
-This method will return all translations that are available on the server as well as loaded on the client.
-
-To build a language picker with all possible options you need to fetch data from the server, e.g.:
-```javascript
-Meteor.methods({
-    getLanguages() {
-        return i18n.getLanguages().map(code => ({
-            code,
-            name: i18n.getLanguageNativeName(code)
-        }));
-    }
-});
-```
-
 
 ## API
 
 ```js
-// creates a React component
-i18n.createComponent(translator, locale, reactjs, type);
-//  @params:
-//    translator (optional, the default is i18n.createTranslator()) - with this argument you can set a different function for translation or the namespace for the default translator.
-//    locale (optional, the default is the current locale) - sets a language for the component (can be different than anywhere else on the site)
-//    reactjs (optional, by default it tries to get React from a global variable) - you can pass a React object if it is not available in the global scope
-//    type (optional, by default it uses <span> to render the content) - sets a DOM element that will be rendered, e.g. 'li', 'div' or 'h1'.
-
-// creates a namespaced translator. Options: {_locale, _purify}
-i18n.createTranslator(namespace, options);
-
-// creates a reactive translator for autoruns
-i18n.createReactiveTranslator(namespace, locale);
-// TIP: keep in mind that a tracker dependency object is not light, yet in React this is not obligatory
-// thus our React component can be reactive and much lighter in terms of performance
-
 // adds a translation
 i18n.addTranslation(locale, namespace, key, ..., translation);
 
@@ -441,10 +322,6 @@ i18n.setOptions({
     // closes string
     close: '}',
 
-    // cleanups untrust/unknown tags, to secure your application against XSS attacks.
-    // at browser side, default policy is to sanitize strings as a PCDATA
-    purify: <FUNCTION>, // On server side as a default option is that nothing is purifying (but you can provide function for that)
-
     // decides whether to show when there's no translation in the current and default language
     hideMissing: false,
 
@@ -458,9 +335,6 @@ i18n.setOptions({
     // synchronizes server connection with locale on client. (method invoked by client will be with client side locale)
     sameLocaleOnServerConnection: true
 });
-
-// formats numbers for locale (locale is by default set to the current one)
-i18n.parseNumber(number, locale);
 
 // supports dynamic imports
 import('../fr.i18n.yml');
@@ -479,12 +353,6 @@ i18n.setLocaleOnConnection(locale, connectionId=);
 // gets the current locale
 i18n.getLocale();
 
-// gets languages with at least one translation
-i18n.getLanguages(type = 'code')
-i18n.getLanguages() // ['de', 'en']
-i18n.getLanguages('name') // ['German', 'English']
-i18n.getLanguages('nativeName') // ['Deutsch', 'English']
-
 // fetches translations file from the remote server (client/server)
 i18n.loadLocale(locale, params)
 // @params on the client { fresh = false, async = false, silent = false,
@@ -499,85 +367,219 @@ i18n.loadLocale(locale, params)
 i18n.runWithLocale(locale, func)
 // it means that every default locale used inside a called function will be set to a passed locale
 // keep in mind that locale must be loaded first (if it is not bundled)
-
-// additional informations about locale (locale is by default set to the current one)
-
-getCurrencySymbol (code) // or locale with country
-returns currency symbol if known
-
-i18n.getCurrencySymbol('en-US') // = $
-i18n.getCurrencySymbol('USD') // = $
-i18n.getCurrencyCodes('en-US') // = ["USD", "USN", "USS"]
-
-getLanguageName (locale)
-getLanguageNativeName (locale)
-isRTL (locale)
-getAllKeysForLocale(locale, exactlyThis = false)
 ```
 
-## Blaze support
+## Integration with React
+
+If you want to use this package with React, you need to create two functions `createTranslator` and `createComponent`. Example code is below.
+
+```ts
+import React from "react";
+import i18n from "meteor/universe:i18n";
+
+/**
+ * @param namespace
+ * @param options {_locale, _purify} TODO Change that
+ */
+export function createTranslator(namespace?, options = undefined) {
+  if (typeof options === "string" && options) {
+    options = { _locale: options };
+  }
+
+  return (...args) => {
+    let _namespace = namespace;
+    if (typeof args[args.length - 1] === "object") {
+      _namespace = args[args.length - 1]._namespace || _namespace;
+      args[args.length - 1] = { ...options, ...args[args.length - 1] };
+    } else if (options) {
+      args.push(options);
+    }
+    if (_namespace) {
+      args.unshift(_namespace);
+    }
+    return i18n.getTranslation(...args);
+  };
+}
+
+/**
+ * @param translatorSeed the default is createTranslator() - with this argument you can set a different function for translation or the namespace for the default translator
+ * @param locale the default is the current locale - sets a language for the component (can be different than anywhere else on the site)
+ * @param type by default it uses <span> to render the content - sets a DOM element that will be rendered, e.g. 'li', 'div' or 'h1'
+ */
+export function createComponent(
+  translatorSeed?: string | ((...args: unknown[]) => string),
+  locale?: string,
+  type?: React.ComponentType | string
+) {
+  const translator =
+    typeof translatorSeed === "string"
+      ? createTranslator(translatorSeed, locale)
+      : translatorSeed === undefined
+      ? createTranslator()
+      : translatorSeed;
+
+  type Props = {
+    _containerType?: React.ComponentType | string;
+    _props?: {};
+    _tagType?: React.ComponentType | string;
+    _translateProps?: string[];
+    children?: React.ReactNode;
+  };
+
+  return class T extends React.Component<Props> {
+    static __ = translator;
+
+    _invalidate = () => this.forceUpdate();
+
+    render() {
+      const {
+        _containerType,
+        _props = {},
+        _tagType,
+        _translateProps,
+        children,
+        ...params
+      } = this.props;
+
+      const tagType = _tagType || type || "span";
+      const items = React.Children.map(
+        children,
+        (item, index) => {
+          if (typeof item === "string" || typeof item === "number") {
+            return React.createElement(tagType, {
+              ..._props,
+              dangerouslySetInnerHTML: { __html: translator(item, params) },
+              key: `_${index}`,
+            } as any);
+          }
+
+          if (Array.isArray(_translateProps)) {
+            const newProps: Record<string, string> = {};
+            _translateProps.forEach((propName) => {
+              const prop = (item as any).props[propName];
+              if (prop && typeof prop === "string") {
+                newProps[propName] = translator(prop, params);
+              }
+            });
+
+            return React.cloneElement(item as any, newProps);
+          }
+
+          return item;
+        },
+        this
+      );
+
+      if (items?.length === 1) {
+        return items[0];
+      }
+
+      const containerType = _containerType || type || "div";
+      return React.createElement(containerType, { ..._props }, items);
+    }
+
+    componentDidMount() {
+      i18n._events.on("changeLocale", this._invalidate);
+    }
+
+    componentWillUnmount() {
+      i18n._events.removeListener("changeLocale", this._invalidate);
+    }
+  };
+}
+```
+
+### Creating a React component
+
+```js
+// an instance of a translate component with the top-level context
+const T = createComponent();
+
+// later on...
+<T>Common.no</T>
+<T>Common.ok</T>
+<T name="World">Common.hello</T>
+// translate component
+<T _translateProps={['title', 'children']}>
+      <div title="Common.ok">Common.ok</div>
+</T>
+```
+
+```js
+// an instance of a translate component in the "Common" namespace
+const T = createComponent(createTranslator('Common'));
+
+// later on...
+<T>ok</T>
+// overriding locale
+<T _locale='pl-PL'>hello</T>
+// overriding the default DOM element 'span' with 'h1'
+<T _tagType='h1'>hello</T>
+// getting something from different namespace (e.g. Different.hello instead of Common.hello)
+<T _namespace='Diffrent'>hello</T>
+// providing props to the element
+<T _props={{ className: 'text-center', style: { color: '#f33' }}}>hello</T>
+```
+
+## Integration with Blaze
 
 [universe:i18n-blaze](https://atmospherejs.com/universe/i18n-blaze)
+
+<!-- TODO Change -->
 
 ## Integration with SimpleSchema package
 
 Add following-like code to main.js:
 
-```
+```js
 const registerSchemaMessages = () => {
-    SimpleSchema.messages({
-        'required': i18n.__('SimpleSchema.required')
-    });
+  SimpleSchema.messages({
+    required: i18n.__("SimpleSchema.required"),
+  });
 };
 
 i18n.onChangeLocale(registerSchemaMessages);
 registerSchemaMessages();
 ```
+
 Put the default error messages somewhere in your project on both sides e.g.:
 
 ```yml
 _locale: en
 _namespace: SimpleSchema
 
-required: '[label] is required'
-minString: '[label] must be at least [min] characters'
-maxString: '[label] cannot exceed [max] characters'
-minNumber: '[label] must be at least [min]'
-maxNumber: '[label] cannot exceed [max]'
-minNumberExclusive: '[label] must be greater than [min]'
-maxNumberExclusive: '[label] must be less than [max]'
-minDate: '[label] must be on or after [min]'
-maxDate: '[label] cannot be after [max]'
-badDate: '[label] is not a valid date'
-minCount: 'You must specify at least [minCount] values'
-maxCount: 'You cannot specify more than [maxCount] values'
-noDecimal: '[label] must be an integer'
-notAllowed: '[value] is not an allowed value'
-expectedString: '[label] must be a string'
-expectedNumber: '[label] must be a number'
-expectedBoolean: '[label] must be a boolean'
-expectedArray: '[label] must be an array'
-expectedObject: '[label] must be an object'
-expectedConstructor: '[label] must be a [type]'
+required: "[label] is required"
+minString: "[label] must be at least [min] characters"
+maxString: "[label] cannot exceed [max] characters"
+minNumber: "[label] must be at least [min]"
+maxNumber: "[label] cannot exceed [max]"
+minNumberExclusive: "[label] must be greater than [min]"
+maxNumberExclusive: "[label] must be less than [max]"
+minDate: "[label] must be on or after [min]"
+maxDate: "[label] cannot be after [max]"
+badDate: "[label] is not a valid date"
+minCount: "You must specify at least [minCount] values"
+maxCount: "You cannot specify more than [maxCount] values"
+noDecimal: "[label] must be an integer"
+notAllowed: "[value] is not an allowed value"
+expectedString: "[label] must be a string"
+expectedNumber: "[label] must be a number"
+expectedBoolean: "[label] must be a boolean"
+expectedArray: "[label] must be an array"
+expectedObject: "[label] must be an object"
+expectedConstructor: "[label] must be a [type]"
 RegEx:
-  msg: '[label] failed regular expression validation'
-  Email: '[label] must be a valid e-mail address'
-  WeakEmail: '[label] must be a valid e-mail address'
-  Domain: '[label] must be a valid domain'
-  WeakDomain: '[label] must be a valid domain'
-  IP: '[label] must be a valid IPv4 or IPv6 address'
-  IPv4: '[label] must be a valid IPv4 address'
-  IPv6: '[label] must be a valid IPv6 address'
-  Url: '[label] must be a valid URL'
-  Id: '[label] must be a valid alphanumeric ID'
-keyNotInSchema: '[key] is not allowed by the schema'
-```
-
-
-## Supported locales
-*(predefined for parseNumber, currency, names, native names)*
-```
-af, af-ZA, am, am-ET, ar, ar-AE, ar-BH, ar-DZ, ar-EG, ar-IQ, ar-JO, ar-KW, ar-LB, ar-LY, ar-MA, ar-OM, ar-QA, ar-SA, ar-SY, ar-TN, ar-YE, arn, arn-CL, as, as-IN, az, az-Cyrl, az-Cyrl-AZ, az-Latn, az-Latn-AZ, ba, ba-RU, be, be-BY, bg, bg-BG, bn, bn-BD, bn-IN, bo, bo-CN, br, br-FR, bs, bs-Cyrl, bs-Cyrl-BA, bs-Latn, bs-Latn-BA, ca, ca-ES, co, co-FR, cs, cs-CZ, cy, cy-GB, da, da-DK, de, de-AT, de-CH, de-DE, de-LI, de-LU, dsb, dsb-DE, dv, dv-MV, el, el-GR, en, en-029, en-AU, en-BZ, en-CA, en-GB, en-IE, en-IN, en-JM, en-MY, en-NZ, en-PH, en-SG, en-TT, en-US, en-ZA, en-ZW, es, es-AR, es-BO, es-CL, es-CO, es-CR, es-DO, es-EC, es-ES, es-GT, es-HN, es-MX, es-NI, es-PA, es-PE, es-PR, es-PY, es-SV, es-US, es-UY, es-VE, et, et-EE, eu, eu-ES, fa, fa-IR, fi, fi-FI, fil, fil-PH, fo, fo-FO, fr, fr-BE, fr-CA, fr-CH, fr-FR, fr-LU, fr-MC, fy, fy-NL, ga, ga-IE, gd, gd-GB, gl, gl-ES, gsw, gsw-FR, gu, gu-IN, ha, ha-Latn, ha-Latn-NG, he, he-IL, hi, hi-IN, hr, hr-BA, hr-HR, hsb, hsb-DE, hu, hu-HU, hy, hy-AM, id, id-ID, ig, ig-NG, ii, ii-CN, is, is-IS, it, it-CH, it-IT, iu, iu-Cans, iu-Cans-CA, iu-Latn, iu-Latn-CA, ja, ja-JP, ka, ka-GE, kk, kk-KZ, kl, kl-GL, km, km-KH, kn, kn-IN, ko, ko-KR, kok, kok-IN, ky, ky-KG, lb, lb-LU, lo, lo-LA, lt, lt-LT, lv, lv-LV, mi, mi-NZ, mk, mk-MK, ml, ml-IN, mn, mn-Cyrl, mn-MN, mn-Mong, mn-Mong-CN, moh, moh-CA, mr, mr-IN, ms, ms-BN, ms-MY, mt, mt-MT, nb, nb-NO, ne, ne-NP, nl, nl-BE, nl-NL, nn, nn-NO, no, nso, nso-ZA, oc, oc-FR, or, or-IN, pa, pa-IN, pl, pl-PL, prs, prs-AF, ps, ps-AF, pt, pt-BR, pt-PT, qut, qut-GT, quz, quz-BO, quz-EC, quz-PE, rm, rm-CH, ro, ro-RO, ru, ru-RU, rw, rw-RW, sa, sa-IN, sah, sah-RU, se, se-FI, se-NO, se-SE, si, si-LK, sk, sk-SK, sl, sl-SI, sma, sma-NO, sma-SE, smj, smj-NO, smj-SE, smn, smn-FI, sms, sms-FI, sq, sq-AL, sr, sr-Cyrl, sr-Cyrl-BA, sr-Cyrl-CS, sr-Cyrl-ME, sr-Cyrl-RS, sr-Latn, sr-Latn-BA, sr-Latn-CS, sr-Latn-ME, sr-Latn-RS, sv, sv-FI, sv-SE, sw, sw-KE, syr, syr-SY, ta, ta-IN, te, te-IN, tg, tg-Cyrl, tg-Cyrl-TJ, th, th-TH, tk, tk-TM, tn, tn-ZA, tr, tr-TR, tt, tt-RU, tzm, tzm-Latn, tzm-Latn-DZ, ug, ug-CN, uk, uk-UA, ur, ur-PK, uz, uz-Cyrl, uz-Cyrl-UZ, uz-Latn, uz-Latn-UZ, vi, vi-VN, wo, wo-SN, xh, xh-ZA, yo, yo-NG, zh, zh-CHS, zh-CHT, zh-CN, zh-Hans, zh-Hant, zh-HK, zh-MO, zh-SG, zh-TW, zu, zu-ZA
+  msg: "[label] failed regular expression validation"
+  Email: "[label] must be a valid e-mail address"
+  WeakEmail: "[label] must be a valid e-mail address"
+  Domain: "[label] must be a valid domain"
+  WeakDomain: "[label] must be a valid domain"
+  IP: "[label] must be a valid IPv4 or IPv6 address"
+  IPv4: "[label] must be a valid IPv4 address"
+  IPv6: "[label] must be a valid IPv6 address"
+  Url: "[label] must be a valid URL"
+  Id: "[label] must be a valid alphanumeric ID"
+keyNotInSchema: "[key] is not allowed by the schema"
 ```
 
 ## Running Tests

@@ -40,6 +40,7 @@ export interface Options {
   defaultLocale: string;
   hideMissing: boolean;
   hostUrl: string;
+  ignoreNoopLocaleChanges: boolean;
   open: string;
   pathOnHost: string;
   sameLocaleOnServerConnection: boolean;
@@ -226,6 +227,7 @@ const i18n = {
     defaultLocale: 'en',
     hideMissing: false,
     hostUrl: '/',
+    ignoreNoopLocaleChanges: false,
     open: '{$',
     pathOnHost: 'universe/locale/',
     sameLocaleOnServerConnection: true,
@@ -240,6 +242,10 @@ const i18n = {
       const message = `Unrecognized locale "${locale}"`;
       i18n._logger(message);
       return Promise.reject(message);
+    }
+
+    if (i18n.options.ignoreNoopLocaleChanges && i18n.getLocale() === normalizedLocale) {
+      return Promise.resolve();
     }
 
     i18n._locale = normalizedLocale;

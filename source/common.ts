@@ -85,7 +85,7 @@ const i18n = {
     
     if (!(locale in i18n._normalizeWithAncestorsCache)) {
       const locales: string[] = [];
-      const parts = locale.toLowerCase().split(/[-_]/);
+      const parts = locale.split(/[-_]/);
       while (parts.length) {
         const locale = parts.join('-');
         if (locale.match(/^[a-z]{2}$|^[a-z]{2}-[A-Z]{2}$/g)) {

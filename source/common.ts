@@ -178,11 +178,10 @@ const i18n = {
       ...variables
     } = options;
 
-    const translation = normalizeGetTranslation([locale, defaultLocale], key);
-    const string = translation ? `${translation}` : hideMissing ? '' : key;
-    const interpolatedString = interpolateTranslation(variables, string, open, close);
+    const translation = normalizeGetTranslation([locale, defaultLocale], key, hideMissing);
+    const interpolatedTranslation = interpolateTranslation(variables, translation, open, close);
 
-    return interpolatedString;
+    return interpolatedTranslation;
   },
   getTranslations(key?: string, locale?: string) {
     if (locale === undefined) {
@@ -260,22 +259,22 @@ i18n.__ = i18n.getTranslation;
 i18n.addTranslation = i18n.addTranslations;
 
 function interpolateTranslation(
-  variables: Omit<GetTranslationOptions, "_locale" | "_purify">,
-  string: string,
+  variables: Omit<GetTranslationOptions, "_locale">,
+  translation: string,
   open: string,
   close: string
 ) {
-  let newString = string;
+  let interpolatedTranslation = translation;
   Object.entries(variables).forEach(([key, value]) => {
     const tag = open + key + close;
-    if (newString.includes(tag)) {
-      newString = newString.split(tag).join(value as string);
+    if (interpolatedTranslation.includes(tag)) {
+      interpolatedTranslation = interpolatedTranslation.split(tag).join(value as string);
     }
   });
-  return newString;
+  return interpolatedTranslation;
 }
 
-function normalizeGetTranslation(locales: any[], key: string) {
+function normalizeGetTranslation(locales: string[], key: string, hideMissing: boolean) {
   let translation: unknown;
   locales.some(locale =>
     i18n
@@ -284,8 +283,9 @@ function normalizeGetTranslation(locales: any[], key: string) {
         locale => (translation = get(i18n._translations, `${locale}.${key}`)),
       ),
   );
+  const translationWithHideMissing = translation ? `${translation}` : hideMissing ? '' : key;
 
-  return translation;
+  return translationWithHideMissing;
 }
 
 export { i18n };

@@ -188,14 +188,9 @@ const i18n = {
     );
 
     let string = translation ? `${translation}` : hideMissing ? '' : key;
-    Object.entries(variables).forEach(([key, value]) => {
-      const tag = open + key + close;
-      if (string.includes(tag)) {
-        string = string.split(tag).join(value as string);
-      }
-    });
+    const interpolatedString = interpolateTranslation(variables, string, open, close);
 
-    return string;
+    return interpolatedString;
   },
   getTranslations(key?: string, locale?: string) {
     if (locale === undefined) {
@@ -285,6 +280,22 @@ function format(integer: number, separator: string) {
   }
 
   return '0';
+}
+
+function interpolateTranslation(
+  variables: Omit<GetTranslationOptions, "_locale" | "_purify">,
+  string: string,
+  open: string,
+  close: string
+) {
+  let newString = string;
+  Object.entries(variables).forEach(([key, value]) => {
+    const tag = open + key + close;
+    if (newString.includes(tag)) {
+      newString = newString.split(tag).join(value as string);
+    }
+  });
+  return newString;
 }
 
 export { i18n };

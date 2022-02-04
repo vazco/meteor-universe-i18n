@@ -259,21 +259,6 @@ const i18n = {
 i18n.__ = i18n.getTranslation;
 i18n.addTranslation = i18n.addTranslations;
 
-function format(integer: number, separator: string) {
-  let result = '';
-  while (integer) {
-    const n = integer % 1e3;
-    integer = Math.floor(integer / 1e3);
-    if (integer === 0) {
-      return n + result;
-    }
-
-    result = separator + (n < 10 ? '00' : n < 100 ? '0' : '') + n + result;
-  }
-
-  return '0';
-}
-
 function interpolateTranslation(
   variables: Omit<GetTranslationOptions, "_locale" | "_purify">,
   string: string,

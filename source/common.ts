@@ -178,16 +178,8 @@ const i18n = {
       ...variables
     } = options;
 
-    let translation: unknown;
-    [locale, defaultLocale].some(locale =>
-      i18n
-        ._normalizeWithAncestors(locale)
-        .some(
-          locale => (translation = get(i18n._translations, `${locale}.${key}`)),
-        ),
-    );
-
-    let string = translation ? `${translation}` : hideMissing ? '' : key;
+    const translation = normalizeGetTranslation([locale, defaultLocale], key);
+    const string = translation ? `${translation}` : hideMissing ? '' : key;
     const interpolatedString = interpolateTranslation(variables, string, open, close);
 
     return interpolatedString;
@@ -296,6 +288,19 @@ function interpolateTranslation(
     }
   });
   return newString;
+}
+
+function normalizeGetTranslation(locales: any[], key: string) {
+  let translation: unknown;
+  locales.some(locale =>
+    i18n
+      ._normalizeWithAncestors(locale)
+      .some(
+        locale => (translation = get(i18n._translations, `${locale}.${key}`)),
+      ),
+  );
+
+  return translation;
 }
 
 export { i18n };

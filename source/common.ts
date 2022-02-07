@@ -63,7 +63,7 @@ const i18n = {
   _formatgetters: {
     getJS: () => '',
     getJSON: () => '',
-    getYML: () => '',
+    getYML: () => ''
   } as Pick<GetCacheEntry, 'getJS' | 'getJSON' | 'getYML'>,
   _getConnectionId(connection?: Meteor.Connection | null) {
     // Actual implementation is only on the server.
@@ -83,7 +83,6 @@ const i18n = {
     console.error(error);
   },
   _normalizeWithAncestors(locale = '') {
-    
     if (!(locale in i18n._normalizeWithAncestorsCache)) {
       const locales: string[] = [];
       const parts = locale.toLowerCase().split(/[-_]/);
@@ -174,13 +173,19 @@ const i18n = {
 
     const key = keys.filter(key => key && typeof key === 'string').join('.');
     const { close, defaultLocale, hideMissing, open } = i18n.options;
-    const {
-      _locale: locale = i18n.getLocale(),
-      ...variables
-    } = options;
+    const { _locale: locale = i18n.getLocale(), ...variables } = options;
 
-    const translation = normalizeGetTranslation([locale, defaultLocale], key, hideMissing);
-    const interpolatedTranslation = interpolateTranslation(variables, translation, open, close);
+    const translation = normalizeGetTranslation(
+      [locale, defaultLocale],
+      key,
+      hideMissing
+    );
+    const interpolatedTranslation = interpolateTranslation(
+      variables,
+      translation,
+      open,
+      close
+    );
 
     return interpolatedTranslation;
   },
@@ -221,7 +226,7 @@ const i18n = {
     open: '{$',
     pathOnHost: 'universe/locale/',
     sameLocaleOnServerConnection: true,
-    translationsHeaders: { 'Cache-Control': 'max-age=2628000' },
+    translationsHeaders: { 'Cache-Control': 'max-age=2628000' }
   } as Options,
   runWithLocale<T>(locale = '', fn: () => T): T {
     return i18n._contextualLocale.withValue(i18n.normalize(locale), fn);
@@ -234,7 +239,10 @@ const i18n = {
       return Promise.reject(message);
     }
 
-    if (i18n.options.ignoreNoopLocaleChanges && i18n.getLocale() === normalizedLocale) {
+    if (
+      i18n.options.ignoreNoopLocaleChanges &&
+      i18n.getLocale() === normalizedLocale
+    ) {
       return Promise.resolve();
     }
 
@@ -254,14 +262,14 @@ const i18n = {
   },
   setOptions(options: Partial<Options>) {
     Object.assign(i18n.options, options);
-  },
+  }
 };
 
 i18n.__ = i18n.getTranslation;
 i18n.addTranslation = i18n.addTranslations;
 
 function interpolateTranslation(
-  variables: Omit<GetTranslationOptions, "_locale">,
+  variables: Omit<GetTranslationOptions, '_locale'>,
   translation: string,
   open: string,
   close: string
@@ -270,22 +278,32 @@ function interpolateTranslation(
   Object.entries(variables).forEach(([key, value]) => {
     const tag = open + key + close;
     if (interpolatedTranslation.includes(tag)) {
-      interpolatedTranslation = interpolatedTranslation.split(tag).join(value as string);
+      interpolatedTranslation = interpolatedTranslation
+        .split(tag)
+        .join(value as string);
     }
   });
   return interpolatedTranslation;
 }
 
-function normalizeGetTranslation(locales: string[], key: string, hideMissing: boolean) {
+function normalizeGetTranslation(
+  locales: string[],
+  key: string,
+  hideMissing: boolean
+) {
   let translation: unknown;
   locales.some(locale =>
     i18n
       ._normalizeWithAncestors(locale)
       .some(
-        locale => (translation = get(i18n._translations, `${locale}.${key}`)),
-      ),
+        locale => (translation = get(i18n._translations, `${locale}.${key}`))
+      )
   );
-  const translationWithHideMissing = translation ? `${translation}` : hideMissing ? '' : key;
+  const translationWithHideMissing = translation
+    ? `${translation}`
+    : hideMissing
+    ? ''
+    : key;
 
   return translationWithHideMissing;
 }

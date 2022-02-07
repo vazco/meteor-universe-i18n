@@ -23,9 +23,9 @@ i18n._loadLocaleWithAncestors = (locale, options) => {
         thunk.then(() =>
           i18n.loadLocale(locale, loadOptions).then(() => {
             i18n._isLoaded[locale] = true;
-          }),
+          })
         ),
-      promise,
+      promise
     );
   }
 
@@ -44,7 +44,7 @@ i18n.loadLocale = (locale, options) => {
     options?.pathOnHost ?? i18n.options.pathOnHost,
     normalizedLocale,
     '?ts=',
-    options?.fresh ? Date.now() : i18n._ts,
+    options?.fresh ? Date.now() : i18n._ts
   ].join('');
 
   const promise = new Promise<HTMLScriptElement>((resolve, reject) => {

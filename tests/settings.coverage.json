@@ -1,7 +1,7 @@
 {
-    "coverage": {
-        "coverage_app_folder": "/var/projects/meteor-universe-i18n/",
-        "is_coverage_active": true,
-        "verbose": false
-    }
+  "coverage": {
+    "coverage_app_folder": "/var/projects/meteor-universe-i18n/",
+    "is_coverage_active": true,
+    "verbose": false
+  }
 }

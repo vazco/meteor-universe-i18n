@@ -47,7 +47,7 @@ function getJS(locale: string, namespace: string, isBefore?: boolean) {
 
 function getCachedFormatter(
   type: 'json' | 'yml',
-  format: (translations: JSONObject) => string,
+  format: (translations: JSONObject) => string
 ) {
   function cacheEntry(locale: string, namespace: string, diffWith?: string) {
     if (typeof namespace === 'string' && namespace) {
@@ -56,21 +56,21 @@ function getCachedFormatter(
         get: () =>
           format({
             _namespace: namespace,
-            ...((i18n.getTranslations(namespace, locale) as object) || {}),
-          }),
+            ...((i18n.getTranslations(namespace, locale) as object) || {})
+          })
       };
     }
 
     if (typeof diffWith === 'string' && diffWith) {
       return {
         key: `_${type}_diff_${diffWith}`,
-        get: () => format(getDiff(locale, diffWith)),
+        get: () => format(getDiff(locale, diffWith))
       };
     }
 
     return {
       key: `_${type}`,
-      get: () => format((i18n._translations[locale] as JSONObject) || {}),
+      get: () => format((i18n._translations[locale] as JSONObject) || {})
     };
   }
 
@@ -92,8 +92,8 @@ const getYML = getCachedFormatter('yml', object =>
     noCompatMode: true,
     schema: YAML.FAILSAFE_SCHEMA,
     skipInvalid: true,
-    sortKeys: true,
-  }),
+    sortKeys: true
+  })
 );
 
 i18n._formatgetters = { getJS, getJSON, getYML };
@@ -129,7 +129,7 @@ i18n.getCache = (locale => {
       updatedAt: new Date().toUTCString(),
       getYML,
       getJSON,
-      getJS,
+      getJS
     };
   }
 
@@ -143,8 +143,8 @@ i18n.loadLocale = async (
     host = i18n.options.hostUrl,
     pathOnHost = i18n.options.pathOnHost,
     queryParams = {},
-    silent = false,
-  } = {},
+    silent = false
+  } = {}
 ) => {
   queryParams.type = 'json';
   if (fresh) {
@@ -181,7 +181,7 @@ i18n.loadLocale = async (
 
 i18n.setLocaleOnConnection = (
   locale: string,
-  connectionId = i18n._getConnectionId(),
+  connectionId = i18n._getConnectionId()
 ) => {
   if (typeof _localesPerConnections[connectionId!] === 'string') {
     _localesPerConnections[connectionId!] = i18n.normalize(locale)!;
@@ -199,8 +199,8 @@ WebApp.connectHandlers.use('/universe/locale/', ((request, response, next) => {
       diff = false,
       namespace,
       preload = false,
-      type,
-    },
+      type
+    }
   } = URL.parse(request.url || '', true);
 
   if (type && !['js', 'js', 'yml'].includes(type as string)) {
@@ -224,7 +224,7 @@ WebApp.connectHandlers.use('/universe/locale/', ((request, response, next) => {
 
   const headers: Record<string, string> = {
     ...i18n.options.translationsHeaders,
-    'Last-Modified': cache.updatedAt,
+    'Last-Modified': cache.updatedAt
   };
 
   if (attachment) {
@@ -236,24 +236,24 @@ WebApp.connectHandlers.use('/universe/locale/', ((request, response, next) => {
     case 'json':
       response.writeHead(200, {
         'Content-Type': 'application/json; charset=utf-8',
-        ...headers,
+        ...headers
       });
       response.end(cache.getJSON(locale, namespace as string, diff as string));
       break;
     case 'yml':
       response.writeHead(200, {
         'Content-Type': 'text/yaml; charset=utf-8',
-        ...headers,
+        ...headers
       });
       response.end(cache.getYML(locale, namespace as string, diff as string));
       break;
     default:
       response.writeHead(200, {
         'Content-Type': 'application/javascript; charset=utf-8',
-        ...headers,
+        ...headers
       });
       response.end(
-        cache.getJS(locale, namespace as string, preload as boolean),
+        cache.getJS(locale, namespace as string, preload as boolean)
       );
       break;
   }
@@ -276,7 +276,7 @@ Meteor.methods({
     }
 
     i18n.setLocaleOnConnection(locale, connectionId);
-  },
+  }
 });
 
 Meteor.onConnection(connection => {
@@ -293,10 +293,10 @@ function patchPublish(publish: typeof Meteor.publish) {
       name,
       function (...args) {
         return _publishConnectionId.withValue(this?.connection?.id, () =>
-          func.apply(this, args),
+          func.apply(this, args)
         );
       },
-      ...args,
+      ...args
     );
   } as typeof Meteor.publish;
 }

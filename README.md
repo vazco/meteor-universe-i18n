@@ -78,7 +78,7 @@ import i18n from 'meteor/universe:i18n';
 ### Setting/getting locale
 
 ```js
-i18n.setLocale("en-US", params);
+i18n.setLocale('en-US', params);
 i18n.getLocale(); // en-US
 ```
 
@@ -100,7 +100,7 @@ function getLang() {
     navigator.language ||
     navigator.browserLanguage ||
     navigator.userLanguage ||
-    "en-US"
+    'en-US'
   );
 }
 
@@ -114,21 +114,21 @@ By the way, It's good option is also use 'accept-language' header to recognize c
 ### Adding translations by methods
 
 ```js
-import i18n from "meteor/universe:i18n";
-import "./en.i18n.yml";
-import "./en-US.i18n.yml";
+import i18n from 'meteor/universe:i18n';
+import './en.i18n.yml';
+import './en-US.i18n.yml';
 
-i18n.addTranslation("en-US", "Common", "no", "No");
-i18n.addTranslation("en-US", "Common.ok", "Ok");
+i18n.addTranslation('en-US', 'Common', 'no', 'No');
+i18n.addTranslation('en-US', 'Common.ok', 'Ok');
 
-i18n.addTranslations("en-US", {
+i18n.addTranslations('en-US', {
   Common: {
-    hello: "Hello {$name} {$0}!",
-  },
+    hello: 'Hello {$name} {$0}!'
+  }
 });
 
-i18n.addTranslations("en-US", "Common", {
-  hello: "Hello {$name} {$0}!",
+i18n.addTranslations('en-US', 'Common', {
+  hello: 'Hello {$name} {$0}!'
 });
 ```
 
@@ -152,16 +152,16 @@ i18n.getTranslation(key, key, key, key, params);
 If needed, parameters can be passed as the last one of the function arguments, as an array or an object since they can be named or positional (ie. indexed). Additionally, for positional parameters it is irrelevant whether they are passed as an array or an object with keys '0', '1', '2'... Besides, 'positional' properties of such an object can be mixed with named ones.
 
 ```yml
-_namespace: ""
+_namespace: ''
 hello: Hello {$name}!
 lengthOfArr: length {$length}
 items: The first item is {$0} and the last one is {$2}!
 ```
 
 ```js
-i18n.__("hello", { name: "Ania" }); // output: Hello Ania!
-i18n.__("lengthOfArr", { length: ["a", "b", "c"].length }); // output: length 3
-i18n.__("items", ["a", "b", "c"]); // output: The first item is a and the last one is c!
+i18n.__('hello', { name: 'Ania' }); // output: Hello Ania!
+i18n.__('lengthOfArr', { length: ['a', 'b', 'c'].length }); // output: length 3
+i18n.__('items', ['a', 'b', 'c']); // output: The first item is a and the last one is c!
 ```
 
 Take in mind, that on client side strings are sanitized to PCDATA.
@@ -193,7 +193,7 @@ _Tip:_ A good practise is using PascalCase for naming of namespaces and for leaf
 Comma-separated or `x`-separated keys in file e.g.:
 
 ```yml
-_splitKey: "."
+_splitKey: '.'
 Chapter.title: Title
 Chapter.xxx: XXX
 ```
@@ -201,7 +201,7 @@ Chapter.xxx: XXX
 or
 
 ```yml
-_splitKey: ":"
+_splitKey: ':'
 Chapter:title: Title
 Chapter:xxx: XXX
 ```
@@ -227,7 +227,7 @@ For example, translations files in packages are by default namespaced by their p
 ```
 
 ```js
-i18n.__("universe:profile", "userName"); // output: User name
+i18n.__('universe:profile', 'userName'); // output: User name
 ```
 
 You can change a default namespace for a file by setting a prefix to this file under the key "\_namespace".
@@ -244,8 +244,8 @@ You can change a default namespace for a file by setting a prefix to this file u
 And then:
 
 ```js
-i18n.__("Common", "userName"); // output: User name
-i18n.__("Common.userName"); // output: User name
+i18n.__('Common', 'userName'); // output: User name
+i18n.__('Common.userName'); // output: User name
 ```
 
 _TIP:_ You can also add translations from a package on the top-level by passing empty string `""` in the key "\_namespace".
@@ -264,7 +264,7 @@ userName: user name
 ```
 
 ```js
-i18n.__("userName"); // output: User name
+i18n.__('userName'); // output: User name
 ```
 
 If you want to add translations under a namespace, you should define it in the key '\_namespace'.
@@ -276,8 +276,8 @@ userName: User name
 ```
 
 ```js
-i18n.__("User.Listing.Item.userName"); // output: User name
-i18n.__("User", "Listing", "Item.userName"); // output: User name
+i18n.__('User.Listing.Item.userName'); // output: User name
+i18n.__('User', 'Listing', 'Item.userName'); // output: User name
 ```
 
 ## Listener on language change
@@ -374,21 +374,21 @@ i18n.runWithLocale(locale, func)
 If you want to use this package with React, you need to create two functions `createTranslator` and `createComponent`. Example code is below.
 
 ```ts
-import React from "react";
-import i18n from "meteor/universe:i18n";
+import React from 'react';
+import i18n from 'meteor/universe:i18n';
 
 /**
  * @param namespace
  * @param options {_locale, _purify} TODO Change that
  */
 export function createTranslator(namespace?, options = undefined) {
-  if (typeof options === "string" && options) {
+  if (typeof options === 'string' && options) {
     options = { _locale: options };
   }
 
   return (...args) => {
     let _namespace = namespace;
-    if (typeof args[args.length - 1] === "object") {
+    if (typeof args[args.length - 1] === 'object') {
       _namespace = args[args.length - 1]._namespace || _namespace;
       args[args.length - 1] = { ...options, ...args[args.length - 1] };
     } else if (options) {
@@ -412,7 +412,7 @@ export function createComponent(
   type?: React.ComponentType | string
 ) {
   const translator =
-    typeof translatorSeed === "string"
+    typeof translatorSeed === 'string'
       ? createTranslator(translatorSeed, locale)
       : translatorSeed === undefined
       ? createTranslator()
@@ -441,23 +441,23 @@ export function createComponent(
         ...params
       } = this.props;
 
-      const tagType = _tagType || type || "span";
+      const tagType = _tagType || type || 'span';
       const items = React.Children.map(
         children,
         (item, index) => {
-          if (typeof item === "string" || typeof item === "number") {
+          if (typeof item === 'string' || typeof item === 'number') {
             return React.createElement(tagType, {
               ..._props,
               dangerouslySetInnerHTML: { __html: translator(item, params) },
-              key: `_${index}`,
+              key: `_${index}`
             } as any);
           }
 
           if (Array.isArray(_translateProps)) {
             const newProps: Record<string, string> = {};
-            _translateProps.forEach((propName) => {
+            _translateProps.forEach(propName => {
               const prop = (item as any).props[propName];
-              if (prop && typeof prop === "string") {
+              if (prop && typeof prop === 'string') {
                 newProps[propName] = translator(prop, params);
               }
             });
@@ -474,16 +474,16 @@ export function createComponent(
         return items[0];
       }
 
-      const containerType = _containerType || type || "div";
+      const containerType = _containerType || type || 'div';
       return React.createElement(containerType, { ..._props }, items);
     }
 
     componentDidMount() {
-      i18n._events.on("changeLocale", this._invalidate);
+      i18n._events.on('changeLocale', this._invalidate);
     }
 
     componentWillUnmount() {
-      i18n._events.removeListener("changeLocale", this._invalidate);
+      i18n._events.removeListener('changeLocale', this._invalidate);
     }
   };
 }
@@ -534,7 +534,7 @@ Add following-like code to main.js:
 ```js
 const registerSchemaMessages = () => {
   SimpleSchema.messages({
-    required: i18n.__("SimpleSchema.required"),
+    required: i18n.__('SimpleSchema.required')
   });
 };
 
@@ -548,38 +548,38 @@ Put the default error messages somewhere in your project on both sides e.g.:
 _locale: en
 _namespace: SimpleSchema
 
-required: "[label] is required"
-minString: "[label] must be at least [min] characters"
-maxString: "[label] cannot exceed [max] characters"
-minNumber: "[label] must be at least [min]"
-maxNumber: "[label] cannot exceed [max]"
-minNumberExclusive: "[label] must be greater than [min]"
-maxNumberExclusive: "[label] must be less than [max]"
-minDate: "[label] must be on or after [min]"
-maxDate: "[label] cannot be after [max]"
-badDate: "[label] is not a valid date"
-minCount: "You must specify at least [minCount] values"
-maxCount: "You cannot specify more than [maxCount] values"
-noDecimal: "[label] must be an integer"
-notAllowed: "[value] is not an allowed value"
-expectedString: "[label] must be a string"
-expectedNumber: "[label] must be a number"
-expectedBoolean: "[label] must be a boolean"
-expectedArray: "[label] must be an array"
-expectedObject: "[label] must be an object"
-expectedConstructor: "[label] must be a [type]"
+required: '[label] is required'
+minString: '[label] must be at least [min] characters'
+maxString: '[label] cannot exceed [max] characters'
+minNumber: '[label] must be at least [min]'
+maxNumber: '[label] cannot exceed [max]'
+minNumberExclusive: '[label] must be greater than [min]'
+maxNumberExclusive: '[label] must be less than [max]'
+minDate: '[label] must be on or after [min]'
+maxDate: '[label] cannot be after [max]'
+badDate: '[label] is not a valid date'
+minCount: 'You must specify at least [minCount] values'
+maxCount: 'You cannot specify more than [maxCount] values'
+noDecimal: '[label] must be an integer'
+notAllowed: '[value] is not an allowed value'
+expectedString: '[label] must be a string'
+expectedNumber: '[label] must be a number'
+expectedBoolean: '[label] must be a boolean'
+expectedArray: '[label] must be an array'
+expectedObject: '[label] must be an object'
+expectedConstructor: '[label] must be a [type]'
 RegEx:
-  msg: "[label] failed regular expression validation"
-  Email: "[label] must be a valid e-mail address"
-  WeakEmail: "[label] must be a valid e-mail address"
-  Domain: "[label] must be a valid domain"
-  WeakDomain: "[label] must be a valid domain"
-  IP: "[label] must be a valid IPv4 or IPv6 address"
-  IPv4: "[label] must be a valid IPv4 address"
-  IPv6: "[label] must be a valid IPv6 address"
-  Url: "[label] must be a valid URL"
-  Id: "[label] must be a valid alphanumeric ID"
-keyNotInSchema: "[key] is not allowed by the schema"
+  msg: '[label] failed regular expression validation'
+  Email: '[label] must be a valid e-mail address'
+  WeakEmail: '[label] must be a valid e-mail address'
+  Domain: '[label] must be a valid domain'
+  WeakDomain: '[label] must be a valid domain'
+  IP: '[label] must be a valid IPv4 or IPv6 address'
+  IPv4: '[label] must be a valid IPv4 address'
+  IPv6: '[label] must be a valid IPv6 address'
+  Url: '[label] must be a valid URL'
+  Id: '[label] must be a valid alphanumeric ID'
+keyNotInSchema: '[key] is not allowed by the schema'
 ```
 
 ## Running Tests

@@ -11,13 +11,13 @@ declare class Compiler {}
 declare class Plugin {
   static registerCompiler(
     options: { extensions: string[] },
-    getInstance: () => Compiler,
+    getInstance: () => Compiler
   ): void;
 }
 
 Plugin.registerCompiler(
   { extensions: ['i18n.json', 'i18n.yml'] },
-  () => new UniverseI18nCompiler(),
+  () => new UniverseI18nCompiler()
 );
 
 interface FileData {
@@ -46,7 +46,7 @@ class UniverseI18nCompiler extends CachingCompiler {
   constructor() {
     super({
       compilerName: 'universe:i18n',
-      defaultCacheSize: 8 * 1024 * 1024,
+      defaultCacheSize: 8 * 1024 * 1024
     });
   }
 
@@ -71,7 +71,7 @@ class UniverseI18nCompiler extends CachingCompiler {
     const options = {
       locale: extractString(content.data, '_locale'),
       namespace: extractString(content.data, '_namespace'),
-      splitKey: extractString(content.data, '_splitKey'),
+      splitKey: extractString(content.data, '_splitKey')
     };
 
     const packageName = file.getPackageName();
@@ -95,13 +95,13 @@ class UniverseI18nCompiler extends CachingCompiler {
         JSON.stringify(content.data),
         ');',
         `Package['universe:i18n'].i18n._ts = Math.max(Package['universe:i18n'].i18n._ts, ${Date.now()});`
-      ].join(''),
+      ].join('')
     };
   }
 
   compileOneFileLater(
     file: InputFile,
-    getCompileResult: () => Promise<CompileResult | null>,
+    getCompileResult: () => Promise<CompileResult | null>
   ) {
     file.addJavaScript(this.getFileInfo(file), getCompileResult);
   }
@@ -159,7 +159,7 @@ function readUnsafe(source: string, type: string): JSON {
     case '.yml':
       return YAML.load(source, {
         schema: YAML.FAILSAFE_SCHEMA,
-        onWarning: console.warn.bind(console),
+        onWarning: console.warn.bind(console)
       });
     default:
       throw new Error(`Unknown i18n file type "${type}".`);

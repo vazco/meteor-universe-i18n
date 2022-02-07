@@ -1,5 +1,3 @@
 {
-    "include": [
-        "**/packages/universe_i18n.js"
-    ]
+  "include": ["**/packages/universe_i18n.js"]
 }

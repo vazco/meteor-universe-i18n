@@ -84,10 +84,10 @@ i18n.getLocale(); // en-US
 
 Params in setLocale are optional yet offer additional possibilities:
 
-- noDownload - disables downloading translation file on the client (client side)
-- silent - protects against broadcasting the refresh event (both sides)
-- async - downloads translation file in an async way (client side)
-- fresh - downloads fresh translations (ignores the browser cache)
+- `noDownload` - disables downloading translation file on the client (client side)
+- `silent` - protects against broadcasting the refresh event (both sides)
+- `async` - downloads translation file in an async way (client side)
+- `fresh` - downloads fresh translations (ignores the browser cache)
 <!-- TODO host, pathOnHost, queryParams ??? -->
 
 If you want to use the browser's locale, you can do it as follows:
@@ -96,7 +96,7 @@ If you want to use the browser's locale, you can do it as follows:
 // somewhere in the page layout (or possibly in the router?)
 function getLang() {
   return (
-    (navigator.languages && navigator.languages[0]) ||
+    navigator.languages?.[0] ||
     navigator.language ||
     navigator.browserLanguage ||
     navigator.userLanguage ||
@@ -139,8 +139,8 @@ You can obtain translation strings by using i18n.getTranslation() or, quicker, c
 ```js
 i18n.__(key);
 i18n.__(key, params);
-i18n.__(Namespace, key, params);
-i18n.__(Namespace, key, params);
+i18n.__(namespace, key, params);
+i18n.__(namespace, key, params);
 i18n.__(key, key, key, key, params);
 
 // same with "getTranslation", e.g.:

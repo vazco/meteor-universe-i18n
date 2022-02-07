@@ -41,6 +41,7 @@ export interface Options {
   hideMissing: boolean;
   hostUrl: string;
   ignoreNoopLocaleChanges: boolean;
+  localeRegEx: RegExp;
   open: string;
   pathOnHost: string;
   sameLocaleOnServerConnection: boolean;
@@ -88,7 +89,7 @@ const i18n = {
       const parts = locale.split(/[-_]/);
       while (parts.length) {
         const locale = parts.join('-');
-        if (locale.match(/^[a-z]{2}$|^[a-z]{2}-[A-Z]{2}$/g)) {
+        if (locale.match(i18n.options.localeRegEx)) {
           locales.push(locale);
         }
 
@@ -216,6 +217,7 @@ const i18n = {
     hideMissing: false,
     hostUrl: '/',
     ignoreNoopLocaleChanges: false,
+    localeRegEx: /^[aA-zZ]{2}(-[aA-zZ]{2})?$/,
     open: '{$',
     pathOnHost: 'universe/locale/',
     sameLocaleOnServerConnection: true,

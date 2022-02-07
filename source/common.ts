@@ -86,7 +86,7 @@ const i18n = {
     
     if (!(locale in i18n._normalizeWithAncestorsCache)) {
       const locales: string[] = [];
-      const parts = locale.split(/[-_]/);
+      const parts = locale.toLowerCase().split(/[-_]/);
       while (parts.length) {
         const locale = parts.join('-');
         if (locale.match(i18n.options.localeRegEx)) {
@@ -158,7 +158,7 @@ const i18n = {
     return Object.keys(keys);
   },
   getCache: (() => ({})) as GetCacheFunction,
-  getLanguageCodes() {
+  getLocales() {
     return Object.keys(i18n._translations);
   },
   getLocale() {

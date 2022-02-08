@@ -119,16 +119,16 @@ const i18n = {
     return interpolatedTranslation;
   },
   _normalizeGetTranslation(locales: string[], key: string) {
+    let finalTranslation: unknown;
     let translation: unknown;
     locales.some(locale =>
-      i18n
-        ._normalizeWithAncestors(locale)
-        .some(
-          locale => (translation = get(i18n._translations, `${locale}.${key}`))
-        )
+      i18n._normalizeWithAncestors(locale).forEach(locale => {
+        translation = get(i18n._translations, `${locale}.${key}`);
+        translation !== undefined && (finalTranslation = translation);
+      })
     );
-    const translationWithHideMissing = translation
-      ? `${translation}`
+    const translationWithHideMissing = finalTranslation
+      ? `${finalTranslation}`
       : i18n.options.hideMissing
       ? ''
       : key;
@@ -204,7 +204,7 @@ const i18n = {
     const options = hasOptions ? (maybeOptions as GetTranslationOptions) : {};
 
     const key = keys.filter(key => key && typeof key === 'string').join('.');
-    const { close, defaultLocale, hideMissing, open } = i18n.options;
+    const { defaultLocale } = i18n.options;
     const { _locale: locale = i18n.getLocale(), ...variables } = options;
 
     const translation = i18n._normalizeGetTranslation(

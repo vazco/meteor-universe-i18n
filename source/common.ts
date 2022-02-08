@@ -103,6 +103,38 @@ const i18n = {
   _normalizeWithAncestorsCache: {} as Record<string, readonly string[]>,
   _translations: {} as JSONObject,
   _ts: 0,
+  _interpolateTranslation(
+    variables: Record<string, unknown>,
+    translation: string
+  ) {
+    let interpolatedTranslation = translation;
+    Object.entries(variables).forEach(([key, value]) => {
+      const tag = i18n.options.open + key + i18n.options.close;
+      if (interpolatedTranslation.includes(tag)) {
+        interpolatedTranslation = interpolatedTranslation
+          .split(tag)
+          .join(value as string);
+      }
+    });
+    return interpolatedTranslation;
+  },
+  _normalizeGetTranslation(locales: string[], key: string) {
+    let translation: unknown;
+    locales.some(locale =>
+      i18n
+        ._normalizeWithAncestors(locale)
+        .some(
+          locale => (translation = get(i18n._translations, `${locale}.${key}`))
+        )
+    );
+    const translationWithHideMissing = translation
+      ? `${translation}`
+      : i18n.options.hideMissing
+      ? ''
+      : key;
+
+    return translationWithHideMissing;
+  },
   __(...args: unknown[]) {
     // This will be aliased to i18n.getTranslation.
     return '';
@@ -175,16 +207,13 @@ const i18n = {
     const { close, defaultLocale, hideMissing, open } = i18n.options;
     const { _locale: locale = i18n.getLocale(), ...variables } = options;
 
-    const translation = normalizeGetTranslation(
+    const translation = i18n._normalizeGetTranslation(
       [locale, defaultLocale],
-      key,
-      hideMissing
+      key
     );
-    const interpolatedTranslation = interpolateTranslation(
+    const interpolatedTranslation = i18n._interpolateTranslation(
       variables,
-      translation,
-      open,
-      close
+      translation
     );
 
     return interpolatedTranslation;
@@ -267,45 +296,5 @@ const i18n = {
 
 i18n.__ = i18n.getTranslation;
 i18n.addTranslation = i18n.addTranslations;
-
-function interpolateTranslation(
-  variables: Omit<GetTranslationOptions, '_locale'>,
-  translation: string,
-  open: string,
-  close: string
-) {
-  let interpolatedTranslation = translation;
-  Object.entries(variables).forEach(([key, value]) => {
-    const tag = open + key + close;
-    if (interpolatedTranslation.includes(tag)) {
-      interpolatedTranslation = interpolatedTranslation
-        .split(tag)
-        .join(value as string);
-    }
-  });
-  return interpolatedTranslation;
-}
-
-function normalizeGetTranslation(
-  locales: string[],
-  key: string,
-  hideMissing: boolean
-) {
-  let translation: unknown;
-  locales.some(locale =>
-    i18n
-      ._normalizeWithAncestors(locale)
-      .some(
-        locale => (translation = get(i18n._translations, `${locale}.${key}`))
-      )
-  );
-  const translationWithHideMissing = translation
-    ? `${translation}`
-    : hideMissing
-    ? ''
-    : key;
-
-  return translationWithHideMissing;
-}
 
 export { i18n };

@@ -123,12 +123,12 @@ i18n.addTranslation('en-US', 'Common.ok', 'Ok');
 
 i18n.addTranslations('en-US', {
   Common: {
-    hello: 'Hello {$name} {$0}!'
-  }
+    hello: 'Hello {$name} {$0}!',
+  },
 });
 
 i18n.addTranslations('en-US', 'Common', {
-  hello: 'Hello {$name} {$0}!'
+  hello: 'Hello {$name} {$0}!',
 });
 ```
 
@@ -408,7 +408,7 @@ export function createTranslator(namespace?, options = undefined) {
 export function createComponent(
   translatorSeed?: string | ((...args: unknown[]) => string),
   locale?: string,
-  type?: React.ComponentType | string
+  type?: React.ComponentType | string,
 ) {
   const translator =
     typeof translatorSeed === 'string'
@@ -448,7 +448,7 @@ export function createComponent(
             return React.createElement(tagType, {
               ..._props,
               dangerouslySetInnerHTML: { __html: translator(item, params) },
-              key: `_${index}`
+              key: `_${index}`,
             } as any);
           }
 
@@ -466,7 +466,7 @@ export function createComponent(
 
           return item;
         },
-        this
+        this,
       );
 
       if (items?.length === 1) {
@@ -533,7 +533,7 @@ Add following-like code to main.js:
 ```js
 const registerSchemaMessages = () => {
   SimpleSchema.messages({
-    required: i18n.__('SimpleSchema.required')
+    required: i18n.__('SimpleSchema.required'),
   });
 };
 

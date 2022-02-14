@@ -140,7 +140,6 @@ You can obtain translation strings by using i18n.getTranslation() or, quicker, c
 i18n.__(key);
 i18n.__(key, params);
 i18n.__(namespace, key, params);
-i18n.__(namespace, key, params);
 i18n.__(key, key, key, key, params);
 
 // same with "getTranslation", e.g.:

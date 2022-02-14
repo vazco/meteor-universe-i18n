@@ -20,7 +20,7 @@ describe('universe-i18n', () => {
       ['fr', 'yml-fr'],
       ['it-IT', 'yml-it-it'],
       ['pl-PL', 'yml-pl-pl'],
-      ['tr', 'yml-tr']
+      ['tr', 'yml-tr'],
     ];
 
     for (const [locale, name] of cases) {
@@ -49,12 +49,12 @@ describe('universe-i18n', () => {
 
     const params = {
       common: {
-        hello: 'Hello {$name}'
-      }
+        hello: 'Hello {$name}',
+      },
     };
     expect(i18n.addTranslations('en-US', params)).to.be.ok;
     expect(i18n.getTranslation('common', 'hello', { name: 'World' })).to.equal(
-      'Hello World'
+      'Hello World',
     );
 
     expect(
@@ -62,11 +62,11 @@ describe('universe-i18n', () => {
         'en-US',
         'common',
         'firstAndThird',
-        'First: {$0}, Third: {$2}'
-      )
+        'First: {$0}, Third: {$2}',
+      ),
     ).to.be.ok;
     expect(i18n.__('common', 'firstAndThird', ['a', 'b', 'c'])).to.equal(
-      'First: a, Third: c'
+      'First: a, Third: c',
     );
   });
 
@@ -87,12 +87,12 @@ describe('universe-i18n', () => {
 
     const params = {
       common: {
-        hello: 'Hello {{name}}'
-      }
+        hello: 'Hello {{name}}',
+      },
     };
     expect(i18n.addTranslations('en-US', params)).to.be.ok;
     expect(i18n.getTranslation('common', 'hello', { name: 'World' })).to.equal(
-      'Hello World'
+      'Hello World',
     );
     i18n.setOptions({ open: '{$', close: '}' });
   });

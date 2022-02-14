@@ -63,7 +63,7 @@ const i18n = {
   _formatgetters: {
     getJS: () => '',
     getJSON: () => '',
-    getYML: () => ''
+    getYML: () => '',
   } as Pick<GetCacheEntry, 'getJS' | 'getJSON' | 'getYML'>,
   _getConnectionId(connection?: Meteor.Connection | null) {
     // Actual implementation is only on the server.
@@ -105,7 +105,7 @@ const i18n = {
   _ts: 0,
   _interpolateTranslation(
     variables: Record<string, unknown>,
-    translation: string
+    translation: string,
   ) {
     let interpolatedTranslation = translation;
     Object.entries(variables).forEach(([key, value]) => {
@@ -125,7 +125,7 @@ const i18n = {
       i18n._normalizeWithAncestors(locale).forEach(locale => {
         translation = get(i18n._translations, `${locale}.${key}`);
         translation !== undefined && (finalTranslation = translation);
-      })
+      }),
     );
     const translationWithHideMissing = finalTranslation
       ? `${finalTranslation}`
@@ -209,11 +209,11 @@ const i18n = {
 
     const translation = i18n._normalizeGetTranslation(
       [locale, defaultLocale],
-      key
+      key,
     );
     const interpolatedTranslation = i18n._interpolateTranslation(
       variables,
-      translation
+      translation,
     );
 
     return interpolatedTranslation;
@@ -255,7 +255,7 @@ const i18n = {
     open: '{$',
     pathOnHost: 'universe/locale/',
     sameLocaleOnServerConnection: true,
-    translationsHeaders: { 'Cache-Control': 'max-age=2628000' }
+    translationsHeaders: { 'Cache-Control': 'max-age=2628000' },
   } as Options,
   runWithLocale<T>(locale = '', fn: () => T): T {
     return i18n._contextualLocale.withValue(i18n.normalize(locale), fn);
@@ -291,7 +291,7 @@ const i18n = {
   },
   setOptions(options: Partial<Options>) {
     Object.assign(i18n.options, options);
-  }
+  },
 };
 
 i18n.__ = i18n.getTranslation;

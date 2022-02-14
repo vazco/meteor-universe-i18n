@@ -1,7 +1,6 @@
 {
   "extends": "vazco/typescript",
   "parser": "@typescript-eslint/parser",
-  "plugins": ["prettier"],
   "root": true,
   "rules": {
     "@typescript-eslint/ban-ts-comment": 0,

@@ -8,8 +8,6 @@
     "@types/meteor": "1.4.76",
     "@types/node": "16.4.10",
     "@types/react": "17.0.15",
-    "eslint-config-vazco": "6.2.0",
-    "eslint-plugin-prettier": "^4.0.0",
-    "prettier": "2.5.1"
+    "eslint-config-vazco": "6.2.0"
   }
 }

@@ -36,6 +36,4 @@ jobs:
         run: meteor npm install
 
       - name: Test
-        run: |
-          chmod +x ./tests/i18n.tests.sh
-          ./tests/i18n.tests.sh
+        run: meteor npm test

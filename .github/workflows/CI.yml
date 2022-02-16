@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+      # TODO remove later
+      - version-2
+
+jobs:
+  CI:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Meteor
+        uses: meteorengineer/setup-meteor@v1
+        with:
+          meteor-release: '2.6'
+
+      - name: Check dependency vulnerabilities
+        run: |
+          meteor npm audit fix || true # skip non-0 exit
+          git status -s | grep " M package-lock.json" && echo "::"warning file=package-lock.json"::"Found vulnerabilities in the project dependencies. Run npm audit to show the audit details. More info: https://docs.npmjs.com/cli/v7/commands/npm-audit
+          git reset --hard HEAD
+
+      - name: Check dependency duplications
+        run: |
+          meteor npm dedupe
+          git status -s | grep " M package-lock.json" && echo "::"warning file=package-lock.json"::"Duplicate dependencies found. Run npm dedupe to remove them, or add --dry-run parameter to get more info.
+          git reset --hard HEAD
+
+      - name: Lint
+        run: meteor npm run lint:ts
+
+      - name: Install packages
+        run: meteor npm install
+
+      - name: Test
+        run: tests/i18n.tests.sh

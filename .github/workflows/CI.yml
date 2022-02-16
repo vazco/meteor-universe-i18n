@@ -17,8 +17,6 @@ jobs:
 
       - name: Setup Meteor
         uses: meteorengineer/setup-meteor@v1
-        with:
-          meteor-release: '2.6'
 
       - name: Check dependency vulnerabilities
         run: |
@@ -32,8 +30,9 @@ jobs:
           git status -s | grep " M package-lock.json" && echo "::"warning file=package-lock.json"::"Duplicate dependencies found. Run npm dedupe to remove them, or add --dry-run parameter to get more info.
           git reset --hard HEAD
 
-      - name: Lint
-        run: meteor npm run lint:ts
+      # TODO
+      # - name: Lint
+      #   run: meteor npm run lint:ts
 
       - name: Install packages
         run: meteor npm install

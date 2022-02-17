@@ -36,4 +36,4 @@ jobs:
         run: meteor npm install
 
       - name: Test
-        run: meteor npm test
+        run: meteor npm run test:CI

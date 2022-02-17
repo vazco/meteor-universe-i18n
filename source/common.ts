@@ -85,11 +85,16 @@ const i18n = {
   _normalizeWithAncestors(locale = '') {
     if (!(locale in i18n._normalizeWithAncestorsCache)) {
       const locales: string[] = [];
-      const parts = locale.toLowerCase().split(/[-_]/);
+      const parts = locale.split(/[-_]/);
       while (parts.length) {
         const locale = parts.join('-');
-        if (locale.match(i18n.options.localeRegEx)) {
-          locales.push(locale);
+        if (i18n.options.localeRegEx.exec(locale)) {
+          const formattedLocale = locale
+            .split(/[-_]/)
+            .map((part, index) => (index ? part.toUpperCase() : part))
+            .join('-');
+
+          locales.push(formattedLocale);
         }
 
         parts.pop();

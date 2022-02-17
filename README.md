@@ -212,7 +212,7 @@ Chapter:
 
 For example, translations files in packages are by default namespaced by their package name.
 
-```json
+```js
 // file en.json in the universe:profile package
 {
   "_locale": "en",
@@ -226,7 +226,7 @@ i18n.__('universe:profile', 'userName'); // output: User name
 
 You can change a default namespace for a file by setting a prefix to this file under the key "\_namespace".
 
-```json
+```js
 // file en.json in the universe:profile package
 {
   "_locale": "en-US",
@@ -365,161 +365,164 @@ i18n.runWithLocale(locale, func)
 
 ## Integration with React
 
-If you want to use this package with React, you need to create two functions `createTranslator` and `createComponent`. Example code is below.
+There are few different ways to integrate this package with a React application. Here is the most "React-way" solution facilitating `React Context`:
 
-```ts
-import React from 'react';
-import i18n from 'meteor/universe:i18n';
+```js
+import { i18n } from 'meteor/universe:i18n';
+import React, {
+  ReactNode,
+  createContext,
+  useCallback,
+  useContext,
+} from 'react';
 
-/**
- * @param namespace
- * @param options {_locale, _purify} TODO Change that
- */
-export function createTranslator(namespace?, options = undefined) {
-  if (typeof options === 'string' && options) {
-    options = { _locale: options };
-  }
+const localeContext = createContext(i18n.getLocale());
 
-  return (...args) => {
-    let _namespace = namespace;
-    if (typeof args[args.length - 1] === 'object') {
-      _namespace = args[args.length - 1]._namespace || _namespace;
-      args[args.length - 1] = { ...options, ...args[args.length - 1] };
-    } else if (options) {
-      args.push(options);
-    }
-    if (_namespace) {
-      args.unshift(_namespace);
-    }
-    return i18n.getTranslation(...args);
-  };
+export type LocaleProviderProps = { children: ReactNode };
+
+export function LocaleProvider({ children }: LocaleProviderProps) {
+  const [locale, setLocale] = useState(i18n.getLocale());
+  useEffect(() => {
+    i18n.onChangeLocale(setLocale);
+    return () => {
+      i18n.offChangeLocale(setLocale);
+    };
+  }, [setLocale]);
+
+  return (
+    <localeContext.Provider value={locale}>{children}</localeContext.Provider>
+  );
 }
 
-/**
- * @param translatorSeed the default is createTranslator() - with this argument you can set a different function for translation or the namespace for the default translator
- * @param locale the default is the current locale - sets a language for the component (can be different than anywhere else on the site)
- * @param type by default it uses <span> to render the content - sets a DOM element that will be rendered, e.g. 'li', 'div' or 'h1'
- */
-export function createComponent(
-  translatorSeed?: string | ((...args: unknown[]) => string),
-  locale?: string,
-  type?: React.ComponentType | string,
-) {
-  const translator =
-    typeof translatorSeed === 'string'
-      ? createTranslator(translatorSeed, locale)
-      : translatorSeed === undefined
-      ? createTranslator()
-      : translatorSeed;
-
-  type Props = {
-    _containerType?: React.ComponentType | string;
-    _props?: {};
-    _tagType?: React.ComponentType | string;
-    _translateProps?: string[];
-    children?: React.ReactNode;
-  };
-
-  return class T extends React.Component<Props> {
-    static __ = translator;
-
-    _invalidate = () => this.forceUpdate();
-
-    render() {
-      const {
-        _containerType,
-        _props = {},
-        _tagType,
-        _translateProps,
-        children,
-        ...params
-      } = this.props;
-
-      const tagType = _tagType || type || 'span';
-      const items = React.Children.map(
-        children,
-        (item, index) => {
-          if (typeof item === 'string' || typeof item === 'number') {
-            return React.createElement(tagType, {
-              ..._props,
-              dangerouslySetInnerHTML: { __html: translator(item, params) },
-              key: `_${index}`,
-            } as any);
-          }
-
-          if (Array.isArray(_translateProps)) {
-            const newProps: Record<string, string> = {};
-            _translateProps.forEach(propName => {
-              const prop = (item as any).props[propName];
-              if (prop && typeof prop === 'string') {
-                newProps[propName] = translator(prop, params);
-              }
-            });
-
-            return React.cloneElement(item as any, newProps);
-          }
-
-          return item;
-        },
-        this,
-      );
-
-      if (items?.length === 1) {
-        return items[0];
-      }
-
-      const containerType = _containerType || type || 'div';
-      return React.createElement(containerType, { ..._props }, items);
-    }
-
-    componentDidMount() {
-      i18n._events.on('changeLocale', this._invalidate);
-    }
-
-    componentWillUnmount() {
-      i18n._events.removeListener('changeLocale', this._invalidate);
-    }
-  };
+export function useLocale() {
+  return useContext(localeContext);
 }
 ```
 
-### Creating a React component
+It allows creating following hook:
 
 ```js
-// an instance of a translate component with the top-level context
-const T = createComponent();
-
-// later on...
-<T>Common.no</T>
-<T>Common.ok</T>
-<T name="World">Common.hello</T>
-// translate component
-<T _translateProps={['title', 'children']}>
-      <div title="Common.ok">Common.ok</div>
-</T>
+export function useTranslator(prefix = '') {
+  const locale = useLocale();
+  return useCallback(
+    (key: string, ...args: unknown[]) =>
+      i18n.getTranslation(prefix, key, ...args),
+    [locale],
+  );
+}
 ```
+
+Which can be later used in the following way:
 
 ```js
-// an instance of a translate component in the "Common" namespace
-const T = createComponent(createTranslator('Common'));
-
-// later on...
-<T>ok</T>
-// overriding locale
-<T _locale='pl-PL'>hello</T>
-// overriding the default DOM element 'span' with 'h1'
-<T _tagType='h1'>hello</T>
-// getting something from different namespace (e.g. Different.hello instead of Common.hello)
-<T _namespace='Diffrent'>hello</T>
-// providing props to the element
-<T _props={{ className: 'text-center', style: { color: '#f33' }}}>hello</T>
+function Example() {
+  const t = useTranslator();
+  return (
+    <>
+      Are you sure?
+      <Button>{t('common.yes')}</Button>
+      <Button>{t('common.no')}</Button>
+      <CompanyField placeholder={t('forms.company.placeholder')} />
+    </>
+  );
+}
 ```
+
+Here are other options for React integration:
+
+<details>
+<summary>
+The most straight-forward approach. Gets transaltion every time language is changed.
+</summary>
+<br>
+
+```js
+import { i18n } from 'meteor/universe:i18n';
+import { useEffect, useState } from 'react';
+
+export function useTranslation(key: string, ...args: unknown[]) {
+  const setLocale = useState(i18n.getLocale())[1];
+  useEffect(() => {
+    i18n.onChangeLocale(setLocale);
+    return () => {
+      i18n.offChangeLocale(setLocale);
+    };
+  }, [setLocale]);
+  return i18n.getTranslation(key, ...args);
+}
+```
+
+</details>
+
+<details>
+<summary>
+Improved version of the solution above. Gets translation every time acctual translation changes, instead of reacting on language changes. Usefull when different languages has same translations.
+</summary>
+<br>
+
+```js
+import { i18n } from 'meteor/universe:i18n';
+import { useEffect, useState } from 'react';
+
+export function useTranslation(key: string, ...args: unknown[]) {
+  const getTranslation = () => i18n.getTranslation(key, ...args);
+  const [translation, setTranslation] = useState(getTranslation());
+  useEffect(() => {
+    const update = () => setTranslation(getTranslation());
+    i18n.onChangeLocale(update);
+    return () => {
+      i18n.offChangeLocale(update);
+    };
+  }, []);
+  return translation;
+}
+```
+
+</details>
+
+<details>
+<summary>
+The meteor-way solution that facilitates `ReactiveVar` and `useTracker`. The advantage of this approach is creating only one listener instead of creating listener on every locale change.
+</summary>
+<br>
+
+```js
+mport { i18n } from 'meteor/universe:i18n';
+// https://docs.meteor.com/api/reactive-var.html
+import { ReactiveVar } from 'meteor/reactive-var';
+// https://blog.meteor.com/introducing-usetracker-react-hooks-for-meteor-cb00c16d6222
+import { useTracker } from 'meteor/react-meteor-data';
+
+const localeReactive = new ReactiveVar<string>(i18n.getLocale());
+i18n.onChangeLocale(localeReactive.set);
+
+export function getTranslationReactive(key: string, ...args: unknown[]) {
+    localeReactive.get();
+    return i18n.getTranslation(key, ...args);
+}
+
+export function useTranslation(key: string, ...args: unknown[]) {
+    return useTracker(() => getTranslationReactive(key, ...args), []);
+}
+```
+
+</details>
 
 ## Integration with Blaze
 
-[universe:i18n-blaze](https://atmospherejs.com/universe/i18n-blaze)
+```js
+import { i18n } from 'meteor/universe:i18n';
+import { Template } from 'meteor/templating';
+import { ReactiveVar } from 'meteor/reactive-var';
 
-<!-- TODO Change -->
+const localeReactive = new ReactiveVar() < string > i18n.getLocale();
+i18n.onChangeLocale(localeReactive.set);
+
+Template.registerHelper('__', function (key: string, ...args: unknown[]) {
+  localeReactive.get();
+  return i18n.getTranslation(key, ...args);
+});
+```
 
 ## Integration with SimpleSchema package
 

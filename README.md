@@ -169,11 +169,23 @@ Instead of setting translations directly through i18n.addTranslation(s), you can
 
 ### Recognition locale of translation
 
-Files are recognized by the `_locale` value in a translation file.
+Files can be named freely as long as they have their respective locale declared under the key '\_locale'.
 
 ```yml
 _locale: en-US
 title: Title
+```
+
+Otherwise, files should be named after their respective locales or placed in directories named accordingly. The only requirement
+
+```
+en.i18n.yml
+en.i18n.json
+en_us.i18n.yml
+en-us.i18n.yml
+en/us.i18n.yml
+en-US/someName.i18n.yml
+someDir/en-us/someName.i18n.yml
 ```
 
 ### Namespace

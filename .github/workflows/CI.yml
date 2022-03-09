@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        meteor-version: ['2.4.1', '2.5.6', '?'] # ? - latest meteor version
+        meteor-version: ['2.5.6', '?'] # ? - latest meteor version
     steps:
       - name: Checkout
         uses: actions/checkout@v2

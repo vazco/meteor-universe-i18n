@@ -7,33 +7,42 @@ on:
       - master
 
 jobs:
+  # npm_vulnerabilities_check:
+  #   name: NPM dependency vulnerabilities check
+  #   uses: vazco/open-standards/.github/workflows/check_dependency_vulnerabilities.yml@master
+
   CI:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # node-version: [12.x, 14.x, 16.x]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Setup Meteor
-        uses: meteorengineer/setup-meteor@v1
+      # - name: Install Node.js ${{ matrix.node-version }}
+      #   uses: actions/setup-node@v2.2.0
+      #   with:
+      #     cache: npm
+      #     node-version: ${{ matrix.node-version }}
 
-      - name: Check dependency vulnerabilities
-        run: |
-          meteor npm audit fix || true # skip non-0 exit
-          git status -s | grep " M package-lock.json" && echo "::"warning file=package-lock.json"::"Found vulnerabilities in the project dependencies. Run npm audit to show the audit details. More info: https://docs.npmjs.com/cli/v7/commands/npm-audit
-          git reset --hard HEAD
-
-      - name: Check dependency duplications
-        run: |
-          meteor npm dedupe
-          git status -s | grep " M package-lock.json" && echo "::"warning file=package-lock.json"::"Duplicate dependencies found. Run npm dedupe to remove them, or add --dry-run parameter to get more info.
-          git reset --hard HEAD
+      # - name: Npm dependency duplication check
+      #   uses: vazco/open-standards/actions/npm-dependency-duplications/@action-test
 
       # TODO
       # - name: Lint
-      #   run: meteor npm run lint:ts
+      #   run: npm run lint:ts
 
-      - name: Install packages
-        run: meteor npm install
+      - name: Install Meteor
+        run: curl https://install.meteor.com | /bin/sh
+
+      - name: Setup Meteor application
+        run: |
+          meteor create --bare test-app 
+          cd test-app
+          meteor npm install puppeteer
+          mkdir packages
+          ln -s ../../ ./packages/meteor-universe-i18n
 
       - name: Test
         run: meteor npm run test:CI

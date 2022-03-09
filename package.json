@@ -3,8 +3,8 @@
   "scripts": {
     "lint:js": "eslint .",
     "lint:ts": "tsc",
-    "test": "UNIVERSE_I18N_LOCALES=en-US meteor test-packages --settings ./tests/settings.coverage.json --port 8080 --driver-package meteortesting:mocha ./",
-    "test:CI": "UNIVERSE_I18N_LOCALES=en-US meteor test-packages --once --settings ./tests/settings.coverage.json --driver-package meteortesting:mocha ./"
+    "test": "UNIVERSE_I18N_LOCALES=en-US meteor test-packages --port 8080 --driver-package meteortesting:mocha ./",
+    "test:CI": "UNIVERSE_I18N_LOCALES=en-US TEST_BROWSER_DRIVER=puppeteer meteor test-packages --once --driver-package meteortesting:mocha ./packages/meteor-universe-i18n"
   },
   "devDependencies": {
     "@types/meteor": "1.4.76",

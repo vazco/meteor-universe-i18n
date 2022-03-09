@@ -1,6 +1,7 @@
 // @ts-ignore
+import { sinon } from 'meteor/practicalmeteor:sinon';
+// @ts-ignore
 import { i18n } from 'meteor/universe:i18n';
-import sinon from 'sinon';
 
 const expect = chai.expect;
 

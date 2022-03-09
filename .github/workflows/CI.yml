@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        meteor-version: [2.4.1, 2.5.6, ?] # ? - latest meteor version
+        meteor-version: ['2.4.1', '2.5.6', '?'] # ? - latest meteor version
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -28,7 +28,9 @@ jobs:
       #   run: npm run lint:ts
 
       - name: Install Meteor
-        run: curl https://install.meteor.com/?release=${{ matrix.meteor-version }} | /bin/sh
+        env:
+          METEOR_VERSION: ${{ matrix.meteor-version }}
+        run: curl https://install.meteor.com/?release=$METEOR_VERSION | /bin/sh
 
       - name: Setup Meteor application
         run: |

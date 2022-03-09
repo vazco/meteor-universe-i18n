@@ -65,15 +65,18 @@ const i18n = {
     getJSON: () => '',
     getYML: () => '',
   } as Pick<GetCacheEntry, 'getJS' | 'getJSON' | 'getYML'>,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _getConnectionId(connection?: Meteor.Connection | null) {
     // Actual implementation is only on the server.
     return undefined as string | undefined;
   },
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _getConnectionLocale(connection?: Meteor.Connection | null) {
     // Actual implementation is only on the server.
     return undefined as string | undefined;
   },
   _isLoaded: {} as Record<string, boolean>,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _loadLocaleWithAncestors(locale: string, options?: SetLocaleOptions) {
     // Actual implementation is only on the client.
     return Promise.resolve();
@@ -140,10 +143,12 @@ const i18n = {
 
     return translationWithHideMissing;
   },
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   __(...args: unknown[]) {
     // This will be aliased to i18n.getTranslation.
     return '';
   },
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   addTranslation(locale: string, ...args: unknown[]) {
     // This will be aliased to i18n.addTranslations.
     return {};
@@ -234,6 +239,7 @@ const i18n = {
   isLoaded(locale?: string) {
     return i18n._isLoaded[locale ?? i18n.getLocale()];
   },
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   loadLocale(locale: string, options?: LoadLocaleOptions) {
     // Actual implementation is only on the client.
     return Promise.resolve<HTMLScriptElement | undefined>(undefined);
@@ -291,6 +297,7 @@ const i18n = {
 
     return promise;
   },
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   setLocaleOnConnection(locale: string, connectionId?: string) {
     // Actual implementation is only on the server.
   },

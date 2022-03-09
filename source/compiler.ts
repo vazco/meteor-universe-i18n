@@ -1,10 +1,12 @@
 import YAML from 'js-yaml';
+// @ts-ignore
 import { CachingCompiler } from 'meteor/caching-compiler';
 import path from 'path';
 import stripJsonComments from 'strip-json-comments';
 
 import { i18n } from './common';
 import { isJSONObject, set } from './utils';
+// eslint-disable-next-line no-duplicate-imports
 import type { JSON } from './utils';
 
 declare class Compiler {}
@@ -134,7 +136,7 @@ function analyzePath(sourcePath: string) {
   return { locale: undefined, type };
 }
 
-function extractString(data: JSON, key: string) {
+function extractString(data: JSON | unknown, key: string) {
   if (!isJSONObject(data) || !(key in data)) {
     return undefined;
   }
@@ -152,7 +154,7 @@ function read(source: string, type: string) {
   }
 }
 
-function readUnsafe(source: string, type: string): JSON {
+function readUnsafe(source: string, type: string): JSON | unknown {
   switch (type) {
     case '.json':
       return JSON.parse(stripJsonComments(source));
@@ -166,7 +168,7 @@ function readUnsafe(source: string, type: string): JSON {
   }
 }
 
-function splitKeys(data: JSON, splitKey: string) {
+function splitKeys(data: JSON | unknown, splitKey: string) {
   if (isJSONObject(data)) {
     for (const [key, value] of Object.entries(data)) {
       if (key.includes(splitKey)) {

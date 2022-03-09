@@ -16,11 +16,7 @@ Npm.depends(npmDependencies);
 Package.registerBuildPlugin({
   name: 'universe:i18n',
   use: ['caching-compiler@1.2.2', 'tracker', 'typescript'],
-  sources: [
-    'source/common.ts',
-    'source/compiler.ts',
-    'source/utils.ts',
-  ],
+  sources: ['source/common.ts', 'source/compiler.ts', 'source/utils.ts'],
   npmDependencies,
 });
 

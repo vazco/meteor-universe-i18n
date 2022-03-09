@@ -1,4 +1,8 @@
+// @ts-ignore
 import { i18n } from 'meteor/universe:i18n';
+import sinon from 'sinon';
+
+const expect = chai.expect;
 
 describe('universe-i18n', () => {
   it('should support YAML files', async () => {

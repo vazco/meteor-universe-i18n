@@ -65,6 +65,7 @@ i18n.loadLocale = (locale, options) => {
   });
 
   if (!options?.silent) {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     promise.then(() => {
       // If the current locale has changed we must notify about that.
       if (

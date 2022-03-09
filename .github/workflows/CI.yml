@@ -45,4 +45,8 @@ jobs:
           ln -s ../../ ./packages/meteor-universe-i18n
 
       - name: Test
-        run: meteor npm run test:CI
+        run: |
+          cd test-app
+          export TEST_BROWSER_DRIVER=puppeteer
+          export UNIVERSE_I18N_LOCALES=en-US
+          meteor test-packages universe:i18n --once --driver-package=meteortesting:mocha

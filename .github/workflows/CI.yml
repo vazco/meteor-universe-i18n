@@ -28,6 +28,9 @@ jobs:
           METEOR_VERSION: ${{ matrix.meteor-version }}
         run: curl https://install.meteor.com/?release=$METEOR_VERSION | /bin/sh
 
+      - name: Install dependencies
+        run: meteor npm install
+
       - name: Lint
         run: meteor npm run lint:ts
 

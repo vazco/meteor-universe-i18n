@@ -32,4 +32,4 @@ jobs:
         run: meteor npm run lint:ts
 
       - name: Run tests
-        run: meteor npm test:once
+        run: meteor npm run test:once

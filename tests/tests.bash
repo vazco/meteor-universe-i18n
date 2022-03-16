@@ -2,8 +2,7 @@
 
 # Create Meteor test app
 meteor create --bare test-app 
-mkdir test-app/packages
-mkdir test-app/packages/meteor-universe-i18n
+mkdir -p test-app/packages/meteor-universe-i18n
 shopt -s extglob
 cp -r !(test-app) ./test-app/packages/meteor-universe-i18n
 cd test-app

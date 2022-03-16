@@ -494,7 +494,7 @@ export function useTranslation(key: string, ...args: unknown[]) {
 
 <details>
 <summary>
-The meteor-way solution that facilitates `ReactiveVar` and `useTracker`. The advantage of this approach is creating only one listener instead of creating listener on every locale change.
+The meteor-way solution that facilitates <code>ReactiveVar</code> and <code>useTracker</code>. The advantage of this approach is creating only one listener instead of creating a listener on every locale change.
 </summary>
 <br>
 

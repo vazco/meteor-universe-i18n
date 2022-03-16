@@ -1,5 +1,4 @@
 import YAML from 'js-yaml';
-// @ts-ignore
 import { CachingCompiler } from 'meteor/caching-compiler';
 import path from 'path';
 import stripJsonComments from 'strip-json-comments';

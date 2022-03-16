@@ -1,4 +1,3 @@
-// @ts-ignore
 import { i18n } from 'meteor/universe:i18n';
 
 const expect = chai.expect;

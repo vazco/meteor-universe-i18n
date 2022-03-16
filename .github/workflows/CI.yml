@@ -23,30 +23,13 @@ jobs:
       - name: Npm dependency duplication check
         uses: vazco/open-standards/actions/npm-dependency-duplications/@action-test
 
-      - name: Install Node
-        uses: actions/setup-node@v2
-        with:
-          node-version: '16'
-
-      - name: Lint
-        run: npm run lint:ts
-
       - name: Install Meteor
         env:
           METEOR_VERSION: ${{ matrix.meteor-version }}
         run: curl https://install.meteor.com/?release=$METEOR_VERSION | /bin/sh
 
-      - name: Setup Meteor application
-        run: |
-          meteor create --bare test-app 
-          cd test-app
-          meteor npm install puppeteer
-          mkdir packages
-          ln -s ../../ ./packages/meteor-universe-i18n
+      - name: Lint
+        run: meteor npm run lint:ts
 
       - name: Run tests
-        run: |
-          cd test-app
-          export TEST_BROWSER_DRIVER=puppeteer
-          export UNIVERSE_I18N_LOCALES=en-US
-          meteor test-packages universe:i18n --once --driver-package=meteortesting:mocha
+        run: meteor npm test:once

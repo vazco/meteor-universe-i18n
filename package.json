@@ -3,7 +3,8 @@
   "scripts": {
     "lint:js": "eslint .",
     "lint:ts": "tsc",
-    "test": "UNIVERSE_I18N_LOCALES=en-US meteor test-packages --port 8080 --driver-package meteortesting:mocha ./"
+    "test": "UNIVERSE_I18N_LOCALES=en-US meteor test-packages --port 8080 --driver-package meteortesting:mocha ./",
+    "test:once": "./tests/tests.sh"
   },
   "devDependencies": {
     "@types/chai": "^4.3.0",
@@ -16,6 +17,7 @@
     "@types/sinon": "^10.0.11",
     "@types/sinon-chai": "^3.2.8",
     "@types/strip-json-comments": "^3.0.0",
-    "eslint-config-vazco": "6.2.0"
+    "eslint-config-vazco": "6.2.0",
+    "typescript": "^4.6.2"
   }
 }

@@ -4,7 +4,7 @@
     "lint:js": "eslint .",
     "lint:ts": "tsc",
     "test": "UNIVERSE_I18N_LOCALES=en-US meteor test-packages --port 8080 --driver-package meteortesting:mocha ./",
-    "test:once": "./tests/tests.sh"
+    "test:once": "./tests/tests.bash"
   },
   "devDependencies": {
     "@types/chai": "4.3.0",

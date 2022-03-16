@@ -1,12 +1,13 @@
-#!/bin/sh
+#!/bin/bash
 
 # Create Meteor test app
 meteor create --bare test-app 
+mkdir test-app/packages
+mkdir test-app/packages/meteor-universe-i18n
+shopt -s extglob
+cp -r !(test-app) ./test-app/packages/meteor-universe-i18n
 cd test-app
 meteor npm install puppeteer
-mkdir packages
-cp -r ../ ./packages/meteor-universe-i18n
-rm -rf ./packages/meteor-universe-i18n/test-app
 
 # Run tests
 export TEST_BROWSER_DRIVER=puppeteer

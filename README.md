@@ -60,7 +60,7 @@ $ meteor npm install --save @types/meteor-universe-i18n
 
 ## Usage
 
-```
+```js
 import i18n from 'meteor/universe:i18n';
 ```
 
@@ -503,7 +503,7 @@ import { ReactiveVar } from 'meteor/reactive-var';
 // https://blog.meteor.com/introducing-usetracker-react-hooks-for-meteor-cb00c16d6222
 import { useTracker } from 'meteor/react-meteor-data';
 
-const localeReactive = new ReactiveVar() < string > i18n.getLocale();
+const localeReactive = new ReactiveVar<string>(i18n.getLocale());
 i18n.onChangeLocale(localeReactive.set);
 
 export function getTranslationReactive(key: string, ...args: unknown[]) {
@@ -525,7 +525,7 @@ import { i18n } from 'meteor/universe:i18n';
 import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
 
-const localeReactive = new ReactiveVar() < string > i18n.getLocale();
+const localeReactive = new ReactiveVar<string>(i18n.getLocale());
 i18n.onChangeLocale(localeReactive.set);
 
 Template.registerHelper('__', function (key: string, ...args: unknown[]) {

@@ -40,7 +40,6 @@ Package.onUse(function (api) {
 
 Package.onTest(function (api) {
   api.use([
-    'lmieulet:meteor-coverage@1.1.4',
     'meteortesting:mocha',
     'practicalmeteor:chai',
     'practicalmeteor:sinon',

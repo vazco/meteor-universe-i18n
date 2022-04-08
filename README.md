@@ -28,23 +28,21 @@ The package supports:
 
 **Table of Contents**
 
-- [Universe i18n](https://github.com/vazco/meteor-universe-i18n/#universe-i18n)
-  - [Installation](https://github.com/vazco/meteor-universe-i18n/#installation)
-    - [Typescript](https://github.com/vazco/meteor-universe-i18n/#typescript)
-  - [Usage](https://github.com/vazco/meteor-universe-i18n/#usage)
-    - [Setting/getting locale](https://github.com/vazco/meteor-universe-i18n/#settinggetting-locale)
-    - [Adding translations by methods](https://github.com/vazco/meteor-universe-i18n/#adding-translations-by-methods)
-    - [Getting translations](https://github.com/vazco/meteor-universe-i18n/#getting-translations)
-  - [Translations files](https://github.com/vazco/meteor-universe-i18n/#translations-files)
-    - [Recognition locale of translation](https://github.com/vazco/meteor-universe-i18n/#recognition-locale-of-translation)
-    - [Namespace](https://github.com/vazco/meteor-universe-i18n/#namespace)
-      - [Translation in packages](https://github.com/vazco/meteor-universe-i18n/#translation-in-packages)
-      - [Translation in application](https://github.com/vazco/meteor-universe-i18n/#translation-in-application)
-  - [API](https://github.com/vazco/meteor-universe-i18n/#api)
-  - [Integration with React](https://github.com/vazco/meteor-universe-i18n/#react-integration)
-    - [Creating a React component](https://github.com/vazco/meteor-universe-i18n/#creating-react-component)
-  - [Integration with Blaze](https://github.com/vazco/meteor-universe-i18n/#blaze-integration)
-  - [Integration with SimpleSchema](https://github.com/vazco/meteor-universe-i18n/blob/master/README.md#integration-with-simpleschema-package)
+- [Installation](https://github.com/vazco/meteor-universe-i18n/#installation)
+  - [Typescript](https://github.com/vazco/meteor-universe-i18n/#typescript)
+- [Usage](https://github.com/vazco/meteor-universe-i18n/#usage)
+  - [Setting/getting locale](https://github.com/vazco/meteor-universe-i18n/#settinggetting-locale)
+  - [Adding translations by methods](https://github.com/vazco/meteor-universe-i18n/#adding-translations-by-methods)
+  - [Getting translations](https://github.com/vazco/meteor-universe-i18n/#getting-translations)
+- [Translations files](https://github.com/vazco/meteor-universe-i18n/#translations-files)
+  - [Recognition locale of translation](https://github.com/vazco/meteor-universe-i18n/#recognition-locale-of-translation)
+  - [Namespace](https://github.com/vazco/meteor-universe-i18n/#namespace)
+    - [Translation in packages](https://github.com/vazco/meteor-universe-i18n/#translation-in-packages)
+    - [Translation in application](https://github.com/vazco/meteor-universe-i18n/#translation-in-application)
+- [API](https://github.com/vazco/meteor-universe-i18n/#api)
+- [Integration with React](https://github.com/vazco/meteor-universe-i18n/#react-integration)
+- [Integration with Blaze](https://github.com/vazco/meteor-universe-i18n/#blaze-integration)
+- [Integration with SimpleSchema](https://github.com/vazco/meteor-universe-i18n/blob/master/README.md#integration-with-simpleschema-package)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -499,22 +497,22 @@ The meteor-way solution that facilitates <code>ReactiveVar</code> and <code>useT
 <br>
 
 ```js
-mport { i18n } from 'meteor/universe:i18n';
+import { i18n } from 'meteor/universe:i18n';
 // https://docs.meteor.com/api/reactive-var.html
 import { ReactiveVar } from 'meteor/reactive-var';
 // https://blog.meteor.com/introducing-usetracker-react-hooks-for-meteor-cb00c16d6222
 import { useTracker } from 'meteor/react-meteor-data';
 
-const localeReactive = new ReactiveVar<string>(i18n.getLocale());
+const localeReactive = new ReactiveVar() < string > i18n.getLocale();
 i18n.onChangeLocale(localeReactive.set);
 
 export function getTranslationReactive(key: string, ...args: unknown[]) {
-    localeReactive.get();
-    return i18n.getTranslation(key, ...args);
+  localeReactive.get();
+  return i18n.getTranslation(key, ...args);
 }
 
 export function useTranslation(key: string, ...args: unknown[]) {
-    return useTracker(() => getTranslationReactive(key, ...args), []);
+  return useTracker(() => getTranslationReactive(key, ...args), []);
 }
 ```
 
@@ -594,7 +592,7 @@ keyNotInSchema: '[key] is not allowed by the schema'
 ## Running Tests
 
 ```bash
-meteor test-packages --driver-package cultofcoders:mocha universe:i18n
+meteor test-packages --driver-package meteortesting:mocha universe:i18n
 ```
 
 ## License

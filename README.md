@@ -64,10 +64,6 @@ $ meteor npm install --save @types/meteor-universe-i18n
 import i18n from 'meteor/universe:i18n';
 ```
 
-### Other links:
-
-- [mock universe i18n](https://github.com/logankoester/mock-meteor-universe-i18n)
-
 ### Setting/getting locale
 
 ```js
@@ -599,4 +595,4 @@ meteor test-packages --driver-package meteortesting:mocha universe:i18n
 
 <img src="https://vazco.eu/banner.png" align="right">
 
-**Like every package maintained by [Vazco](https://vazco.eu/), Universe i18n is [MIT licensed](https://github.com/vazco/uniforms/blob/master/LICENSE).**
+**Like every package maintained by [Vazco](https://vazco.eu/), universe:i18n is [MIT licensed](https://github.com/vazco/meteor-universe-i18n/blob/master/LICENSE).**

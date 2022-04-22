@@ -5,7 +5,6 @@ import stripJsonComments from 'strip-json-comments';
 
 import { i18n } from './common';
 import { isJSONObject, set } from './utils';
-// eslint-disable-next-line no-duplicate-imports
 import type { JSON } from './utils';
 
 declare class Compiler {}

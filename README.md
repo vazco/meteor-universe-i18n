@@ -360,7 +360,7 @@ i18n.loadLocale(locale, params)
 // @params on server { queryParams = {}, fresh = false, silent = false,
 // host = i18n.options.hostUrl, pathOnHost = i18n.options.pathOnHost }
 // on the server side, this method uses HTTP.get with query parameter `type=json` to fetch json data
-// on the client site, it adds a new script with translations to the head node
+// on the client side, it adds a new script with translations to the head node
 // this function returns a promise
 
 // executes function in the locale context,

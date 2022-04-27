@@ -90,7 +90,9 @@ const i18n = {
         if (i18n.options.localeRegEx.exec(locale)) {
           const formattedLocale = locale
             .split(/[-_]/)
-            .map((part, index) => (index ? part.toUpperCase() : part))
+            .map((part, index) =>
+              index ? part.toUpperCase() : part.toLowerCase(),
+            )
             .join('-');
 
           locales.push(formattedLocale);

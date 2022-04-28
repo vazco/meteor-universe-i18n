@@ -1,5 +1,0 @@
-{
-    "include": [
-        "**/packages/universe_i18n.js"
-    ]
-}

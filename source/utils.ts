@@ -19,7 +19,7 @@ export function get(object: UnknownRecord, path: string) {
   return object?.[last];
 }
 
-export function isJSONObject(value: JSON): value is JSONObject {
+export function isJSONObject(value: JSON | unknown): value is JSONObject {
   return !!value && typeof value === 'object';
 }
 

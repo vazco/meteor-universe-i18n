@@ -94,7 +94,7 @@ class UniverseI18nCompiler extends CachingCompiler {
         `'${options.namespace ?? packageName ?? ''}',`,
         JSON.stringify(content.data),
         ');',
-        `Package['universe:i18n'].i18n._ts = Math.max(Package['universe:i18n'].i18n._ts, ${Date.now()});`
+        `Package['universe:i18n'].i18n._ts = Math.max(Package['universe:i18n'].i18n._ts, ${Date.now()});`,
       ].join(''),
     };
   }
@@ -134,7 +134,7 @@ function analyzePath(sourcePath: string) {
   return { locale: undefined, type };
 }
 
-function extractString(data: JSON, key: string) {
+function extractString(data: JSON | unknown, key: string) {
   if (!isJSONObject(data) || !(key in data)) {
     return undefined;
   }
@@ -152,7 +152,7 @@ function read(source: string, type: string) {
   }
 }
 
-function readUnsafe(source: string, type: string): JSON {
+function readUnsafe(source: string, type: string): JSON | unknown {
   switch (type) {
     case '.json':
       return JSON.parse(stripJsonComments(source));
@@ -166,7 +166,7 @@ function readUnsafe(source: string, type: string): JSON {
   }
 }
 
-function splitKeys(data: JSON, splitKey: string) {
+function splitKeys(data: JSON | unknown, splitKey: string) {
   if (isJSONObject(data)) {
     for (const [key, value] of Object.entries(data)) {
       if (key.includes(splitKey)) {

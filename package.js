@@ -16,12 +16,7 @@ Npm.depends(npmDependencies);
 Package.registerBuildPlugin({
   name: 'universe:i18n',
   use: ['caching-compiler@1.2.2', 'tracker', 'typescript'],
-  sources: [
-    'source/common.ts',
-    'source/compiler.ts',
-    'source/locales.ts',
-    'source/utils.ts',
-  ],
+  sources: ['source/common.ts', 'source/compiler.ts', 'source/utils.ts'],
   npmDependencies,
 });
 
@@ -45,7 +40,6 @@ Package.onUse(function (api) {
 
 Package.onTest(function (api) {
   api.use([
-    'lmieulet:meteor-coverage@1.1.4',
     'meteortesting:mocha',
     'practicalmeteor:chai',
     'practicalmeteor:sinon',

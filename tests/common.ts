@@ -1,4 +1,7 @@
+import { sinon } from 'meteor/practicalmeteor:sinon';
 import { i18n } from 'meteor/universe:i18n';
+
+const expect = chai.expect;
 
 describe('universe-i18n', () => {
   it('should support YAML files', async () => {
@@ -70,31 +73,6 @@ describe('universe-i18n', () => {
     );
   });
 
-  it('should be able to parse numbers', async () => {
-    await i18n.setLocale('en-US');
-    expect(i18n.parseNumber('7013217.715')).to.equal('7,013,217.715');
-    expect(i18n.setLocale('pl-PL')).to.be.ok;
-    expect(i18n.parseNumber('16217 and 17217,715', 'en-US')).to.equal(
-      '16,217 and 17,217.715',
-    );
-    expect(i18n.parseNumber('7013217.715', 'ru-RU')).to.equal('7 013 217,715');
-  });
-
-  it('should return correct locale data', () => {
-    expect(i18n.getLanguageNativeName('pt')).to.equal('Português');
-    expect(i18n.getLanguageNativeName('pt-BR')).to.equal('Português (Brasil)');
-  });
-
-  it('should be able to get currency symbol and currency codes', () => {
-    expect(i18n.getCurrencySymbol('en-US')).to.equal('$');
-    expect(i18n.getCurrencySymbol('USD')).to.equal('$');
-    expect(i18n.getCurrencyCodes('en-US')).to.deep.equal(['USD', 'USN', 'USS']);
-
-    expect(i18n.getCurrencySymbol('pl-PL')).to.equal('zł');
-    expect(i18n.getCurrencySymbol('PLN')).to.equal('zł');
-    expect(i18n.getCurrencyCodes('pl-PL')).to.deep.equal(['PLN']);
-  });
-
   it('should be able to listen on locale change', async () => {
     const callback = sinon.spy();
 
@@ -104,25 +82,6 @@ describe('universe-i18n', () => {
 
     expect(callback).to.have.been.calledOnce;
     expect(callback).to.have.been.calledWith('pl-PL');
-  });
-
-  it('should include current language in available languages', async () => {
-    await i18n.setLocale('en-US');
-    expect(i18n.getLanguages()).to.include(i18n.getLocale());
-  });
-
-  it('should be able to create translators', async () => {
-    const frenchTranslator = i18n.createTranslator('', 'fr-FR');
-    await i18n.setLocale('es-ES');
-    expect(i18n.__('common.name')).to.equal('json-es-es');
-    expect(frenchTranslator('common.name')).to.equal('yml-fr');
-  });
-
-  it('should be able to create reactive translators', async () => {
-    const frenchReactiveTranslator = i18n.createReactiveTranslator('', 'fr-FR');
-    await i18n.setLocale('es-ES');
-    expect(i18n.__('common.name')).to.equal('json-es-es');
-    expect(frenchReactiveTranslator('common.name')).to.equal('yml-fr');
   });
 
   it('should be able to set options', async () => {
@@ -139,18 +98,5 @@ describe('universe-i18n', () => {
       'Hello World',
     );
     i18n.setOptions({ open: '{$', close: '}' });
-  });
-
-  it('should be able to create translation components', async () => {
-    const frenchTranslator = i18n.createTranslator('', 'fr-FR');
-    await i18n.setLocale('es-ES');
-    const Component = i18n.createComponent(frenchTranslator, 'fr-FR', {
-      Component: Object,
-      createElement: () => {},
-      PropTypes: { string: String },
-    });
-
-    expect(Component).to.be.a('Function');
-    expect(Component.__('common.name')).to.equal('yml-fr');
   });
 });

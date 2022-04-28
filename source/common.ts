@@ -2,12 +2,7 @@ import { EventEmitter } from 'events';
 import { Meteor } from 'meteor/meteor';
 import { Tracker } from 'meteor/tracker';
 
-import { CURRENCIES, LOCALES, SYMBOLS } from './locales';
 import { JSON, JSONObject, get, isJSONObject, set } from './utils';
-
-export interface CreateTranslatorOptions extends GetTranslationOptions {
-  _namespace?: string;
-}
 
 export interface GetCacheEntry {
   getJS(locale: string, namespace: string, isBefore?: boolean): string;
@@ -24,7 +19,6 @@ export interface GetCacheFunction {
 export interface GetTranslationOptions {
   _locale?: string;
   _namespace?: string;
-  _purify?: (string: string) => string;
   [key: string]: unknown;
 }
 
@@ -43,9 +37,9 @@ export interface Options {
   hideMissing: boolean;
   hostUrl: string;
   ignoreNoopLocaleChanges: boolean;
+  localeRegEx: RegExp;
   open: string;
   pathOnHost: string;
-  purify: undefined | ((string: string) => string);
   sameLocaleOnServerConnection: boolean;
   translationsHeaders: Record<string, string>;
 }
@@ -67,36 +61,41 @@ const i18n = {
     getJSON: () => '',
     getYML: () => '',
   } as Pick<GetCacheEntry, 'getJS' | 'getJSON' | 'getYML'>,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _getConnectionId(connection?: Meteor.Connection | null) {
     // Actual implementation is only on the server.
     return undefined as string | undefined;
   },
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _getConnectionLocale(connection?: Meteor.Connection | null) {
     // Actual implementation is only on the server.
     return undefined as string | undefined;
   },
   _isLoaded: {} as Record<string, boolean>,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _loadLocaleWithAncestors(locale: string, options?: SetLocaleOptions) {
     // Actual implementation is only on the client.
     return Promise.resolve();
   },
   _locale: 'en',
-  _localeData(locale?: string) {
-    locale = i18n.normalize(locale ?? i18n.getLocale());
-    return locale && i18n._locales[locale.toLowerCase()];
-  },
-  _locales: LOCALES,
   _logger(error: unknown) {
     console.error(error);
   },
   _normalizeWithAncestors(locale = '') {
     if (!(locale in i18n._normalizeWithAncestorsCache)) {
       const locales: string[] = [];
-      const parts = locale.toLowerCase().split(/[-_]/);
+      const parts = locale.split(/[-_]/);
       while (parts.length) {
         const locale = parts.join('-');
-        if (locale in i18n._locales) {
-          locales.push(i18n._locales[locale][0]);
+        if (i18n.options.localeRegEx.exec(locale)) {
+          const formattedLocale = locale
+            .split(/[-_]/)
+            .map((part, index) =>
+              index ? part.toUpperCase() : part.toLowerCase(),
+            )
+            .join('-');
+
+          locales.push(formattedLocale);
         }
 
         parts.pop();
@@ -110,10 +109,43 @@ const i18n = {
   _normalizeWithAncestorsCache: {} as Record<string, readonly string[]>,
   _translations: {} as JSONObject,
   _ts: 0,
+  _interpolateTranslation(
+    variables: Record<string, unknown>,
+    translation: string,
+  ) {
+    let interpolatedTranslation = translation;
+    Object.entries(variables).forEach(([key, value]) => {
+      const tag = i18n.options.open + key + i18n.options.close;
+      if (interpolatedTranslation.includes(tag)) {
+        interpolatedTranslation = interpolatedTranslation
+          .split(tag)
+          .join(value as string);
+      }
+    });
+    return interpolatedTranslation;
+  },
+  _normalizeGetTranslation(locales: string[], key: string) {
+    let translation: unknown;
+    locales.some(locale =>
+      i18n._normalizeWithAncestors(locale).some(locale => {
+        translation = get(i18n._translations, `${locale}.${key}`);
+        return translation !== undefined;
+      }),
+    );
+    const translationWithHideMissing = translation
+      ? `${translation}`
+      : i18n.options.hideMissing
+      ? ''
+      : key;
+
+    return translationWithHideMissing;
+  },
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   __(...args: unknown[]) {
     // This will be aliased to i18n.getTranslation.
     return '';
   },
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   addTranslation(locale: string, ...args: unknown[]) {
     // This will be aliased to i18n.addTranslations.
     return {};
@@ -133,135 +165,6 @@ const i18n = {
     }
 
     return i18n._translations;
-  },
-  createComponent(
-    translatorSeed?: string | ((...args: unknown[]) => string),
-    locale?: string,
-    reactjs?: typeof import('react'),
-    type?: React.ComponentType | string,
-  ) {
-    const translator =
-      typeof translatorSeed === 'string'
-        ? i18n.createTranslator(translatorSeed, locale)
-        : translatorSeed === undefined
-        ? i18n.createTranslator()
-        : translatorSeed;
-
-    if (!reactjs) {
-      if (typeof React !== 'undefined') {
-        reactjs = React;
-      } else {
-        try {
-          reactjs = require('react');
-        } catch (error) {
-          // Ignore.
-        }
-      }
-
-      if (!reactjs) {
-        console.error('React is not detected!');
-      }
-    }
-
-    type Props = {
-      _containerType?: React.ComponentType | string;
-      _props?: {};
-      _tagType?: React.ComponentType | string;
-      _translateProps?: string[];
-      children?: React.ReactNode;
-    };
-
-    return class T extends reactjs!.Component<Props> {
-      static __ = translator;
-
-      _invalidate = () => this.forceUpdate();
-
-      render() {
-        const {
-          _containerType,
-          _props = {},
-          _tagType,
-          _translateProps,
-          children,
-          ...params
-        } = this.props;
-
-        const tagType = _tagType || type || 'span';
-        const items = reactjs!.Children.map(children, (item, index) => {
-          if (typeof item === 'string' || typeof item === 'number') {
-            return reactjs!.createElement(tagType, {
-              ..._props,
-              dangerouslySetInnerHTML: { __html: translator(item, params) },
-              key: `_${index}`,
-            } as any);
-          }
-
-          if (Array.isArray(_translateProps)) {
-            const newProps: Record<string, string> = {};
-            _translateProps.forEach(propName => {
-              const prop = (item as any).props[propName];
-              if (prop && typeof prop === 'string') {
-                newProps[propName] = translator(prop, params);
-              }
-            });
-
-            return reactjs!.cloneElement(item as any, newProps);
-          }
-
-          return item;
-        });
-
-        if (items?.length === 1) {
-          return items[0];
-        }
-
-        const containerType = _containerType || type || 'div';
-        return reactjs!.createElement(containerType, { ..._props }, items);
-      }
-
-      componentDidMount() {
-        i18n._events.on('changeLocale', this._invalidate);
-      }
-
-      componentWillUnmount() {
-        i18n._events.removeListener('changeLocale', this._invalidate);
-      }
-    };
-  },
-  createReactiveTranslator(namespace?: string, locale?: string) {
-    const translator = i18n.createTranslator(namespace, locale);
-    return (...args: unknown[]) => {
-      i18n._deps.depend();
-      return translator(...args);
-    };
-  },
-  createTranslator(
-    namespace?: string,
-    options?: string | CreateTranslatorOptions,
-  ) {
-    const finalOptions =
-      typeof options === 'string'
-        ? options === ''
-          ? {}
-          : { _locale: options }
-        : options;
-
-    return (...args: any[]) => {
-      let _namespace = namespace;
-      const finalArg = args.length - 1;
-      if (typeof args[finalArg] === 'object') {
-        _namespace = args[finalArg]._namespace || _namespace;
-        args[finalArg] = { ...finalOptions, ...args[finalArg] };
-      } else if (finalOptions) {
-        args.push(finalOptions);
-      }
-
-      if (_namespace) {
-        args.unshift(_namespace);
-      }
-
-      return i18n.getTranslation(...args);
-    };
   },
   getAllKeysForLocale(locale?: string, exactlyThis = false) {
     if (locale === undefined) {
@@ -293,60 +196,13 @@ const i18n = {
     return Object.keys(keys);
   },
   getCache: (() => ({})) as GetCacheFunction,
-  getCurrencyCodes(locale?: string) {
-    if (locale === undefined) {
-      locale = i18n.getLocale();
-    }
-
-    const countryCode = locale
-      .substr(locale.lastIndexOf('-') + 1)
-      .toUpperCase();
-    return CURRENCIES[countryCode];
-  },
-  getCurrencySymbol(locale?: string) {
-    if (locale === undefined) {
-      locale = i18n.getLocale();
-    }
-
-    const code = i18n.getCurrencyCodes(locale);
-    return SYMBOLS[code?.[0] || locale];
-  },
-  getLanguageName(locale?: string) {
-    return i18n._localeData(locale)?.[1];
-  },
-  getLanguageNativeName(locale?: string) {
-    return i18n._localeData(locale)?.[2];
-  },
-  getLanguages(type: 'code' | 'name' | 'nativeName' = 'code') {
-    const codes = Object.keys(i18n._translations);
-    switch (type) {
-      case 'code':
-        return codes;
-      case 'name':
-        return codes.map(i18n.getLanguageName);
-      case 'nativeName':
-        return codes.map(i18n.getLanguageNativeName);
-      default:
-        return [];
-    }
+  getLocales() {
+    return Object.keys(i18n._translations);
   },
   getLocale() {
     return (
       i18n._contextualLocale.get() ?? i18n._locale ?? i18n.options.defaultLocale
     );
-  },
-  getRefreshMixin() {
-    return {
-      _localeChanged(this: React.Component, locale: string) {
-        this.setState({ locale });
-      },
-      componentWillMount() {
-        i18n.onChangeLocale(this._localeChanged);
-      },
-      componentWillUnmount() {
-        i18n.offChangeLocale(this._localeChanged);
-      },
-    };
   },
   getTranslation(...args: unknown[]) {
     const maybeOptions = args[args.length - 1];
@@ -355,31 +211,19 @@ const i18n = {
     const options = hasOptions ? (maybeOptions as GetTranslationOptions) : {};
 
     const key = keys.filter(key => key && typeof key === 'string').join('.');
-    const { close, defaultLocale, hideMissing, open } = i18n.options;
-    const {
-      _locale: locale = i18n.getLocale(),
-      _purify: purify = i18n.options.purify,
-      ...variables
-    } = options;
+    const { defaultLocale } = i18n.options;
+    const { _locale: locale = i18n.getLocale(), ...variables } = options;
 
-    let translation: unknown;
-    [locale, defaultLocale].some(locale =>
-      i18n
-        ._normalizeWithAncestors(locale)
-        .some(
-          locale => (translation = get(i18n._translations, `${locale}.${key}`)),
-        ),
+    const translation = i18n._normalizeGetTranslation(
+      [locale, defaultLocale],
+      key,
+    );
+    const interpolatedTranslation = i18n._interpolateTranslation(
+      variables,
+      translation,
     );
 
-    let string = translation ? `${translation}` : hideMissing ? '' : key;
-    Object.entries(variables).forEach(([key, value]) => {
-      const tag = open + key + close;
-      if (string.includes(tag)) {
-        string = string.split(tag).join(value as string);
-      }
-    });
-
-    return typeof purify === 'function' ? purify(string) : string;
+    return interpolatedTranslation;
   },
   getTranslations(key?: string, locale?: string) {
     if (locale === undefined) {
@@ -392,9 +236,7 @@ const i18n = {
   isLoaded(locale?: string) {
     return i18n._isLoaded[locale ?? i18n.getLocale()];
   },
-  isRTL(locale?: string) {
-    return i18n._localeData(locale)?.[3];
-  },
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   loadLocale(locale: string, options?: LoadLocaleOptions) {
     // Actual implementation is only on the client.
     return Promise.resolve<HTMLScriptElement | undefined>(undefined);
@@ -417,26 +259,12 @@ const i18n = {
     hideMissing: false,
     hostUrl: '/',
     ignoreNoopLocaleChanges: false,
+    localeRegEx: /^[aA-zZ]{2}(-[aA-zZ]{2})?$/,
     open: '{$',
     pathOnHost: 'universe/locale/',
-    purify: undefined,
     sameLocaleOnServerConnection: true,
     translationsHeaders: { 'Cache-Control': 'max-age=2628000' },
   } as Options,
-  parseNumber(number: number, locale?: string) {
-    const numberAsString = String(number);
-    const normalizedLocale = i18n.normalize(locale ?? i18n.getLocale())!;
-    const separator = i18n._locales[normalizedLocale.toLowerCase()]?.[4];
-    const result = separator
-      ? numberAsString.replace(
-          /(\d+)[\.,]*(\d*)/gm,
-          (_, integer, decimal) =>
-            format(+integer, separator[0]) +
-            (decimal ? separator[1] + decimal : ''),
-        )
-      : numberAsString;
-    return result || '0';
-  },
   runWithLocale<T>(locale = '', fn: () => T): T {
     return i18n._contextualLocale.withValue(i18n.normalize(locale), fn);
   },
@@ -448,7 +276,10 @@ const i18n = {
       return Promise.reject(message);
     }
 
-    if (i18n.options.ignoreNoopLocaleChanges && i18n.getLocale() === normalizedLocale) {
+    if (
+      i18n.options.ignoreNoopLocaleChanges &&
+      i18n.getLocale() === normalizedLocale
+    ) {
       return Promise.resolve();
     }
 
@@ -463,6 +294,7 @@ const i18n = {
 
     return promise;
   },
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   setLocaleOnConnection(locale: string, connectionId?: string) {
     // Actual implementation is only on the server.
   },
@@ -473,20 +305,5 @@ const i18n = {
 
 i18n.__ = i18n.getTranslation;
 i18n.addTranslation = i18n.addTranslations;
-
-function format(integer: number, separator: string) {
-  let result = '';
-  while (integer) {
-    const n = integer % 1e3;
-    integer = Math.floor(integer / 1e3);
-    if (integer === 0) {
-      return n + result;
-    }
-
-    result = separator + (n < 10 ? '00' : n < 100 ? '0' : '') + n + result;
-  }
-
-  return '0';
-}
 
 export { i18n };

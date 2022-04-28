@@ -10,7 +10,6 @@ import URL from 'url';
 
 import { GetCacheEntry, GetCacheFunction, i18n } from './common';
 import './global';
-import { LOCALES as locales } from './locales';
 import { JSONObject, set } from './utils';
 
 i18n.setOptions({ hostUrl: Meteor.absoluteUrl() });
@@ -138,7 +137,7 @@ i18n.getCache = (locale => {
 }) as GetCacheFunction;
 
 i18n.loadLocale = async (
-  localeName,
+  locale,
   {
     fresh = false,
     host = i18n.options.hostUrl,
@@ -147,27 +146,38 @@ i18n.loadLocale = async (
     silent = false,
   } = {},
 ) => {
-  localeName = locales[localeName.toLowerCase()]?.[0] ?? localeName;
+  const normalizedLocale = i18n.normalize(locale);
+  if (!normalizedLocale) {
+    i18n._logger(new Error(`Unrecognized locale "${locale}"`));
+    return Promise.resolve(undefined);
+  }
 
   queryParams.type = 'json';
   if (fresh) {
     queryParams.ts = new Date().getTime();
   }
 
-  const url = URL.resolve(host, pathOnHost + localeName);
+  const url = URL.resolve(
+    host,
+    pathOnHost + normalizedLocale + '?' + queryParams.type,
+  );
+
   try {
     const data = await fetch(url, { method: 'GET' });
     const json = await data.json();
     const { content } = json || {};
     if (content) {
-      i18n.addTranslations(localeName, JSON.parse(stripJsonComments(content)));
-      delete cache[localeName];
+      i18n.addTranslations(
+        normalizedLocale,
+        JSON.parse(stripJsonComments(content)),
+      );
+      delete cache[normalizedLocale];
       if (!silent) {
         const locale = i18n.getLocale();
         // If current locale is changed we must notify about that.
         if (
-          locale.indexOf(localeName) === 0 ||
-          i18n.options.defaultLocale.indexOf(localeName) === 0
+          locale.indexOf(normalizedLocale) === 0 ||
+          i18n.options.defaultLocale.indexOf(normalizedLocale) === 0
         ) {
           i18n._emitChange();
         }
@@ -206,7 +216,7 @@ WebApp.connectHandlers.use('/universe/locale/', ((request, response, next) => {
     },
   } = URL.parse(request.url || '', true);
 
-  if (type && !['js', 'js', 'yml'].includes(type as string)) {
+  if (type && !['js', 'json', 'yml'].includes(type as string)) {
     response.writeHead(415);
     response.end();
     return;

@@ -40,8 +40,8 @@ The package supports:
     - [Translation in packages](https://github.com/vazco/meteor-universe-i18n/#translation-in-packages)
     - [Translation in application](https://github.com/vazco/meteor-universe-i18n/#translation-in-application)
 - [API](https://github.com/vazco/meteor-universe-i18n/#api)
-- [Integration with React](https://github.com/vazco/meteor-universe-i18n/#react-integration)
-- [Integration with Blaze](https://github.com/vazco/meteor-universe-i18n/#blaze-integration)
+- [Integration with React](https://github.com/vazco/meteor-universe-i18n/#integration-with-react)
+- [Integration with Blaze](https://github.com/vazco/meteor-universe-i18n/#integration-with-blaze)
 - [Integration with SimpleSchema](https://github.com/vazco/meteor-universe-i18n/blob/master/README.md#integration-with-simpleschema-package)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->

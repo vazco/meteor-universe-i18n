@@ -152,11 +152,6 @@ i18n.__('lengthOfArr', { length: ['a', 'b', 'c'].length }); // output: length 3
 i18n.__('items', ['a', 'b', 'c']); // output: The first item is a and the last one is c!
 ```
 
-Take in mind, that on client side strings are sanitized to PCDATA.
-_TIP:_ To prevent sensitization you can pass `_purify={false}` on `<T>` component.
-
-<!-- TODO remove? -->
-
 ## Translations files
 
 Instead of setting translations directly through i18n.addTranslation(s), you can store them in YAML or JSON files, named **.i18n.yml**, **.i18n.json** accordingly. As locales are by default loaded lazily, the translation files, unless they are attached to the bundle, should be placed in the common space.
@@ -304,7 +299,7 @@ i18n.addTranslation(locale, namespace, key, ..., translation);
 // adds translations (same as addTranslation)
 i18n.addTranslations(locale, namespace, translationsMap);
 
-// gets a translation in params (_locale, _purify)
+// gets a translation in params (_locale)
 i18n.getTranslation(namespace, key, ..., params);
 i18n.__(namespace, key,..., params);
 
@@ -499,7 +494,7 @@ import { ReactiveVar } from 'meteor/reactive-var';
 // https://blog.meteor.com/introducing-usetracker-react-hooks-for-meteor-cb00c16d6222
 import { useTracker } from 'meteor/react-meteor-data';
 
-const localeReactive = new ReactiveVar<string>(i18n.getLocale());
+const localeReactive = new ReactiveVar() < string > i18n.getLocale();
 i18n.onChangeLocale(localeReactive.set);
 
 export function getTranslationReactive(key: string, ...args: unknown[]) {
@@ -521,7 +516,7 @@ import { i18n } from 'meteor/universe:i18n';
 import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
 
-const localeReactive = new ReactiveVar<string>(i18n.getLocale());
+const localeReactive = new ReactiveVar() < string > i18n.getLocale();
 i18n.onChangeLocale(localeReactive.set);
 
 Template.registerHelper('__', function (key: string, ...args: unknown[]) {

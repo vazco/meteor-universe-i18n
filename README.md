@@ -30,6 +30,7 @@ The package supports:
 
 - [Installation](https://github.com/vazco/meteor-universe-i18n/#installation)
   - [Typescript](https://github.com/vazco/meteor-universe-i18n/#typescript)
+- [Migration to v2 / Breaking changes](https://github.com/vazco/meteor-universe-i18n/#migration-to-v2-breaking-changes)
 - [Usage](https://github.com/vazco/meteor-universe-i18n/#usage)
   - [Setting/getting locale](https://github.com/vazco/meteor-universe-i18n/#settinggetting-locale)
   - [Adding translations by methods](https://github.com/vazco/meteor-universe-i18n/#adding-translations-by-methods)
@@ -57,6 +58,20 @@ $ meteor add universe:i18n
 ```sh
 $ meteor npm install --save @types/meteor-universe-i18n
 ```
+
+## Migration to v2 / Breaking changes
+- We removed `locales` and `currency data` from our package. 
+  Delete from your code the following functions: `parseNumber`, `getLanguages`, `getCurrencyCodes`, `getCurrencySymbol`, `getLanguageName`, `getLanguageNativeName` and `isRTL`
+- Remove `_purify` option ([explanation](https://github.com/vazco/meteor-universe-i18n/issues/144#issuecomment-1006522371))
+- Remove `createTranslator` and `createReactiveTranslator`
+
+### React migration
+`meteor-universe-i18n` has no longer built-in React integration. However, we described [several approaches](https://github.com/vazco/meteor-universe-i18n/integration-with-react) to integrating React with our package. You need also to remove  `createComponent` and `getRefreshMixin` functions.
+
+
+### Blaze migration
+- Remove deprecated [universe-i18n-blaze](https://github.com/vazco/universe-i18n-blaze) package 
+- Add Blaze integration described in the [documentation](https://github.com/vazco/meteor-universe-i18n/#integration-with-blaze) below.
 
 ## Usage
 

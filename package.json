@@ -19,5 +19,6 @@
     "@types/strip-json-comments": "3.0.0",
     "eslint-config-vazco": "6.2.0",
     "typescript": "4.6.2"
-  }
+  },
+  "types": "source/index.d.ts"
 }

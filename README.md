@@ -61,18 +61,13 @@ $ meteor npm install --save @types/meteor-universe-i18n
 
 ## Migration to v2
 
-### Breaking changes
+- Locales and currency data have been removed. That means, the following functions are no longer available: `parseNumber`, `getLanguages`, `getCurrencyCodes`, `getCurrencySymbol`, `getLanguageName`, `getLanguageNativeName` and `isRTL`. If your app needs them, check if the [Intl API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl) suits your needs. If not, copy the values you need from [v1 source](https://github.com/vazco/meteor-universe-i18n/tree/v1.32.5)
+- The `_purify` option has been removed, as it wasn't working on the server anyway. For detailed explanation and an alternative, see [this comment](https://github.com/vazco/meteor-universe-i18n/issues/144#issuecomment-1006522371)
+- Both `createTranslator` and `createReactiveTranslator` have been removed. If your project is using them, simply create your own helpers on top of `getTranslation`
+- The built-in React integration is no longer there, i.e., both `createComponent` and `getRefreshMixin` functions have been removed. Refer to the [Integration with React](#integration-with-react) section for details.
+- The Blaze integration package ([universe-i18n-blaze](https://github.com/vazco/universe-i18n-blaze)) is deprecated. Refer to the [Integration with Blaze](#integration-with-blaze) section for details.
 
-- Locales and currency data has been removed from our package. Delete from your code the following functions: `parseNumber`, `getLanguages`, `getCurrencyCodes`, `getCurrencySymbol`, `getLanguageName`, `getLanguageNativeName` and `isRTL`. You can use Intl API or write your custom functions (see [meteor-universe-i18n v1 code](https://github.com/vazco/meteor-universe-i18n/blob/v1.32.5/source/common.ts) for a reference)
-- Remove `_purify` option ([explanation](https://github.com/vazco/meteor-universe-i18n/issues/144#issuecomment-1006522371))
-- Remove `createTranslator` and `createReactiveTranslator`
-- `meteor-universe-i18n` has no longer built-in React integration. However, we described [several approaches](https://github.com/vazco/meteor-universe-i18n/integration-with-react) to integrating React with our package. You need also to remove `createComponent` and `getRefreshMixin` functions
-- Remove deprecated [universe-i18n-blaze](https://github.com/vazco/universe-i18n-blaze) package and add Blaze integration described in the [documentation](https://github.com/vazco/meteor-universe-i18n/#integration-with-blaze) below
-
-### Useful links
-
-- [Roadmap to v2](https://github.com/vazco/meteor-universe-i18n/issues/144)
-- [v2.0.0-rc.0 pull request](https://github.com/vazco/meteor-universe-i18n/pull/152)
+If you want to read more about v2, check out the [roadmap](https://github.com/vazco/meteor-universe-i18n/issues/144) as well as the [main pull request](https://github.com/vazco/meteor-universe-i18n/pull/152).
 
 ## Usage
 

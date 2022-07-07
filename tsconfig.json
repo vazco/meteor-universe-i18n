@@ -1,16 +1,16 @@
 {
-  "include": ["source/**/*.ts"],
   "exclude": ["source/index.d.ts"],
+  "include": ["source/**/*.ts"],
   "compilerOptions": {
+    "declaration": true,
+    "emitDeclarationOnly": true,
     "esModuleInterop": true,
     "jsx": "react",
     "lib": ["DOM", "ES2019"],
     "module": "commonjs",
     "moduleResolution": "node",
+    "outFile": "source/index",
     "strict": true,
-    "target": "ES2019",
-    "declaration": true,
-    "emitDeclarationOnly": true,
-    "outFile": "source/index"
+    "target": "ES2019"
   }
 }

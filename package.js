@@ -31,6 +31,7 @@ Package.onUse(function (api) {
     'tracker',
     'typescript',
     'webapp',
+    'zodern:types@1.0.0',
   ]);
 
   api.mainModule('source/client.ts', 'client');

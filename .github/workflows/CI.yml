@@ -7,10 +7,6 @@ on:
       - master
 
 jobs:
-  npm_vulnerabilities_check:
-    name: NPM dependency vulnerabilities check
-    uses: vazco/open-standards/.github/workflows/check_dependency_vulnerabilities.yml@master
-
   CI:
     runs-on: ubuntu-latest
     strategy:
@@ -20,8 +16,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Npm dependency duplication check
-        uses: vazco/open-standards/actions/npm-dependency-duplications/@action-test
+      - name: Check dependency duplications
+        uses: vazco/open-standards/actions/npm-dependency-duplications/@master
+
+      - name: Check dependency vulnerabilities
+        uses: vazco/open-standards/actions/npm-dependency-vulnerabilities/@master
 
       - name: Install Meteor
         env:

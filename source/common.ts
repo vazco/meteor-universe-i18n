@@ -307,3 +307,4 @@ i18n.__ = i18n.getTranslation;
 i18n.addTranslation = i18n.addTranslations;
 
 export { i18n };
+export default i18n;

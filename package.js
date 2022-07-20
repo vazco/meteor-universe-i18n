@@ -1,7 +1,7 @@
 Package.describe({
   name: 'universe:i18n',
   documentation: './atmosphere.md',
-  version: '2.0.0-rc.0',
+  version: '2.0.0-rc.1',
   summary:
     'Lightweight i18n, YAML & JSON translation files, React component, incremental & remote loading',
   git: 'https://github.com/vazco/meteor-universe-i18n',
@@ -31,6 +31,7 @@ Package.onUse(function (api) {
     'tracker',
     'typescript',
     'webapp',
+    'zodern:types@1.0.0',
   ]);
 
   api.mainModule('source/client.ts', 'client');

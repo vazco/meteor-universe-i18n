@@ -30,6 +30,7 @@ The package supports:
 
 - [Installation](https://github.com/vazco/meteor-universe-i18n/#installation)
   - [Typescript](https://github.com/vazco/meteor-universe-i18n/#typescript)
+- [Migration to v2](https://github.com/vazco/meteor-universe-i18n/#migration-to-v2)
 - [Usage](https://github.com/vazco/meteor-universe-i18n/#usage)
   - [Setting/getting locale](https://github.com/vazco/meteor-universe-i18n/#settinggetting-locale)
   - [Adding translations by methods](https://github.com/vazco/meteor-universe-i18n/#adding-translations-by-methods)
@@ -57,6 +58,16 @@ $ meteor add universe:i18n
 ```sh
 $ meteor npm install --save @types/meteor-universe-i18n
 ```
+
+## Migration to v2
+
+- Locales and currency data have been removed. That means, the following functions are no longer available: `parseNumber`, `getLanguages`, `getCurrencyCodes`, `getCurrencySymbol`, `getLanguageName`, `getLanguageNativeName` and `isRTL`. If your app needs them, check if the [Intl API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl) suits your needs. If not, copy the values you need from [v1 source](https://github.com/vazco/meteor-universe-i18n/tree/v1.32.5)
+- The `_purify` option has been removed, as it wasn't working on the server anyway. For detailed explanation and an alternative, see [this comment](https://github.com/vazco/meteor-universe-i18n/issues/144#issuecomment-1006522371)
+- Both `createTranslator` and `createReactiveTranslator` have been removed. If your project is using them, simply create your own helpers on top of `getTranslation`
+- The built-in React integration is no longer there, i.e., both `createComponent` and `getRefreshMixin` functions have been removed. Refer to the [Integration with React](#integration-with-react) section for details.
+- The Blaze integration package ([universe-i18n-blaze](https://github.com/vazco/universe-i18n-blaze)) is deprecated. Refer to the [Integration with Blaze](#integration-with-blaze) section for details.
+
+If you want to read more about v2, check out the [roadmap](https://github.com/vazco/meteor-universe-i18n/issues/144) as well as the [main pull request](https://github.com/vazco/meteor-universe-i18n/pull/152).
 
 ## Usage
 
@@ -368,7 +379,7 @@ i18n.runWithLocale(locale, func)
 
 There are few different ways to integrate this package with a React application. Here is the most "React-way" solution facilitating `React Context`:
 
-```js
+```ts
 import { i18n } from 'meteor/universe:i18n';
 import React, {
   ReactNode,
@@ -402,7 +413,7 @@ export function useLocale() {
 
 It allows creating following hook:
 
-```js
+```ts
 export function useTranslator(prefix = '') {
   const locale = useLocale();
   return useCallback(
@@ -437,7 +448,7 @@ The most straight-forward approach. Gets transaltion every time language is chan
 </summary>
 <br>
 
-```js
+```ts
 import { i18n } from 'meteor/universe:i18n';
 import { useEffect, useState } from 'react';
 
@@ -461,7 +472,7 @@ Improved version of the solution above. Gets translation every time acctual tran
 </summary>
 <br>
 
-```js
+```ts
 import { i18n } from 'meteor/universe:i18n';
 import { useEffect, useState } from 'react';
 
@@ -487,14 +498,14 @@ The meteor-way solution that facilitates <code>ReactiveVar</code> and <code>useT
 </summary>
 <br>
 
-```js
+```ts
 import { i18n } from 'meteor/universe:i18n';
 // https://docs.meteor.com/api/reactive-var.html
 import { ReactiveVar } from 'meteor/reactive-var';
 // https://blog.meteor.com/introducing-usetracker-react-hooks-for-meteor-cb00c16d6222
 import { useTracker } from 'meteor/react-meteor-data';
 
-const localeReactive = new ReactiveVar() < string > i18n.getLocale();
+const localeReactive = new ReactiveVar<string>(i18n.getLocale());
 i18n.onChangeLocale(localeReactive.set);
 
 export function getTranslationReactive(key: string, ...args: unknown[]) {
@@ -511,7 +522,7 @@ export function useTranslation(key: string, ...args: unknown[]) {
 
 ## Integration with Blaze
 
-```js
+```ts
 import { i18n } from 'meteor/universe:i18n';
 import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';

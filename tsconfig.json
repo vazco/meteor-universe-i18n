@@ -1,6 +1,5 @@
 {
-  "exclude": ["source/index.d.ts"],
-  "include": ["source/**/*.ts"],
+  "include": ["source/common.ts"],
   "compilerOptions": {
     "declaration": true,
     "emitDeclarationOnly": true,
@@ -9,7 +8,8 @@
     "lib": ["DOM", "ES2019"],
     "module": "commonjs",
     "moduleResolution": "node",
-    "outFile": "source/index",
+    "declarationDir": "types",
+    "declarationMap": true,
     "strict": true,
     "target": "ES2019"
   }

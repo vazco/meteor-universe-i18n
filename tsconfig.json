@@ -1,11 +1,15 @@
 {
+  "include": ["source/common.ts"],
   "compilerOptions": {
+    "declaration": true,
+    "emitDeclarationOnly": true,
     "esModuleInterop": true,
     "jsx": "react",
     "lib": ["DOM", "ES2019"],
     "module": "commonjs",
     "moduleResolution": "node",
-    "noEmit": true,
+    "declarationDir": "types",
+    "declarationMap": true,
     "strict": true,
     "target": "ES2019"
   }

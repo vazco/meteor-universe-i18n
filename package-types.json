@@ -1,3 +1,3 @@
 {
-  "typesEntry": "source/common.ts"
+  "typesEntry": "types/common.d.ts"
 }

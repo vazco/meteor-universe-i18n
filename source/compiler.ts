@@ -1,3 +1,5 @@
+/// <reference path="meteor_caching-compiler.d.ts"/>
+
 import YAML from 'js-yaml';
 import { CachingCompiler } from 'meteor/caching-compiler';
 import path from 'path';

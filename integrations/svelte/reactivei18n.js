@@ -1,7 +1,7 @@
 import { i18n } from 'meteor/universe:i18n';
 import { derived, writable } from 'svelte/store';
 
-// Import of all files that contain translations, eg:
+// Importing files that contain translations, eg:
 import '../locales/en.i18n.yml';
 import '../locales/es.i18n.yml';
 

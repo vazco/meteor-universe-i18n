@@ -7,6 +7,7 @@ import { isEqual } from 'lodash-es';
 import '../imports/locales/en.i18n.yml';
 import '../imports/locales/es.i18n.yml';
 
+// Function for updating i18n translation with translations from database
 function refresh(locale, { translations = {}, updatedAt = new Date() }) {
   locale = i18n.normalize(locale);
   i18n._translations[locale] = translations;
@@ -22,6 +23,7 @@ const mergeTranslations = (baseTranslations, translation) => {
   return Object.assign({}, translation, baseTranslations);
 };
 
+// Adding translations from files to database on startup
 Meteor.startup(() => {
   const updatedAt = new Date();
 
@@ -41,7 +43,8 @@ Meteor.startup(() => {
   Translations.find().observeChanges({ added: refresh, changed: refresh });
 });
 
-// This is just an example, this method should check user's permissions.
+// Method for updating translations in database
+// This is just a basic example, this method should check user's permissions.
 Meteor.methods({
   'translations.updateTranslation'({ translationId, newTranslation }) {
     const inDB = Translations.findOne({ _id: translationId });

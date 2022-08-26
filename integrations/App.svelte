@@ -1,8 +1,9 @@
 <script>
-  import { t, locale } from '../utils/i18n';
   import { Meteor } from 'meteor/meteor';
+  import { t, locale } from '../utils/i18n';
   import { reactiveLocale } from '../../client/main';
 
+  // Changing locale should be done via the reactiveLocale to trigger database timestamp check
   const setLanguage = language => {
     reactiveLocale.set(language);
   };

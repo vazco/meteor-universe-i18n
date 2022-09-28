@@ -1,10 +1,10 @@
 <script>
   import { Meteor } from 'meteor/meteor';
-  import { t, locale } from '../utils/i18n';
-  import { reactiveLocale } from '../../client/main';
+  import { t, locale } from './reactivei18n';
+  import { reactiveLocale } from './client';
 
-  // Changing locale should be done via the reactiveLocale to trigger database timestamp check
   const setLanguage = language => {
+    // Changing locale should be done via the reactiveLocale to trigger database timestamp check
     reactiveLocale.set(language);
   };
 
@@ -14,7 +14,6 @@
 </script>
 
 <div class="container">
-  <h1>Welcome to Meteor!</h1>
   <button on:click={() => setLanguage('en')}>EN</button>
   <button on:click={() => setLanguage('es')}>ESP</button>
 
@@ -28,6 +27,8 @@
     apple: {$t('apple')}
   </div>
   <br />
+
+  <!-- Example of updating locale in the DB from client level-->
   Locale to update:
   <input placeholder="e.g. es" bind:value={localeToUpdate} /><br />
   Key to update:

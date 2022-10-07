@@ -1,6 +1,6 @@
 import { i18n } from 'meteor/universe:i18n';
 import { useCallback } from 'react';
-import { useLocale } from './reactive18n';
+import { useLocale } from './reactivei18n';
 
 export function useTranslator(prefix = '') {
   const locale = useLocale();

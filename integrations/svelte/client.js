@@ -3,7 +3,7 @@ import { Tracker } from 'meteor/tracker';
 import { ReactiveVar } from 'meteor/reactive-var';
 
 import { Translations } from '../imports/api/TranslationsCollection';
-import { locale as storeLocale } from '../imports/utils/i18n';
+import { locale as storeLocale } from './reactivei18n';
 
 export const reactiveLocale = new ReactiveVar('en');
 

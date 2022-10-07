@@ -7,17 +7,15 @@ const Example = () => {
   return (
     <>
       Are you sure?
-      <button>{t('common.yes')}</button>
-      <button>{t('common.no')}</button>
-      <input placeholder={t('forms.company.placeholder')} />
+      <button>{t('ok')}</button>
+      <button>{t('dog')}</button>
+      <input placeholder={t('company.placeholder')} />
     </>
   );
 };
 
-const App = () => (
+export const App = () => (
   <LocaleProvider>
     <Example />
   </LocaleProvider>
 );
-
-export default App;

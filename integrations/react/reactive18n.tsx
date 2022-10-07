@@ -7,6 +7,8 @@ import React, {
   useContext,
 } from 'react';
 
+import './en.i18n.yml';
+
 const localeContext = createContext(i18n.getLocale());
 
 export type LocaleProviderProps = { children: ReactNode };

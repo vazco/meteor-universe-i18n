@@ -386,7 +386,6 @@ There are few different ways to integrate this package with a React application.
 
 ```tsx
 // imports/i18n/i18n.tsx
-
 import { i18n } from 'meteor/universe:i18n';
 import React, {
   ReactNode,
@@ -433,7 +432,6 @@ Created above `useTranslator` hook can be used in the following way:
 
 ```tsx
 // imports/ui/App.tsx
-
 import React from 'react';
 import { LocaleProvider, useTranslator } from '/imports/i18n/i18n';
 

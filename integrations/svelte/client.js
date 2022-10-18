@@ -11,8 +11,7 @@ let latestTranslations = new Map([]);
 Tracker.autorun(async () => {
   let locale = reactiveLocale.get();
 
-  const translationTimestamp = Translations.find({ _id: locale }).fetch()[0]
-    ?.updatedAt;
+  const translationTimestamp = Translations.findOne({ _id: locale })?.updatedAt;
 
   if (!latestTranslations.get(locale)) {
     latestTranslations.set(locale, '');

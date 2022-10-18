@@ -8,7 +8,7 @@ There are a few different ways to integrate `universe:i18n` package with a React
 
 ## Blaze
 
-Blaze integration is similar to one of the React integration solutions and facilitates <code>ReactiveVar</code>.
+Blaze integration is similar to one of the React integration solutions and facilitates `ReactiveVar`.
 
 ## Svelte
 

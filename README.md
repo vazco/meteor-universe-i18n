@@ -163,7 +163,7 @@ i18n.__('items', ['a', 'b', 'c']); // output: The first item is a and the last o
 
 ## Translations files
 
-Instead of setting translations directly through i18n.addTranslation(s), you can store them in YAML or JSON files, named **.i18n.yml**, **.i18n.json** accordingly. Translation files should be imported on the client side:
+Instead of setting translations directly through `i18n.addTranslation(s)`, you can store them in YAML or JSON files, named **.i18n.yml**, **.i18n.json** accordingly. Translation files should be imported on the client side:
 
 ```js
 // client/main.jsx

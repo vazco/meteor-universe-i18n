@@ -30,7 +30,7 @@ function getDiff(locale: string, diffWith?: string) {
   return diff;
 }
 
-function getJS(locale: string, namespace: string, isBefore?: boolean) {
+function getJS(locale: string, namespace?: string, isBefore?: boolean) {
   const json = getJSON(locale, namespace);
   if (json.length <= 2 && !isBefore) {
     return '';

@@ -392,7 +392,7 @@ i18n.runWithLocale(locale, func)
 
 ## Integrations
 
-This section showcases some of the ways of integrating `universe:i18n` with different frameworks. More detailed examples can be found in the `integrations` directory.
+This section showcases some of the ways of integrating `universe:i18n` with different frameworks. More detailed examples can be found in the [`integrations` directory](https://github.com/vazco/meteor-universe-i18n/blob/master/integrations).
 
 ### Integration with React
 

@@ -384,13 +384,16 @@ This section showcases some of the ways of integrating `universe:i18n` with diff
 
 There are few different ways to integrate this package with a React application. Here is the most "React-way" solution facilitating `React Context`:
 
-```ts
+```tsx
+// imports/i18n/i18n.tsx
 import { i18n } from 'meteor/universe:i18n';
 import React, {
   ReactNode,
   createContext,
   useCallback,
   useContext,
+  useEffect,
+  useState,
 } from 'react';
 
 const localeContext = createContext(i18n.getLocale());
@@ -414,11 +417,7 @@ export function LocaleProvider({ children }: LocaleProviderProps) {
 export function useLocale() {
   return useContext(localeContext);
 }
-```
 
-It allows creating following hook:
-
-```ts
 export function useTranslator(prefix = '') {
   const locale = useLocale();
   return useCallback(
@@ -429,20 +428,27 @@ export function useTranslator(prefix = '') {
 }
 ```
 
-Which can be later used in the following way:
+Created above `useTranslator` hook can be used in the following way:
 
-```js
-function Example() {
+```tsx
+// imports/ui/App.tsx
+import React from 'react';
+import { LocaleProvider, useTranslator } from '/imports/i18n/i18n';
+
+const Component = () => {
   const t = useTranslator();
   return (
-    <>
-      Are you sure?
-      <Button>{t('common.yes')}</Button>
-      <Button>{t('common.no')}</Button>
-      <CompanyField placeholder={t('forms.company.placeholder')} />
-    </>
+    <div>
+      <h1>{t('hello')}</h1>
+    </div>
   );
-}
+};
+
+export const App = () => (
+  <LocaleProvider>
+    <Component />
+  </LocaleProvider>
+);
 ```
 
 Here are other options for React integration:

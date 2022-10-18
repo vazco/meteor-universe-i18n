@@ -41,9 +41,10 @@ The package supports:
     - [Translation in packages](https://github.com/vazco/meteor-universe-i18n/#translation-in-packages)
     - [Translation in application](https://github.com/vazco/meteor-universe-i18n/#translation-in-application)
 - [API](https://github.com/vazco/meteor-universe-i18n/#api)
-- [Integration with React](https://github.com/vazco/meteor-universe-i18n/#integration-with-react)
-- [Integration with Blaze](https://github.com/vazco/meteor-universe-i18n/#integration-with-blaze)
-- [Integration with SimpleSchema](https://github.com/vazco/meteor-universe-i18n/blob/master/README.md#integration-with-simpleschema-package)
+- [Integrations](https://github.com/vazco/meteor-universe-i18n/#integrations)
+  - [Integration with React](https://github.com/vazco/meteor-universe-i18n/#integration-with-react)
+  - [Integration with Blaze](https://github.com/vazco/meteor-universe-i18n/#integration-with-blaze)
+  - [Integration with SimpleSchema](https://github.com/vazco/meteor-universe-i18n/blob/master/README.md#integration-with-simpleschema-package)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -375,7 +376,11 @@ i18n.runWithLocale(locale, func)
 // keep in mind that locale must be loaded first (if it is not bundled)
 ```
 
-## Integration with React
+## Integrations
+
+This section showcases some of the ways of integrating `universe:i18n` with different frameworks. More detailed examples can be found in the `integrations` directory.
+
+### Integration with React
 
 There are few different ways to integrate this package with a React application. Here is the most "React-way" solution facilitating `React Context`:
 
@@ -520,7 +525,7 @@ export function useTranslation(key: string, ...args: unknown[]) {
 
 </details>
 
-## Integration with Blaze
+### Integration with Blaze
 
 ```ts
 import { i18n } from 'meteor/universe:i18n';
@@ -536,7 +541,7 @@ Template.registerHelper('__', function (key: string, ...args: unknown[]) {
 });
 ```
 
-## Integration with SimpleSchema package
+### Integration with SimpleSchema package
 
 Add following-like code to main.js:
 

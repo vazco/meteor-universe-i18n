@@ -165,18 +165,34 @@ i18n.__('items', ['a', 'b', 'c']); // output: The first item is a and the last o
 
 ## Translations files
 
-Instead of setting translations directly through i18n.addTranslation(s), you can store them in YAML or JSON files, named **.i18n.yml**, **.i18n.json** accordingly. As locales are by default loaded lazily, the translation files, unless they are attached to the bundle, should be placed in the common space.
+Instead of setting translations directly through i18n.addTranslation(s), you can store them in YAML or JSON files, named **.i18n.yml**, **.i18n.json** accordingly. Translation files should be imported on the client side:
+
+```js
+// client/main.jsx
+import React from 'react';
+import { Meteor } from 'meteor/meteor';
+import { render } from 'react-dom';
+import { App } from '/imports/ui/App';
+
+import '../i18n/en.i18n.json';
+import '../i18n/de.i18n.json';
+
+Meteor.startup(() => {
+  render(<App />, document.getElementById('react-target'));
+});
+```
 
 ### Recognition locale of translation
 
 Files can be named freely as long as they have their respective locale declared under the key '\_locale'.
 
 ```yml
+# translation.i18n.yml
 _locale: en-US
 title: Title
 ```
 
-Otherwise, files should be named after their respective locales or placed in directories named accordingly. The only requirement
+Otherwise, files should be named after their respective locales or placed in directories named accordingly.
 
 ```
 en.i18n.yml
@@ -225,7 +241,7 @@ Chapter:
 For example, translations files in packages are by default namespaced by their package name.
 
 ```js
-// file en.json in the universe:profile package
+// file en.i18n.json in the universe:profile package
 {
   "_locale": "en",
   "userName": "User name"
@@ -239,7 +255,7 @@ i18n.__('universe:profile', 'userName'); // output: User name
 You can change a default namespace for a file by setting a prefix to this file under the key "\_namespace".
 
 ```js
-// file en.json in the universe:profile package
+// file en.i18n.json in the universe:profile package
 {
   "_locale": "en-US",
   "_namespace": "Common",
@@ -264,7 +280,7 @@ and can override every other namespace.
 For example:
 
 ```yml
-# file en_us.yml in an application space (not from a package)
+# file en_us.i18n.yml in an application space (not from a package)
 _locale: en-US
 userName: user name
 ```

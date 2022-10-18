@@ -115,8 +115,6 @@ By the way, It's good option is also use 'accept-language' header to recognize c
 
 ```js
 import i18n from 'meteor/universe:i18n';
-import './en.i18n.yml';
-import './en-US.i18n.yml';
 
 i18n.addTranslation('en-US', 'Common', 'no', 'No');
 i18n.addTranslation('en-US', 'Common.ok', 'Ok');

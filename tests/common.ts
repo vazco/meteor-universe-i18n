@@ -1,8 +1,8 @@
 /// <reference path="meteor_practicalmeteor_sinon.d.ts"/>
-/// <reference path="meteor_universe_i18n.d.ts"/>
 
 import { sinon } from 'meteor/practicalmeteor:sinon';
-import { i18n } from 'meteor/universe:i18n';
+
+import { i18n } from '../source/common';
 
 const expect = chai.expect;
 

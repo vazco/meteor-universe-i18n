@@ -1,4 +1,4 @@
-import { i18n } from 'meteor/universe:i18n';
+import { i18n } from '../source/server';
 
 const expect = chai.expect;
 

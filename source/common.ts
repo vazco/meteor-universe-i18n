@@ -7,7 +7,7 @@ import { JSON, JSONObject, get, isJSONObject, set } from './utils';
 export interface GetCacheEntry {
   getJS(locale: string, namespace: string, isBefore?: boolean): string;
   getJSON(locale: string, namespace: string, diff?: string): string;
-  getYML(locale: string, namespace: string, diff?: string): string;
+  getYML(locale: string, namespace?: string, diff?: string): string;
   updatedAt: string;
 }
 

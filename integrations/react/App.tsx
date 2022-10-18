@@ -1,5 +1,5 @@
 import React from 'react';
-import { LocaleProvider } from './reactive18n';
+import { LocaleProvider } from './reactivei18n';
 import { useTranslator } from './useTranslator';
 
 const Example = () => {

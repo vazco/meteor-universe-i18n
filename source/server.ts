@@ -173,7 +173,7 @@ i18n.loadLocale = async (
     if (content) {
       i18n.addTranslations(
         normalizedLocale,
-        JSON.parse(stripJsonComments(content)),
+        JSON.parse(stripJsonComments(content as string)),
       );
       delete cache[normalizedLocale];
       if (!silent) {
@@ -319,6 +319,7 @@ function patchPublish(publish: typeof Meteor.publish) {
 }
 
 Meteor.publish = patchPublish(Meteor.publish);
+// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 (Meteor as any).server.publish = patchPublish((Meteor as any).server.publish);
 
 export { i18n };

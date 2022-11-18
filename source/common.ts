@@ -171,7 +171,7 @@ const i18n = {
       locale = i18n.getLocale();
     }
 
-    const keys = Object.create(null);
+    const keys: Record<string, boolean> = Object.create(null);
     function walk(path: string[], data: JSON) {
       if (isJSONObject(data)) {
         for (const [key, value] of Object.entries(data)) {

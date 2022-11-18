@@ -1,8 +1,8 @@
 {
   "private": true,
   "scripts": {
-    "lint:js": "eslint .",
-    "lint:ts": "tsc",
+    "lint:js": "eslint source/",
+    "lint:ts": "tsc --noEmit",
     "test:local": "UNIVERSE_I18N_LOCALES=en-US meteor test-packages --port 8080 --driver-package meteortesting:mocha ./",
     "test:CI": "./tests/tests.bash"
   },

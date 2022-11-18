@@ -82,6 +82,7 @@ i18n.loadLocale = (locale, options) => {
 
 const preloaded = (window as any).__uniI18nPre;
 if (typeof preloaded === 'object') {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   Object.entries(preloaded).map(([locale, translations]) => {
     if (translations) {
       i18n.addTranslations(locale, translations);

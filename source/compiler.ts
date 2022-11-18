@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/triple-slash-reference
 /// <reference path="meteor_caching-compiler.d.ts"/>
 
 import YAML from 'js-yaml';
@@ -6,8 +7,7 @@ import path from 'path';
 import stripJsonComments from 'strip-json-comments';
 
 import { i18n } from './common';
-import { isJSONObject, set } from './utils';
-import type { JSON } from './utils';
+import { isJSONObject, set, JSON } from './utils';
 
 declare class Compiler {}
 declare class Plugin {

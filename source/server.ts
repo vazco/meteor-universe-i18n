@@ -1,12 +1,12 @@
 import type { NextHandleFunction } from 'connect';
-import Fibers from 'fibers';
-import YAML from 'js-yaml';
+import { current } from 'fibers';
+import { dump, FAILSAFE_SCHEMA } from 'js-yaml';
 import { Match, check } from 'meteor/check';
 import { DDP } from 'meteor/ddp';
 import { Meteor } from 'meteor/meteor';
 import { WebApp } from 'meteor/webapp';
 import stripJsonComments from 'strip-json-comments';
-import URL from 'url';
+import { parse, resolve } from 'url';
 
 import { GetCacheEntry, GetCacheFunction, i18n } from './common';
 import './global';
@@ -16,7 +16,7 @@ i18n.setOptions({ hostUrl: Meteor.absoluteUrl() });
 
 const _get = i18n._contextualLocale.get.bind(i18n._contextualLocale);
 i18n._contextualLocale.get = () =>
-  Fibers.current ? _get() ?? i18n._getConnectionLocale() : undefined;
+  current ? _get() ?? i18n._getConnectionLocale() : undefined;
 
 function getDiff(locale: string, diffWith?: string) {
   const diff: JSONObject = {};
@@ -91,10 +91,10 @@ function getCachedFormatter(
 
 const getJSON = getCachedFormatter('json', object => JSON.stringify(object));
 const getYML = getCachedFormatter('yml', object =>
-  YAML.dump(object, {
+  dump(object, {
     indent: 2,
     noCompatMode: true,
-    schema: YAML.FAILSAFE_SCHEMA,
+    schema: FAILSAFE_SCHEMA,
     skipInvalid: true,
     sortKeys: true,
   }),
@@ -161,7 +161,7 @@ i18n.loadLocale = async (
     queryParams.ts = new Date().getTime();
   }
 
-  const url = URL.resolve(
+  const url = resolve(
     host,
     pathOnHost + normalizedLocale + '?' + queryParams.type,
   );
@@ -218,7 +218,7 @@ WebApp.connectHandlers.use('/universe/locale/', ((request, response, next) => {
       preload = false,
       type,
     },
-  } = URL.parse(request.url || '', true);
+  } = parse(request.url || '', true);
 
   if (type && !['js', 'json', 'yml'].includes(type as string)) {
     response.writeHead(415);

@@ -1,9 +1,9 @@
 // eslint-disable-next-line @typescript-eslint/triple-slash-reference
 /// <reference path="meteor_caching-compiler.d.ts"/>
 
-import YAML from 'js-yaml';
+import { load, FAILSAFE_SCHEMA } from 'js-yaml';
 import { CachingCompiler } from 'meteor/caching-compiler';
-import path from 'path';
+import { extname } from 'path';
 import stripJsonComments from 'strip-json-comments';
 
 import { i18n } from './common';
@@ -124,7 +124,7 @@ class UniverseI18nCompiler extends CachingCompiler {
 }
 
 function analyzePath(sourcePath: string) {
-  const type = path.extname(sourcePath);
+  const type = extname(sourcePath);
   const parts = sourcePath.replace(`.i18n.${type}`, '').split(/[-./\\_]/g);
   for (let length = parts.length; length; --length) {
     const locale = i18n.normalize(parts.slice(-length).join('-'));
@@ -159,8 +159,8 @@ function readUnsafe(source: string, type: string): JSON | unknown {
     case '.json':
       return JSON.parse(stripJsonComments(source));
     case '.yml':
-      return YAML.load(source, {
-        schema: YAML.FAILSAFE_SCHEMA,
+      return load(source, {
+        schema: FAILSAFE_SCHEMA,
         onWarning: console.warn.bind(console),
       });
     default:

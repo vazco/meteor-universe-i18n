@@ -1,5 +1,5 @@
 import type { NextHandleFunction } from 'connect';
-import { current } from 'fibers';
+import Fibers from 'fibers';
 import { dump, FAILSAFE_SCHEMA } from 'js-yaml';
 import { Match, check } from 'meteor/check';
 import { DDP } from 'meteor/ddp';
@@ -16,7 +16,7 @@ i18n.setOptions({ hostUrl: Meteor.absoluteUrl() });
 
 const _get = i18n._contextualLocale.get.bind(i18n._contextualLocale);
 i18n._contextualLocale.get = () =>
-  current ? _get() ?? i18n._getConnectionLocale() : undefined;
+  Fibers.current ? _get() ?? i18n._getConnectionLocale() : undefined;
 
 function getDiff(locale: string, diffWith?: string) {
   const diff: JSONObject = {};

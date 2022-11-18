@@ -7,7 +7,8 @@ import React, {
   useContext,
 } from 'react';
 
-import './en.i18n.yml';
+import './locales/en.i18n.yml';
+import './locales/es.i18n.yml';
 
 const localeContext = createContext(i18n.getLocale());
 

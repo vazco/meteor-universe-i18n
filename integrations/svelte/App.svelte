@@ -20,21 +20,20 @@
   <div>
     Locale: {$locale}
     <br />
-    hi: {$t('hi')}
     <br />
     ok: {$t('ok')}
     <br />
-    apple: {$t('apple')}
+    dog: {$t('dog')}
   </div>
   <br />
 
   <!-- Example of updating locale in the DB from client level-->
   Locale to update:
-  <input placeholder="e.g. es" bind:value={localeToUpdate} /><br />
+  <input placeholder="e.g. en" bind:value={localeToUpdate} /><br />
   Key to update:
-  <input placeholder="e.g. apple" bind:value={keyToUpdate} /><br />
+  <input placeholder="e.g. dog" bind:value={keyToUpdate} /><br />
   New value:
-  <input placeholder="e.g. Green apple" bind:value={valueToUpdate} /><br />
+  <input placeholder="e.g. Big dog" bind:value={valueToUpdate} /><br />
   <button
     on:click={() => {
       const newTranslation = {};

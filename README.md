@@ -116,8 +116,6 @@ By the way, It's good option is also use 'accept-language' header to recognize c
 
 ```js
 import i18n from 'meteor/universe:i18n';
-import './en.i18n.yml';
-import './en-US.i18n.yml';
 
 i18n.addTranslation('en-US', 'Common', 'no', 'No');
 i18n.addTranslation('en-US', 'Common.ok', 'Ok');
@@ -166,18 +164,34 @@ i18n.__('items', ['a', 'b', 'c']); // output: The first item is a and the last o
 
 ## Translations files
 
-Instead of setting translations directly through i18n.addTranslation(s), you can store them in YAML or JSON files, named **.i18n.yml**, **.i18n.json** accordingly. As locales are by default loaded lazily, the translation files, unless they are attached to the bundle, should be placed in the common space.
+Instead of setting translations directly through `i18n.addTranslation(s)`, you can store them in YAML or JSON files, named **.i18n.yml**, **.i18n.json** accordingly. Translation files should be imported on the client side:
+
+```js
+// client/main.jsx
+import React from 'react';
+import { Meteor } from 'meteor/meteor';
+import { render } from 'react-dom';
+import { App } from '/imports/ui/App';
+
+import '../i18n/en.i18n.json';
+import '../i18n/de.i18n.json';
+
+Meteor.startup(() => {
+  render(<App />, document.getElementById('react-target'));
+});
+```
 
 ### Recognition locale of translation
 
 Files can be named freely as long as they have their respective locale declared under the key '\_locale'.
 
 ```yml
+# translation.i18n.yml
 _locale: en-US
 title: Title
 ```
 
-Otherwise, files should be named after their respective locales or placed in directories named accordingly. The only requirement
+Otherwise, files should be named after their respective locales or placed in directories named accordingly.
 
 ```
 en.i18n.yml
@@ -226,7 +240,7 @@ Chapter:
 For example, translations files in packages are by default namespaced by their package name.
 
 ```js
-// file en.json in the universe:profile package
+// file en.i18n.json in the universe:profile package
 {
   "_locale": "en",
   "userName": "User name"
@@ -240,7 +254,7 @@ i18n.__('universe:profile', 'userName'); // output: User name
 You can change a default namespace for a file by setting a prefix to this file under the key "\_namespace".
 
 ```js
-// file en.json in the universe:profile package
+// file en.i18n.json in the universe:profile package
 {
   "_locale": "en-US",
   "_namespace": "Common",
@@ -265,7 +279,7 @@ and can override every other namespace.
 For example:
 
 ```yml
-# file en_us.yml in an application space (not from a package)
+# file en_us.i18n.yml in an application space (not from a package)
 _locale: en-US
 userName: user name
 ```
@@ -378,19 +392,22 @@ i18n.runWithLocale(locale, func)
 
 ## Integrations
 
-This section showcases some of the ways of integrating `universe:i18n` with different frameworks. More detailed examples can be found in the `integrations` directory.
+This section showcases some of the ways of integrating `universe:i18n` with different frameworks. More detailed examples can be found in the [`integrations` directory](https://github.com/vazco/meteor-universe-i18n/blob/master/integrations).
 
 ### Integration with React
 
 There are few different ways to integrate this package with a React application. Here is the most "React-way" solution facilitating `React Context`:
 
-```ts
+```tsx
+// imports/i18n/i18n.tsx
 import { i18n } from 'meteor/universe:i18n';
 import React, {
   ReactNode,
   createContext,
   useCallback,
   useContext,
+  useEffect,
+  useState,
 } from 'react';
 
 const localeContext = createContext(i18n.getLocale());
@@ -414,11 +431,7 @@ export function LocaleProvider({ children }: LocaleProviderProps) {
 export function useLocale() {
   return useContext(localeContext);
 }
-```
 
-It allows creating following hook:
-
-```ts
 export function useTranslator(prefix = '') {
   const locale = useLocale();
   return useCallback(
@@ -429,20 +442,27 @@ export function useTranslator(prefix = '') {
 }
 ```
 
-Which can be later used in the following way:
+Created above `useTranslator` hook can be used in the following way:
 
-```js
-function Example() {
+```tsx
+// imports/ui/App.tsx
+import React from 'react';
+import { LocaleProvider, useTranslator } from '/imports/i18n/i18n';
+
+const Component = () => {
   const t = useTranslator();
   return (
-    <>
-      Are you sure?
-      <Button>{t('common.yes')}</Button>
-      <Button>{t('common.no')}</Button>
-      <CompanyField placeholder={t('forms.company.placeholder')} />
-    </>
+    <div>
+      <h1>{t('hello')}</h1>
+    </div>
   );
-}
+};
+
+export const App = () => (
+  <LocaleProvider>
+    <Component />
+  </LocaleProvider>
+);
 ```
 
 Here are other options for React integration:

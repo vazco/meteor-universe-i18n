@@ -20,6 +20,8 @@ function refresh(locale, { translations = {}, updatedAt = new Date() }) {
 }
 
 const mergeTranslations = (baseTranslations, translation) => {
+  // This is just a basic example of shallow merge
+  // To assure correct merge of objects deep merge should be used
   return Object.assign({}, translation, baseTranslations);
 };
 

@@ -9,7 +9,6 @@ const Example = () => {
       Are you sure?
       <button>{t('ok')}</button>
       <button>{t('dog')}</button>
-      <input placeholder={t('company.placeholder')} />
     </>
   );
 };

@@ -1,8 +1,7 @@
 {
-  "include": ["source/common.ts"],
+  "include": ["source/**.*"],
   "compilerOptions": {
     "declaration": true,
-    "emitDeclarationOnly": true,
     "esModuleInterop": true,
     "jsx": "react",
     "lib": ["DOM", "ES2019"],

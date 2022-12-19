@@ -56,7 +56,7 @@ $ meteor add universe:i18n
 
 ### Typescript
 
-This package is integrated with [zodern:types](https://github.com/zodern/meteor-types) package. If you use `zodern:types` package in your project, it will automatically download the current type definitions.
+This package is integrated with [`zodern:types`](https://github.com/zodern/meteor-types) package. If you use `zodern:types` package in your project, it will automatically download the current type definitions.
 
 However, you can still use types from the DefinitelyTyped package.
 

@@ -2,7 +2,8 @@ import { EventEmitter } from 'events';
 import { Meteor } from 'meteor/meteor';
 import { Tracker } from 'meteor/tracker';
 
-import { JSON, JSONObject, get, isJSONObject, set } from './utils';
+import { get, isJSONObject, set } from './utils';
+import type { JSON, JSONObject } from './utils';
 
 export interface GetCacheEntry {
   getJS(locale: string, namespace?: string, isBefore?: boolean): string;

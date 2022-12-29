@@ -20,7 +20,7 @@ Package.registerBuildPlugin({
 });
 
 Package.onUse(function (api) {
-  api.versionsFrom('2.0');
+  api.versionsFrom('1.9');
   api.use([
     'check',
     'ddp',

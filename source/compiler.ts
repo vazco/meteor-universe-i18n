@@ -7,7 +7,8 @@ import { extname } from 'path';
 import stripJsonComments from 'strip-json-comments';
 
 import { i18n } from './common';
-import { isJSONObject, set, JSON } from './utils';
+import { isJSONObject, set } from './utils';
+import type { JSON } from './utils';
 
 declare class Compiler {}
 declare class Plugin {

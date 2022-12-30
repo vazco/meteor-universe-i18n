@@ -1,3 +1,8 @@
+## [v2.0.1](https://github.com/vazco/meteor-universe-i18n/tree/v2.0.1) (2022-12-30)
+
+- **Fixed:** Importing translation files ([\#176](https://github.com/vazco/meteor-universe-i18n/pull/176))
+- **Added:** Support for Meteor 1.9 (\#177)[https://github.com/vazco/meteor-universe-i18n/pull/177]
+
 ## [v2.0.0](https://github.com/vazco/meteor-universe-i18n/tree/v2.0.0) (2022-10-27)
 
 - **Updated:** Integration examples ([\#169](https://github.com/vazco/meteor-universe-i18n/pull/169))

@@ -4,6 +4,7 @@ Package.describe({
   summary:
     'Lightweight i18n, YAML & JSON translation files, string interpolation, incremental & remote loading',
   git: 'https://github.com/vazco/meteor-universe-i18n.git',
+  documentation: './ATMOSPHERE.md',
 });
 
 const npmDependencies = {

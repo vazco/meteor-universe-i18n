@@ -28,7 +28,7 @@ Package.onUse(function (api) {
     'isobuild:compiler-plugin@1.0.0',
     'promise',
     'tracker',
-    'typescript',
+    'typescript@4.6.4',
     'webapp',
     'zodern:types@1.0.0',
   ]);
@@ -43,7 +43,7 @@ Package.onTest(function (api) {
     'meteortesting:mocha',
     'practicalmeteor:chai',
     'practicalmeteor:sinon',
-    'typescript',
+    'typescript@4.6.4',
     'universe:i18n',
   ]);
 

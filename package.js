@@ -44,7 +44,7 @@ Package.onTest(function (api) {
     'meteortesting:mocha',
     'practicalmeteor:chai',
     'practicalmeteor:sinon',
-    'typescript@4.6.4',
+    'typescript',
     'universe:i18n',
   ]);
 

@@ -1,3 +1,7 @@
+## [v2.0.2](https://github.com/vazco/meteor-universe-i18n/tree/v2.0.2) (2022-01-04)
+
+- **Fixed:** The published version was corrupted and couldn't be downloaded.
+
 ## [v2.0.1](https://github.com/vazco/meteor-universe-i18n/tree/v2.0.1) (2022-12-30)
 
 - **Fixed:** Importing translation files ([\#176](https://github.com/vazco/meteor-universe-i18n/pull/176))

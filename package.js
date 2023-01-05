@@ -1,6 +1,6 @@
 Package.describe({
   name: 'universe:i18n',
-  version: '2.0.3',
+  version: '2.0.4',
   summary:
     'Lightweight i18n, YAML & JSON translation files, string interpolation, incremental & remote loading',
   git: 'https://github.com/vazco/meteor-universe-i18n.git',
@@ -29,9 +29,9 @@ Package.onUse(function (api) {
     'isobuild:compiler-plugin@1.0.0',
     'promise',
     'tracker',
-    'typescript',
+    'typescript@4.0.0 || 3.0.0',
     'webapp',
-    'zodern:types',
+    'zodern:types@1.0.0',
   ]);
 
   api.mainModule('source/client.ts', 'client');

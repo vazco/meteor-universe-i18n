@@ -1,3 +1,7 @@
+## [v2.0.5](https://github.com/vazco/meteor-universe-i18n/tree/v2.0.5) (2022-01-12)
+
+- **Fixed:** JSON FetchError related to missing query parameter.
+
 ## [v2.0.2](https://github.com/vazco/meteor-universe-i18n/tree/v2.0.2) (2022-01-04)
 
 - **Fixed:** The published version was corrupted and couldn't be downloaded.

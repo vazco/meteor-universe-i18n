@@ -163,7 +163,7 @@ i18n.loadLocale = async (
 
   const url = resolve(
     host,
-    pathOnHost + normalizedLocale + '?' + queryParams.type,
+    pathOnHost + normalizedLocale + '?type=' + queryParams.type,
   );
 
   try {

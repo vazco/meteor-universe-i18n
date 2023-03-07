@@ -50,7 +50,6 @@ export interface SetLocaleOptions extends LoadLocaleOptions {
 }
 
 const i18n = {
-  _contextualLocale: new Meteor.EnvironmentVariable<string | undefined>(),
   _deps: new Tracker.Dependency(),
   _emitChange(locale?: string) {
     i18n._events.emit('changeLocale', locale ?? i18n._locale);
@@ -201,9 +200,7 @@ const i18n = {
     return Object.keys(i18n._translations);
   },
   getLocale() {
-    return (
-      i18n._contextualLocale.get() ?? i18n._locale ?? i18n.options.defaultLocale
-    );
+    return i18n._locale ?? i18n.options.defaultLocale;
   },
   getTranslation(...args: unknown[]) {
     const maybeOptions = args[args.length - 1];
@@ -266,9 +263,6 @@ const i18n = {
     sameLocaleOnServerConnection: true,
     translationsHeaders: { 'Cache-Control': 'max-age=2628000' },
   } as Options,
-  runWithLocale<T>(locale = '', fn: () => T): T {
-    return i18n._contextualLocale.withValue(i18n.normalize(locale), fn);
-  },
   setLocale(locale: string, options?: SetLocaleOptions) {
     const normalizedLocale = i18n.normalize(locale);
     if (!normalizedLocale) {

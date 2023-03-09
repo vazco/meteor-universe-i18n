@@ -43,6 +43,7 @@ export interface SetLocaleOptions extends LoadLocaleOptions {
   noDownload?: boolean;
 }
 declare const i18n: {
+  _contextualLocale: Meteor.EnvironmentVariable<string | undefined>;
   _deps: Tracker.Dependency;
   _emitChange(locale?: string | undefined): void;
   _events: EventEmitter;
@@ -94,6 +95,7 @@ declare const i18n: {
   onChangeLocale(fn: (locale: string) => void): void;
   onceChangeLocale(fn: (locale: string) => void): void;
   options: Options;
+  runWithLocale<T>(locale: string | undefined, fn: () => T): T;
   setLocale(
     locale: string,
     options?: SetLocaleOptions | undefined,

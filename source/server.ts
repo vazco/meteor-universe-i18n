@@ -13,6 +13,9 @@ import { JSONObject, set } from './utils';
 
 i18n.setOptions({ hostUrl: Meteor.absoluteUrl() });
 
+const _get = i18n._contextualLocale.get.bind(i18n._contextualLocale);
+i18n._contextualLocale.get = () => _get() ?? i18n._getConnectionLocale();
+
 function getDiff(locale: string, diffWith?: string) {
   const diff: JSONObject = {};
   const diffKeys = i18n.getAllKeysForLocale(diffWith);

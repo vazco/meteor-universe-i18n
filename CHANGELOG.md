@@ -1,3 +1,7 @@
+## [v2.0.7](https://github.com/vazco/meteor-universe-i18n/tree/v2.0.7) (2022-03-17)
+
+- **Removed:** Usage of Fibers ([\#181](https://github.com/vazco/meteor-universe-i18n/pull/181))
+
 ## [v2.0.6](https://github.com/vazco/meteor-universe-i18n/tree/v2.0.6) (2022-03-17)
 
 - **Removed:** Support for Meteor <2.3 ([\#180](https://github.com/vazco/meteor-universe-i18n/pull/180))

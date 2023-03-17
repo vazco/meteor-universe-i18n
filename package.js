@@ -21,7 +21,7 @@ Package.registerBuildPlugin({
 });
 
 Package.onUse(function (api) {
-  api.versionsFrom('1.9');
+  api.versionsFrom('2.3');
   api.use([
     'check',
     'ddp',
@@ -29,7 +29,7 @@ Package.onUse(function (api) {
     'isobuild:compiler-plugin@1.0.0',
     'promise',
     'tracker',
-    'typescript@4.0.0 || 3.0.0',
+    'typescript',
     'webapp',
     'zodern:types@1.0.0',
   ]);

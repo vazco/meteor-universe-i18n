@@ -40,7 +40,7 @@ function getJS(locale: string, namespace?: string, isBefore?: boolean) {
       }'] = ${json}`
     : `(Package['universe:i18n'].i18n).addTranslations('${locale}', ${
         namespace && typeof namespace === 'string' ? `'${namespace}', ` : ''
-      }${json});`;
+      }${json}),Package['universe:i18n'].i18n._ts = Math.max(Package['universe:i18n'].i18n._ts, ${Date.now()});`;
 }
 
 function getCachedFormatter(

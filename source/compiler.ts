@@ -7,8 +7,12 @@ import { extname } from 'path';
 import stripJsonComments from 'strip-json-comments';
 
 import { i18n } from './common';
-import { isJSONObject, set } from './utils';
-import type { JSON } from './utils';
+import {
+  isJSONObject,
+  set,
+  type JSON,
+  getAddCachedTranslationsJS,
+} from './utils';
 
 declare class Compiler {}
 declare class Plugin {
@@ -91,14 +95,11 @@ class UniverseI18nCompiler extends CachingCompiler {
     }
 
     return {
-      data: [
-        "Package['universe:i18n'].i18n.addTranslations(",
-        `'${locale}',`,
-        `'${options.namespace ?? packageName ?? ''}',`,
+      data: getAddCachedTranslationsJS(
+        locale,
         JSON.stringify(content.data),
-        ');',
-        `Package['universe:i18n'].i18n._ts = Math.max(Package['universe:i18n'].i18n._ts, ${Date.now()});`,
-      ].join(''),
+        options.namespace ?? packageName,
+      ),
     };
   }
 

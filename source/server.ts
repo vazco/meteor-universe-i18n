@@ -9,7 +9,7 @@ import { parse, resolve } from 'url';
 
 import { GetCacheEntry, GetCacheFunction, i18n } from './common';
 import './global';
-import { JSONObject, set } from './utils';
+import { JSONObject, set, getAddCachedTranslationsJS } from './utils';
 
 i18n.setOptions({ hostUrl: Meteor.absoluteUrl() });
 
@@ -38,9 +38,7 @@ function getJS(locale: string, namespace?: string, isBefore?: boolean) {
     ? `var w=this||window;w.__uniI18nPre=w.__uniI18nPre||{};w.__uniI18nPre['${locale}${
         namespace && typeof namespace === 'string' ? `.${namespace}` : ''
       }'] = ${json}`
-    : `(Package['universe:i18n'].i18n).addTranslations('${locale}', ${
-        namespace && typeof namespace === 'string' ? `'${namespace}', ` : ''
-      }${json}),Package['universe:i18n'].i18n._ts = Math.max(Package['universe:i18n'].i18n._ts, ${Date.now()});`;
+    : getAddCachedTranslationsJS(locale, json, namespace);
 }
 
 function getCachedFormatter(

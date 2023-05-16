@@ -7,12 +7,8 @@ import { extname } from 'path';
 import stripJsonComments from 'strip-json-comments';
 
 import { i18n } from './common';
-import {
-  isJSONObject,
-  set,
-  type JSON,
-  getAddCachedTranslationsJS,
-} from './utils';
+import { getAddCachedTranslationsJS } from './getJS';
+import { isJSONObject, set, type JSON } from './utils';
 
 declare class Compiler {}
 declare class Plugin {

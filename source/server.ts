@@ -37,14 +37,14 @@ const _localesPerConnections: Record<string, string> = {};
 i18n._getConnectionLocale = connection =>
   _localesPerConnections[i18n._getConnectionId(connection)!];
 
-const globalCache: Record<string, GetCacheEntry> = {};
+const cache: Record<string, GetCacheEntry> = {};
 i18n.getCache = (locale => {
   if (!locale) {
-    return globalCache;
+    return cache;
   }
 
-  if (!globalCache[locale]) {
-    globalCache[locale] = {
+  if (!cache[locale]) {
+    cache[locale] = {
       updatedAt: new Date().toUTCString(),
       getYML,
       getJSON,
@@ -52,7 +52,7 @@ i18n.getCache = (locale => {
     };
   }
 
-  return globalCache[locale];
+  return cache[locale];
 }) as GetCacheFunction;
 
 i18n.loadLocale = async (
@@ -90,7 +90,7 @@ i18n.loadLocale = async (
         normalizedLocale,
         JSON.parse(stripJsonComments(content as string)),
       );
-      delete globalCache[normalizedLocale];
+      delete cache[normalizedLocale];
       if (!silent) {
         const locale = i18n.getLocale();
         // If current locale is changed we must notify about that.
@@ -164,7 +164,7 @@ WebApp.connectHandlers.use('/universe/locale/', ((request, response, next) => {
     headers['Content-Disposition'] = `attachment; filename="${filename}"`;
   }
 
-  const localeCache = globalCache[locale] as unknown as Record<string, string>;
+  const localeCache = { ...cache } as unknown as Record<string, string>;
 
   switch (type) {
     case 'json':

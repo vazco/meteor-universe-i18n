@@ -1,5 +1,4 @@
 import type { NextHandleFunction } from 'connect';
-import { dump, FAILSAFE_SCHEMA } from 'js-yaml';
 import { Match, check } from 'meteor/check';
 import { DDP } from 'meteor/ddp';
 import { Meteor } from 'meteor/meteor';
@@ -7,95 +6,14 @@ import { WebApp } from 'meteor/webapp';
 import stripJsonComments from 'strip-json-comments';
 import { parse, resolve } from 'url';
 
+import { getJS, getJSON, getYML } from './code-generators';
 import { GetCacheEntry, GetCacheFunction, i18n } from './common';
 import './global';
-import { getAddCachedTranslationsJS } from './getJS';
-import { JSONObject, set } from './utils';
 
 i18n.setOptions({ hostUrl: Meteor.absoluteUrl() });
 
 const _get = i18n._contextualLocale.get.bind(i18n._contextualLocale);
 i18n._contextualLocale.get = () => _get() ?? i18n._getConnectionLocale();
-
-function getDiff(locale: string, diffWith?: string) {
-  const diff: JSONObject = {};
-  const diffKeys = i18n.getAllKeysForLocale(diffWith);
-  i18n.getAllKeysForLocale(locale).forEach(key => {
-    if (diffKeys.includes(key)) {
-      set(diff, key, i18n.getTranslation(key));
-    }
-  });
-
-  return diff;
-}
-
-function getJS(locale: string, namespace?: string, isBefore?: boolean) {
-  const json = getJSON(locale, namespace);
-  if (json.length <= 2 && !isBefore) {
-    return '';
-  }
-
-  return isBefore
-    ? `var w=this||window;w.__uniI18nPre=w.__uniI18nPre||{};w.__uniI18nPre['${locale}${
-        namespace ? `.${namespace}` : ''
-      }'] = ${json}`
-    : getAddCachedTranslationsJS(locale, json, namespace);
-}
-
-function getCachedFormatter(
-  type: 'json' | 'yml',
-  format: (translations: JSONObject) => string,
-) {
-  function cacheEntry(locale: string, namespace?: string, diffWith?: string) {
-    if (typeof namespace === 'string' && namespace) {
-      return {
-        key: `_${type}${namespace}`,
-        get: () =>
-          format({
-            _namespace: namespace,
-            ...((i18n.getTranslations(namespace, locale) as object) || {}),
-          }),
-      };
-    }
-
-    if (typeof diffWith === 'string' && diffWith) {
-      return {
-        key: `_${type}_diff_${diffWith}`,
-        get: () => format(getDiff(locale, diffWith)),
-      };
-    }
-
-    return {
-      key: `_${type}`,
-      get: () => format((i18n._translations[locale] as JSONObject) || {}),
-    };
-  }
-
-  return function cached(
-    locale: string,
-    namespace?: string,
-    diffWith?: string,
-  ) {
-    const localeCache = cache[locale] as unknown as Record<string, string>;
-    const { get, key } = cacheEntry(locale, namespace, diffWith);
-    if (!(key in localeCache)) {
-      localeCache[key] = get();
-    }
-
-    return localeCache[key];
-  };
-}
-
-const getJSON = getCachedFormatter('json', object => JSON.stringify(object));
-const getYML = getCachedFormatter('yml', object =>
-  dump(object, {
-    indent: 2,
-    noCompatMode: true,
-    schema: FAILSAFE_SCHEMA,
-    skipInvalid: true,
-    sortKeys: true,
-  }),
-);
 
 i18n._formatgetters = { getJS, getJSON, getYML };
 
@@ -119,14 +37,14 @@ const _localesPerConnections: Record<string, string> = {};
 i18n._getConnectionLocale = connection =>
   _localesPerConnections[i18n._getConnectionId(connection)!];
 
-const cache: Record<string, GetCacheEntry> = {};
+const globalCache: Record<string, GetCacheEntry> = {};
 i18n.getCache = (locale => {
   if (!locale) {
-    return cache;
+    return globalCache;
   }
 
-  if (!cache[locale]) {
-    cache[locale] = {
+  if (!globalCache[locale]) {
+    globalCache[locale] = {
       updatedAt: new Date().toUTCString(),
       getYML,
       getJSON,
@@ -134,7 +52,7 @@ i18n.getCache = (locale => {
     };
   }
 
-  return cache[locale];
+  return globalCache[locale];
 }) as GetCacheFunction;
 
 i18n.loadLocale = async (
@@ -172,7 +90,7 @@ i18n.loadLocale = async (
         normalizedLocale,
         JSON.parse(stripJsonComments(content as string)),
       );
-      delete cache[normalizedLocale];
+      delete globalCache[normalizedLocale];
       if (!silent) {
         const locale = i18n.getLocale();
         // If current locale is changed we must notify about that.
@@ -246,20 +164,26 @@ WebApp.connectHandlers.use('/universe/locale/', ((request, response, next) => {
     headers['Content-Disposition'] = `attachment; filename="${filename}"`;
   }
 
+  const localeCache = globalCache[locale] as unknown as Record<string, string>;
+
   switch (type) {
     case 'json':
       response.writeHead(200, {
         'Content-Type': 'application/json; charset=utf-8',
         ...headers,
       });
-      response.end(cache.getJSON(locale, namespace as string, diff as string));
+      response.end(
+        cache.getJSON(locale, localeCache, namespace as string, diff as string),
+      );
       break;
     case 'yml':
       response.writeHead(200, {
         'Content-Type': 'text/yaml; charset=utf-8',
         ...headers,
       });
-      response.end(cache.getYML(locale, namespace as string, diff as string));
+      response.end(
+        cache.getYML(locale, localeCache, namespace as string, diff as string),
+      );
       break;
     default:
       response.writeHead(200, {
@@ -267,7 +191,12 @@ WebApp.connectHandlers.use('/universe/locale/', ((request, response, next) => {
         ...headers,
       });
       response.end(
-        cache.getJS(locale, namespace as string, preload as boolean),
+        cache.getJS(
+          locale,
+          localeCache,
+          namespace as string,
+          preload as boolean,
+        ),
       );
       break;
   }

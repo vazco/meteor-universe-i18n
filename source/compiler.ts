@@ -6,8 +6,8 @@ import { CachingCompiler } from 'meteor/caching-compiler';
 import { extname } from 'path';
 import stripJsonComments from 'strip-json-comments';
 
+import { getAddCachedTranslationsJS } from './code-generators';
 import { i18n } from './common';
-import { getAddCachedTranslationsJS } from './getJS';
 import { isJSONObject, set, type JSON } from './utils';
 
 declare class Compiler {}

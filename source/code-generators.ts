@@ -1,5 +1,6 @@
 import { dump, FAILSAFE_SCHEMA } from 'js-yaml';
 
+import { i18n } from './common';
 import { JSONObject, set } from './utils';
 
 function getDiff(locale: string, diffWith?: string) {
@@ -45,10 +46,13 @@ function getCachedFormatter(
 
   return function cached(
     locale: string,
-    localeCache: Record<string, string>,
     namespace?: string,
     diffWith?: string,
   ) {
+    const localeCache = i18n.getCache(locale) as unknown as Record<
+      string,
+      string
+    >;
     const { get, key } = cacheEntry(locale, namespace, diffWith);
     if (!(key in localeCache)) {
       localeCache[key] = get();
@@ -82,13 +86,8 @@ export const getYML = getCachedFormatter('yml', object =>
   }),
 );
 
-export function getJS(
-  locale: string,
-  localeCache: Record<string, string>,
-  namespace?: string,
-  isBefore?: boolean,
-) {
-  const json = getJSON(locale, localeCache, namespace);
+export function getJS(locale: string, namespace?: string, isBefore?: boolean) {
+  const json = getJSON(locale, namespace);
   if (json.length <= 2 && !isBefore) {
     return '';
   }

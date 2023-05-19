@@ -6,24 +6,9 @@ import { get, isJSONObject, set } from './utils';
 import type { JSON, JSONObject } from './utils';
 
 export interface GetCacheEntry {
-  getJS(
-    locale: string,
-    localeCache: Record<string, string>,
-    namespace?: string,
-    isBefore?: boolean,
-  ): string;
-  getJSON(
-    locale: string,
-    localeCache: Record<string, string>,
-    namespace?: string,
-    diff?: string,
-  ): string;
-  getYML(
-    locale: string,
-    localeCache: Record<string, string>,
-    namespace?: string,
-    diff?: string,
-  ): string;
+  getJS(locale: string, namespace?: string, isBefore?: boolean): string;
+  getJSON(locale: string, namespace?: string, diff?: string): string;
+  getYML(locale: string, namespace?: string, diff?: string): string;
   updatedAt: string;
 }
 

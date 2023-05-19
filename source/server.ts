@@ -164,26 +164,20 @@ WebApp.connectHandlers.use('/universe/locale/', ((request, response, next) => {
     headers['Content-Disposition'] = `attachment; filename="${filename}"`;
   }
 
-  const localeCache = { ...cache } as unknown as Record<string, string>;
-
   switch (type) {
     case 'json':
       response.writeHead(200, {
         'Content-Type': 'application/json; charset=utf-8',
         ...headers,
       });
-      response.end(
-        cache.getJSON(locale, localeCache, namespace as string, diff as string),
-      );
+      response.end(cache.getJSON(locale, namespace as string, diff as string));
       break;
     case 'yml':
       response.writeHead(200, {
         'Content-Type': 'text/yaml; charset=utf-8',
         ...headers,
       });
-      response.end(
-        cache.getYML(locale, localeCache, namespace as string, diff as string),
-      );
+      response.end(cache.getYML(locale, namespace as string, diff as string));
       break;
     default:
       response.writeHead(200, {
@@ -191,12 +185,7 @@ WebApp.connectHandlers.use('/universe/locale/', ((request, response, next) => {
         ...headers,
       });
       response.end(
-        cache.getJS(
-          locale,
-          localeCache,
-          namespace as string,
-          preload as boolean,
-        ),
+        cache.getJS(locale, namespace as string, preload as boolean),
       );
       break;
   }

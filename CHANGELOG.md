@@ -1,3 +1,7 @@
+## [v2.0.8](https://github.com/vazco/meteor-universe-i18n/tree/v2.0.8) (2023-05-24)
+
+- **Fixed:** Cache management ([\#182](https://github.com/vazco/meteor-universe-i18n/pull/182))
+
 ## [v2.0.7](https://github.com/vazco/meteor-universe-i18n/tree/v2.0.7) (2022-03-17)
 
 - **Removed:** Usage of Fibers ([\#181](https://github.com/vazco/meteor-universe-i18n/pull/181))

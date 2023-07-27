@@ -20,6 +20,7 @@ export interface GetCacheFunction {
 export interface GetTranslationOptions {
   _locale?: string;
   _namespace?: string;
+  count?: number;
   [key: string]: unknown;
 }
 
@@ -125,11 +126,11 @@ const i18n = {
     });
     return interpolatedTranslation;
   },
-  _normalizeGetTranslation(locales: string[], key: string) {
+  _normalizeGetTranslation(locales: string[], key: string, count?: number) {
     let translation: unknown;
     locales.some(locale =>
       i18n._normalizeWithAncestors(locale).some(locale => {
-        translation = get(i18n._translations, `${locale}.${key}`);
+        translation = get(i18n._translations, `${locale}.${key}`, count);
         return translation !== undefined;
       }),
     );
@@ -213,11 +214,12 @@ const i18n = {
 
     const key = keys.filter(key => key && typeof key === 'string').join('.');
     const { defaultLocale } = i18n.options;
-    const { _locale: locale = i18n.getLocale(), ...variables } = options;
+    const { _locale: locale = i18n.getLocale(), count, ...variables } = options;
 
     const translation = i18n._normalizeGetTranslation(
       [locale, defaultLocale],
       key,
+      count,
     );
     const interpolatedTranslation = i18n._interpolateTranslation(
       variables,

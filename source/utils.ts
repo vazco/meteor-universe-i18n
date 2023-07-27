@@ -3,7 +3,7 @@ export type JSONObject = { [key: string]: JSON };
 
 type UnknownRecord = Record<string, unknown>;
 
-export function get(object: UnknownRecord, path: string) {
+export function get(object: UnknownRecord, path: string, count?: number) {
   const keys = path.split('.');
   const last = keys.pop()!;
 
@@ -16,7 +16,19 @@ export function get(object: UnknownRecord, path: string) {
     object = object[key] as UnknownRecord;
   }
 
-  return object?.[last];
+  const translation = object?.[last];
+
+  if (count !== undefined) {
+    const tmp = (translation as string).split(' | ');
+    const counted = tmp[count > tmp.length - 1 ? tmp.length - 1 : count];
+
+    if (counted.includes('{count}')) {
+      return counted.replace('{count}', `${count}`);
+    }
+    return counted;
+  }
+
+  return translation;
 }
 
 export function isJSONObject(value: JSON | unknown): value is JSONObject {

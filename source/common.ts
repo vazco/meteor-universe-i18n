@@ -130,7 +130,12 @@ const i18n = {
     let translation: unknown;
     locales.some(locale =>
       i18n._normalizeWithAncestors(locale).some(locale => {
-        translation = get(i18n._translations, `${locale}.${key}`, count);
+        translation = get(
+          i18n._translations,
+          `${locale}.${key}`,
+          i18n.pluralizationRules,
+          count,
+        );
         return translation !== undefined;
       }),
     );
@@ -304,6 +309,7 @@ const i18n = {
   setOptions(options: Partial<Options>) {
     Object.assign(i18n.options, options);
   },
+  pluralizationRules: {} as Record<string, (count: number) => number>,
 };
 
 i18n.__ = i18n.getTranslation;

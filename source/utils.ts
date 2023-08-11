@@ -3,9 +3,29 @@ export type JSONObject = { [key: string]: JSON };
 
 type UnknownRecord = Record<string, unknown>;
 
-export function get(object: UnknownRecord, path: string, count?: number) {
+const getTranslationWithCount = (
+  originalCount: number,
+  newCount: number,
+  translation: string,
+) => {
+  const tmp = translation.split(' | ');
+  const counted = tmp[newCount > tmp.length - 1 ? tmp.length - 1 : newCount];
+
+  if (counted.includes('{count}')) {
+    return counted.replace('{count}', `${originalCount}`);
+  }
+  return counted;
+};
+
+export function get(
+  object: UnknownRecord,
+  path: string,
+  pluralizationRules?: Record<string, (count: number) => number>,
+  count?: number,
+) {
   const keys = path.split('.');
   const last = keys.pop()!;
+  const locale = keys[0];
 
   let key: string | undefined;
   while ((key = keys.shift())) {
@@ -19,13 +39,11 @@ export function get(object: UnknownRecord, path: string, count?: number) {
   const translation = object?.[last];
 
   if (count !== undefined) {
-    const tmp = (translation as string).split(' | ');
-    const counted = tmp[count > tmp.length - 1 ? tmp.length - 1 : count];
-
-    if (counted.includes('{count}')) {
-      return counted.replace('{count}', `${count}`);
+    let newCount = count;
+    if (locale && pluralizationRules && pluralizationRules[locale]) {
+      newCount = pluralizationRules[locale](count);
     }
-    return counted;
+    return getTranslationWithCount(count, newCount, translation as string);
   }
 
   return translation;

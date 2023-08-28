@@ -40,6 +40,8 @@ The package supports:
   - [Namespace](https://github.com/vazco/meteor-universe-i18n/#namespace)
     - [Translation in packages](https://github.com/vazco/meteor-universe-i18n/#translation-in-packages)
     - [Translation in application](https://github.com/vazco/meteor-universe-i18n/#translation-in-application)
+- [Pluralization](https://github.com/vazco/meteor-universe-i18n/#pluralization)
+  - [Custom rules](https://github.com/vazco/meteor-universe-i18n/#custom-rules)
 - [API](https://github.com/vazco/meteor-universe-i18n/#api)
 - [Integrations](https://github.com/vazco/meteor-universe-i18n/#integrations)
   - [Integration with React](https://github.com/vazco/meteor-universe-i18n/#integration-with-react)
@@ -318,6 +320,85 @@ i18n.offChangeLocale(fn);
 
 // does something on the first language change and then stops the listener
 i18n.onceChangeLocale(fn);
+```
+
+## Pluralization
+
+With this package, you can translate with pluralization. To do that you need to use the pipe separator `|` in your locale translations, like in the example below:
+
+```yml
+_locale: 'en'
+phone: 'zero phones | one phone | two phones | {count} phones'
+```
+
+Then just add the `count` argument to the `getTranslation` options:
+
+```html
+<p>{i18n.getTranslation('phone', { count: 0 })}</p>
+<p>{i18n.getTranslation('phone', { count: 1 })}</p>
+<p>{i18n.getTranslation('phone', { count: 2 })}</p>
+<p>{i18n.getTranslation('phone', { count: 3 })}</p>
+<p>{i18n.getTranslation('phone', { count: 1000 })}</p>
+```
+
+Output:
+
+```html
+<p>zero phones</p>
+<p>one phone</p>
+<p>two phones</p>
+<p>3 phones</p>
+<p>1000 phones</p>
+```
+
+### Custom rules
+
+Some languages (e.g. from the Slavic group) may have more complicated pluralization rules. It is possible to define custom pluralization rules to handle such cases. To do that add the `pluralizationRules` property to `i18n.setOptions`:
+
+```js
+i18n.setOptions({
+  // Key - language to applye the rule for, e.g 'pl'
+  // Value - function that takes the count as argument and returns index of the correct pluralization form
+  pluralizationRules: {
+    pl: value => {
+      if (value === 0) return 0;
+      if (value === 1) return 1;
+      if (value < 5) return 2;
+      return 3;
+    },
+  },
+});
+```
+
+```yml
+_locale: 'en'
+phone: 'zero telefonów | jeden telefon | {count} telefony | {count} telefonów'
+```
+
+Template:
+
+```html
+<p>{i18n.getTranslation('phone', { count: 0 })}</p>
+<p>{i18n.getTranslation('phone', { count: 1 })}</p>
+<p>{i18n.getTranslation('phone', { count: 2 })}</p>
+<p>{i18n.getTranslation('phone', { count: 3 })}</p>
+<p>{i18n.getTranslation('phone', { count: 4 })}</p>
+<p>{i18n.getTranslation('phone', { count: 5 })}</p>
+<p>{i18n.getTranslation('phone', { count: 6 })}</p>
+<p>{i18n.getTranslation('phone', { count: 1000 })}</p>
+```
+
+Output:
+
+```html
+<p>zero telefonów</p>
+<p>jeden telefon</p>
+<p>dwa telefony</p>
+<p>trzy telefony</p>
+<p>cztery telefony</p>
+<p>5 telefonów</p>
+<p>6 telefonów</p>
+<p>1000 telefonów</p>
 ```
 
 ## API

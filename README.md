@@ -371,7 +371,7 @@ i18n.setOptions({
 ```
 
 ```yml
-_locale: 'en'
+_locale: 'pl'
 phone: 'zero telefonów | jeden telefon | {count} telefony | {count} telefonów'
 ```
 

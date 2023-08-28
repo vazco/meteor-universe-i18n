@@ -5,23 +5,24 @@ type UnknownRecord = Record<string, unknown>;
 
 const getTranslationWithCount = (
   originalCount: number,
-  newCount: number,
+  index: number,
   translation: string,
 ) => {
-  const tmp = translation.split(' | ');
-  const counted = tmp[newCount > tmp.length - 1 ? tmp.length - 1 : newCount];
+  const options = translation.split(' | ');
+  const pluralized =
+    options[index >= options.length ? options.length - 1 : index];
 
-  if (counted.includes('{count}')) {
-    return counted.replace('{count}', `${originalCount}`);
+  if (pluralized.includes('{count}')) {
+    return pluralized.replace('{count}', `${originalCount}`);
   }
-  return counted;
+  return pluralized;
 };
 
 export function get(
   object: UnknownRecord,
   path: string,
-  pluralizationRules?: Record<string, (count: number) => number>,
   count?: number,
+  pluralizationRules?: Record<string, (count: number) => number>,
 ) {
   const keys = path.split('.');
   const last = keys.pop()!;
@@ -32,18 +33,17 @@ export function get(
     if (typeof object !== 'object' || object === null) {
       break;
     }
-
     object = object[key] as UnknownRecord;
   }
 
   const translation = object?.[last];
 
   if (count !== undefined) {
-    let newCount = count;
-    if (locale && pluralizationRules && pluralizationRules[locale]) {
-      newCount = pluralizationRules[locale](count);
+    let index = count;
+    if (pluralizationRules && pluralizationRules[locale]) {
+      index = pluralizationRules[locale](count);
     }
-    return getTranslationWithCount(count, newCount, translation as string);
+    return getTranslationWithCount(count, index, translation as string);
   }
 
   return translation;

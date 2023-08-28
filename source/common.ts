@@ -44,6 +44,7 @@ export interface Options {
   pathOnHost: string;
   sameLocaleOnServerConnection: boolean;
   translationsHeaders: Record<string, string>;
+  pluralizationRules?: Record<string, (count: number) => number>;
 }
 
 export interface SetLocaleOptions extends LoadLocaleOptions {
@@ -133,8 +134,8 @@ const i18n = {
         translation = get(
           i18n._translations,
           `${locale}.${key}`,
-          i18n.pluralizationRules,
           count,
+          i18n.options.pluralizationRules,
         );
         return translation !== undefined;
       }),
@@ -272,6 +273,7 @@ const i18n = {
     pathOnHost: 'universe/locale/',
     sameLocaleOnServerConnection: true,
     translationsHeaders: { 'Cache-Control': 'max-age=2628000' },
+    pluralizationRules: {},
   } as Options,
   runWithLocale<T>(locale = '', fn: () => T): T {
     return i18n._contextualLocale.withValue(i18n.normalize(locale), fn);
@@ -309,7 +311,6 @@ const i18n = {
   setOptions(options: Partial<Options>) {
     Object.assign(i18n.options, options);
   },
-  pluralizationRules: {} as Record<string, (count: number) => number>,
 };
 
 i18n.__ = i18n.getTranslation;

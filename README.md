@@ -28,25 +28,25 @@ The package supports:
 
 **Table of Contents**
 
-- [Installation](https://github.com/vazco/meteor-universe-i18n/#installation)
-  - [Typescript](https://github.com/vazco/meteor-universe-i18n/#typescript)
-- [Migration to v2](https://github.com/vazco/meteor-universe-i18n/#migration-to-v2)
-- [Usage](https://github.com/vazco/meteor-universe-i18n/#usage)
-  - [Setting/getting locale](https://github.com/vazco/meteor-universe-i18n/#settinggetting-locale)
-  - [Adding translations by methods](https://github.com/vazco/meteor-universe-i18n/#adding-translations-by-methods)
-  - [Getting translations](https://github.com/vazco/meteor-universe-i18n/#getting-translations)
-- [Translations files](https://github.com/vazco/meteor-universe-i18n/#translations-files)
-  - [Recognition locale of translation](https://github.com/vazco/meteor-universe-i18n/#recognition-locale-of-translation)
-  - [Namespace](https://github.com/vazco/meteor-universe-i18n/#namespace)
-    - [Translation in packages](https://github.com/vazco/meteor-universe-i18n/#translation-in-packages)
-    - [Translation in application](https://github.com/vazco/meteor-universe-i18n/#translation-in-application)
-- [Pluralization](https://github.com/vazco/meteor-universe-i18n/#pluralization)
-  - [Custom rules](https://github.com/vazco/meteor-universe-i18n/#custom-rules)
-- [API](https://github.com/vazco/meteor-universe-i18n/#api)
-- [Integrations](https://github.com/vazco/meteor-universe-i18n/#integrations)
-  - [Integration with React](https://github.com/vazco/meteor-universe-i18n/#integration-with-react)
-  - [Integration with Blaze](https://github.com/vazco/meteor-universe-i18n/#integration-with-blaze)
-  - [Integration with SimpleSchema](https://github.com/vazco/meteor-universe-i18n/blob/master/README.md#integration-with-simpleschema-package)
+- [Installation](#installation)
+  - [Typescript](#typescript)
+- [Migration to v2](#migration-to-v2)
+- [Usage](#usage)
+  - [Setting/getting locale](#settinggetting-locale)
+  - [Adding translations by methods](#adding-translations-by-methods)
+  - [Getting translations](#getting-translations)
+- [Translations files](#translations-files)
+  - [Recognition locale of translation](#recognition-locale-of-translation)
+  - [Namespace](#namespace)
+    - [Translation in packages](#translation-in-packages)
+    - [Translation in application](#translation-in-application)
+- [Pluralization](#pluralization)
+  - [Custom rules](#custom-rules)
+- [API](#api)
+- [Integrations](#integrations)
+  - [Integration with React](#integration-with-react)
+  - [Integration with Blaze](#integration-with-blaze)
+  - [Integration with SimpleSchema](#integration-with-simpleschema-package)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -328,27 +328,17 @@ With this package, you can translate with pluralization. To do that you need to 
 
 ```yml
 _locale: 'en'
-phone: 'zero phones | one phone | two phones | {count} phones'
+phone: 'zero phones | one phone | two phones | {$count} phones'
 ```
 
 Then just add the `count` argument to the `getTranslation` options:
 
-```html
-<p>{i18n.getTranslation('phone', { count: 0 })}</p>
-<p>{i18n.getTranslation('phone', { count: 1 })}</p>
-<p>{i18n.getTranslation('phone', { count: 2 })}</p>
-<p>{i18n.getTranslation('phone', { count: 3 })}</p>
-<p>{i18n.getTranslation('phone', { count: 1000 })}</p>
-```
-
-Output:
-
-```html
-<p>zero phones</p>
-<p>one phone</p>
-<p>two phones</p>
-<p>3 phones</p>
-<p>1000 phones</p>
+```js
+i18n.getTranslation('phone', { count: 0 }); // -> zero phones
+i18n.getTranslation('phone', { count: 1 }); // -> one phone
+i18n.getTranslation('phone', { count: 2 }); // -> two phones
+i18n.getTranslation('phone', { count: 3 }); // -> 3 phones
+i18n.getTranslation('phone', { count: 1000 }); // -> 1000 phones
 ```
 
 ### Custom rules
@@ -357,13 +347,13 @@ Some languages (e.g. from the Slavic group) may have more complicated pluralizat
 
 ```js
 i18n.setOptions({
-  // Key - language to applye the rule for, e.g 'pl'
+  // Key - language to apply the rule for, e.g. 'pl'
   // Value - function that takes the count as argument and returns index of the correct pluralization form
   pluralizationRules: {
-    pl: value => {
-      if (value === 0) return 0;
-      if (value === 1) return 1;
-      if (value < 5) return 2;
+    pl: count => {
+      if (count === 0) return 0;
+      if (count === 1) return 1;
+      if (count < 5) return 2;
       return 3;
     },
   },
@@ -372,33 +362,19 @@ i18n.setOptions({
 
 ```yml
 _locale: 'pl'
-phone: 'zero telefonów | jeden telefon | {count} telefony | {count} telefonów'
+phone: 'zero telefonów | jeden telefon | {$count} telefony | {$count} telefonów'
 ```
 
 Template:
 
-```html
-<p>{i18n.getTranslation('phone', { count: 0 })}</p>
-<p>{i18n.getTranslation('phone', { count: 1 })}</p>
-<p>{i18n.getTranslation('phone', { count: 2 })}</p>
-<p>{i18n.getTranslation('phone', { count: 3 })}</p>
-<p>{i18n.getTranslation('phone', { count: 4 })}</p>
-<p>{i18n.getTranslation('phone', { count: 5 })}</p>
-<p>{i18n.getTranslation('phone', { count: 6 })}</p>
-<p>{i18n.getTranslation('phone', { count: 1000 })}</p>
-```
-
-Output:
-
-```html
-<p>zero telefonów</p>
-<p>jeden telefon</p>
-<p>dwa telefony</p>
-<p>trzy telefony</p>
-<p>cztery telefony</p>
-<p>5 telefonów</p>
-<p>6 telefonów</p>
-<p>1000 telefonów</p>
+```js
+i18n.getTranslation('phone', { count: 0 }); // -> zero telefonów
+i18n.getTranslation('phone', { count: 1 }); // -> jeden telefon
+i18n.getTranslation('phone', { count: 2 }); // -> 2 telefony
+i18n.getTranslation('phone', { count: 3 }); // -> 3 telefony
+i18n.getTranslation('phone', { count: 4 }); // -> 4 telefony
+i18n.getTranslation('phone', { count: 5 }); // -> 5 telefonów
+i18n.getTranslation('phone', { count: 1000 }); // -> 1000 telefonów
 ```
 
 ## API

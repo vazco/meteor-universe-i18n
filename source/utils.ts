@@ -12,8 +12,8 @@ const getTranslationWithCount = (
   const pluralized =
     options[index >= options.length ? options.length - 1 : index];
 
-  if (pluralized.includes('{count}')) {
-    return pluralized.replace('{count}', `${originalCount}`);
+  if (pluralized.includes('{$count}')) {
+    return pluralized.replace('{$count}', originalCount.toString());
   }
   return pluralized;
 };
@@ -38,12 +38,13 @@ export function get(
 
   const translation = object?.[last];
 
-  if (count !== undefined) {
-    let index = count;
-    if (pluralizationRules && pluralizationRules[locale]) {
-      index = pluralizationRules[locale](count);
-    }
-    return getTranslationWithCount(count, index, translation as string);
+  if (count !== undefined && typeof translation === 'string') {
+    const index =
+      pluralizationRules && pluralizationRules[locale]
+        ? pluralizationRules[locale](count)
+        : count;
+
+    return getTranslationWithCount(count, index, translation);
   }
 
   return translation;

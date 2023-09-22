@@ -20,7 +20,7 @@ export interface GetCacheFunction {
 export interface GetTranslationOptions {
   _locale?: string;
   _namespace?: string;
-  count?: number;
+  _count?: number;
   [key: string]: unknown;
 }
 
@@ -44,7 +44,8 @@ export interface Options {
   pathOnHost: string;
   sameLocaleOnServerConnection: boolean;
   translationsHeaders: Record<string, string>;
-  pluralizationRules?: Record<string, (count: number) => number>;
+  pluralizationRules: Record<string, (count: number) => number>;
+  divider: string;
 }
 
 export interface SetLocaleOptions extends LoadLocaleOptions {
@@ -127,16 +128,11 @@ const i18n = {
     });
     return interpolatedTranslation;
   },
-  _normalizeGetTranslation(locales: string[], key: string, count?: number) {
+  _normalizeGetTranslation(locales: string[], key: string) {
     let translation: unknown;
     locales.some(locale =>
       i18n._normalizeWithAncestors(locale).some(locale => {
-        translation = get(
-          i18n._translations,
-          `${locale}.${key}`,
-          count,
-          i18n.options.pluralizationRules,
-        );
+        translation = get(i18n._translations, `${locale}.${key}`);
         return translation !== undefined;
       }),
     );
@@ -147,6 +143,21 @@ const i18n = {
       : key;
 
     return translationWithHideMissing;
+  },
+  _getPluralization(translation: string, locale: string, count?: number) {
+    const pluralizationRules = _i18n.options.pluralizationRules;
+    if (count !== undefined && typeof translation === 'string') {
+      const index =
+        pluralizationRules && pluralizationRules[locale]
+          ? pluralizationRules[locale](count)
+          : count;
+
+      const options = translation.split(_i18n.options.divider);
+      const pluralized =
+        options[index >= options.length ? options.length - 1 : index];
+      return pluralized;
+    }
+    return translation;
   },
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   __(...args: unknown[]) {
@@ -220,19 +231,23 @@ const i18n = {
 
     const key = keys.filter(key => key && typeof key === 'string').join('.');
     const { defaultLocale } = i18n.options;
-    const { _locale: locale = i18n.getLocale(), count, ...variables } = options;
+    const { _locale: locale = i18n.getLocale(), ...variables } = options;
 
     const translation = i18n._normalizeGetTranslation(
       [locale, defaultLocale],
       key,
-      count,
     );
     const interpolatedTranslation = i18n._interpolateTranslation(
       variables,
       translation,
     );
+    const pluralizedTranslation = i18n._getPluralization(
+      interpolatedTranslation,
+      locale,
+      variables._count,
+    );
 
-    return interpolatedTranslation;
+    return pluralizedTranslation;
   },
   getTranslations(key?: string, locale?: string) {
     if (locale === undefined) {
@@ -274,6 +289,7 @@ const i18n = {
     sameLocaleOnServerConnection: true,
     translationsHeaders: { 'Cache-Control': 'max-age=2628000' },
     pluralizationRules: {},
+    divider: ' | ',
   } as Options,
   runWithLocale<T>(locale = '', fn: () => T): T {
     return i18n._contextualLocale.withValue(i18n.normalize(locale), fn);

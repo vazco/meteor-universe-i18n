@@ -3,30 +3,9 @@ export type JSONObject = { [key: string]: JSON };
 
 type UnknownRecord = Record<string, unknown>;
 
-const getTranslationWithCount = (
-  originalCount: number,
-  index: number,
-  translation: string,
-) => {
-  const options = translation.split(' | ');
-  const pluralized =
-    options[index >= options.length ? options.length - 1 : index];
-
-  if (pluralized.includes('{$count}')) {
-    return pluralized.replace('{$count}', originalCount.toString());
-  }
-  return pluralized;
-};
-
-export function get(
-  object: UnknownRecord,
-  path: string,
-  count?: number,
-  pluralizationRules?: Record<string, (count: number) => number>,
-) {
+export function get(object: UnknownRecord, path: string) {
   const keys = path.split('.');
   const last = keys.pop()!;
-  const locale = keys[0];
 
   let key: string | undefined;
   while ((key = keys.shift())) {
@@ -36,18 +15,7 @@ export function get(
     object = object[key] as UnknownRecord;
   }
 
-  const translation = object?.[last];
-
-  if (count !== undefined && typeof translation === 'string') {
-    const index =
-      pluralizationRules && pluralizationRules[locale]
-        ? pluralizationRules[locale](count)
-        : count;
-
-    return getTranslationWithCount(count, index, translation);
-  }
-
-  return translation;
+  return object?.[last];
 }
 
 export function isJSONObject(value: JSON | unknown): value is JSONObject {

@@ -45,7 +45,7 @@ export interface Options {
   sameLocaleOnServerConnection: boolean;
   translationsHeaders: Record<string, string>;
   pluralizationRules: Record<string, (count: number) => number>;
-  divider: string;
+  pluralizationDivider: string;
 }
 
 export interface SetLocaleOptions extends LoadLocaleOptions {
@@ -144,17 +144,13 @@ const i18n = {
 
     return translationWithHideMissing;
   },
-  _getPluralization(translation: string, locale: string, count?: number) {
+  _pluralizeTranslation(translation: string, locale: string, count?: number) {
     const pluralizationRules = _i18n.options.pluralizationRules;
-    if (count !== undefined && typeof translation === 'string') {
-      const index =
-        pluralizationRules && pluralizationRules[locale]
-          ? pluralizationRules[locale](count)
-          : count;
+    if (count !== undefined) {
+      const index = pluralizationRules?.[locale]?.(count) ?? count;
 
-      const options = translation.split(_i18n.options.divider);
-      const pluralized =
-        options[index >= options.length ? options.length - 1 : index];
+      const options = translation.split(_i18n.options.pluralizationDivider);
+      const pluralized = options[Math.min(index, options.length - 1)];
       return pluralized;
     }
     return translation;
@@ -241,7 +237,7 @@ const i18n = {
       variables,
       translation,
     );
-    const pluralizedTranslation = i18n._getPluralization(
+    const pluralizedTranslation = i18n._pluralizeTranslation(
       interpolatedTranslation,
       locale,
       variables._count,
@@ -289,7 +285,7 @@ const i18n = {
     sameLocaleOnServerConnection: true,
     translationsHeaders: { 'Cache-Control': 'max-age=2628000' },
     pluralizationRules: {},
-    divider: ' | ',
+    pluralizationDivider: ' | ',
   } as Options,
   runWithLocale<T>(locale = '', fn: () => T): T {
     return i18n._contextualLocale.withValue(i18n.normalize(locale), fn);

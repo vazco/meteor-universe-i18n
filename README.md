@@ -360,6 +360,7 @@ i18n.setOptions({
       if (units === 0) return 2;
       if (tens === 1 && units === 1) return 0;
       if (units > 1 && units < 5) return 1;
+      return 2;
     },
   },
 });

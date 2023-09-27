@@ -20,6 +20,7 @@ export interface GetCacheFunction {
 export interface GetTranslationOptions {
   _locale?: string;
   _namespace?: string;
+  _count?: number;
   [key: string]: unknown;
 }
 
@@ -43,6 +44,8 @@ export interface Options {
   pathOnHost: string;
   sameLocaleOnServerConnection: boolean;
   translationsHeaders: Record<string, string>;
+  pluralizationRules: Record<string, (count: number) => number>;
+  pluralizationDivider: string;
 }
 
 export interface SetLocaleOptions extends LoadLocaleOptions {
@@ -141,6 +144,17 @@ const i18n = {
 
     return translationWithHideMissing;
   },
+  _pluralizeTranslation(translation: string, locale: string, count?: number) {
+    const pluralizationRules = _i18n.options.pluralizationRules;
+    if (count !== undefined) {
+      const index = pluralizationRules?.[locale]?.(count) ?? count;
+
+      const options = translation.split(_i18n.options.pluralizationDivider);
+      const pluralized = options[Math.min(index, options.length - 1)];
+      return pluralized;
+    }
+    return translation;
+  },
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   __(...args: unknown[]) {
     // This will be aliased to i18n.getTranslation.
@@ -223,8 +237,13 @@ const i18n = {
       variables,
       translation,
     );
+    const pluralizedTranslation = i18n._pluralizeTranslation(
+      interpolatedTranslation,
+      locale,
+      variables._count,
+    );
 
-    return interpolatedTranslation;
+    return pluralizedTranslation;
   },
   getTranslations(key?: string, locale?: string) {
     if (locale === undefined) {
@@ -265,6 +284,8 @@ const i18n = {
     pathOnHost: 'universe/locale/',
     sameLocaleOnServerConnection: true,
     translationsHeaders: { 'Cache-Control': 'max-age=2628000' },
+    pluralizationRules: {},
+    pluralizationDivider: ' | ',
   } as Options,
   runWithLocale<T>(locale = '', fn: () => T): T {
     return i18n._contextualLocale.withValue(i18n.normalize(locale), fn);

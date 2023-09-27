@@ -28,23 +28,25 @@ The package supports:
 
 **Table of Contents**
 
-- [Installation](https://github.com/vazco/meteor-universe-i18n/#installation)
-  - [Typescript](https://github.com/vazco/meteor-universe-i18n/#typescript)
-- [Migration to v2](https://github.com/vazco/meteor-universe-i18n/#migration-to-v2)
-- [Usage](https://github.com/vazco/meteor-universe-i18n/#usage)
-  - [Setting/getting locale](https://github.com/vazco/meteor-universe-i18n/#settinggetting-locale)
-  - [Adding translations by methods](https://github.com/vazco/meteor-universe-i18n/#adding-translations-by-methods)
-  - [Getting translations](https://github.com/vazco/meteor-universe-i18n/#getting-translations)
-- [Translations files](https://github.com/vazco/meteor-universe-i18n/#translations-files)
-  - [Recognition locale of translation](https://github.com/vazco/meteor-universe-i18n/#recognition-locale-of-translation)
-  - [Namespace](https://github.com/vazco/meteor-universe-i18n/#namespace)
-    - [Translation in packages](https://github.com/vazco/meteor-universe-i18n/#translation-in-packages)
-    - [Translation in application](https://github.com/vazco/meteor-universe-i18n/#translation-in-application)
-- [API](https://github.com/vazco/meteor-universe-i18n/#api)
-- [Integrations](https://github.com/vazco/meteor-universe-i18n/#integrations)
-  - [Integration with React](https://github.com/vazco/meteor-universe-i18n/#integration-with-react)
-  - [Integration with Blaze](https://github.com/vazco/meteor-universe-i18n/#integration-with-blaze)
-  - [Integration with SimpleSchema](https://github.com/vazco/meteor-universe-i18n/blob/master/README.md#integration-with-simpleschema-package)
+- [Installation](#installation)
+  - [Typescript](#typescript)
+- [Migration to v2](#migration-to-v2)
+- [Usage](#usage)
+  - [Setting/getting locale](#settinggetting-locale)
+  - [Adding translations by methods](#adding-translations-by-methods)
+  - [Getting translations](#getting-translations)
+- [Translations files](#translations-files)
+  - [Recognition locale of translation](#recognition-locale-of-translation)
+  - [Namespace](#namespace)
+    - [Translation in packages](#translation-in-packages)
+    - [Translation in application](#translation-in-application)
+- [Pluralization](#pluralization)
+  - [Custom rules](#custom-rules)
+- [API](#api)
+- [Integrations](#integrations)
+  - [Integration with React](#integration-with-react)
+  - [Integration with Blaze](#integration-with-blaze)
+  - [Integration with SimpleSchema](#integration-with-simpleschema-package)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -318,6 +320,68 @@ i18n.offChangeLocale(fn);
 
 // does something on the first language change and then stops the listener
 i18n.onceChangeLocale(fn);
+```
+
+## Pluralization
+
+With this package, you can translate with pluralization. To do that you need to use the pipe separator `|` in your locale translations, like in the example below:
+
+```yml
+_locale: 'en'
+phone: 'zero phones | one phone | two phones | {$_count} phones'
+```
+
+Then just add the `_count` argument to the `getTranslation` options:
+
+```js
+i18n.getTranslation('phone', { _count: 0 }); // -> zero phones
+i18n.getTranslation('phone', { _count: 1 }); // -> one phone
+i18n.getTranslation('phone', { _count: 2 }); // -> two phones
+i18n.getTranslation('phone', { _count: 3 }); // -> 3 phones
+i18n.getTranslation('phone', { _count: 1000 }); // -> 1000 phones
+```
+
+It is possible to override the default separator `|` with custom one by adding the `pluralizationDivider` property to `i18n.setOptions`.
+
+### Custom rules
+
+Some languages (e.g. from the Slavic group) may have more complicated pluralization rules. It is possible to define custom pluralization rules to handle such cases. To do that add the `pluralizationRules` property to `i18n.setOptions`:
+
+```js
+i18n.setOptions({
+  // Key - language to apply the rule for, e.g. 'pl'
+  // Value - function that takes the count as argument and returns index of the correct pluralization form
+  pluralizationRules: {
+    pl: count => {
+      const tens = count % 100;
+      const units = tens % 10;
+
+      if (tens > 10 && tens < 20) return 2;
+      if (units === 0) return 2;
+      if (tens === 1 && units === 1) return 0;
+      if (units > 1 && units < 5) return 1;
+      return 2;
+    },
+  },
+});
+```
+
+```yml
+_locale: 'pl'
+phone: '{$_count} telefon | {$_count} telefony | {$_count} telefonów'
+```
+
+Template:
+
+```js
+i18n.getTranslation('phone', { _count: 0 }); // -> 0 telefonów
+i18n.getTranslation('phone', { _count: 1 }); // -> 1 telefon
+i18n.getTranslation('phone', { _count: 2 }); // -> 2 telefony
+i18n.getTranslation('phone', { _count: 3 }); // -> 3 telefony
+i18n.getTranslation('phone', { _count: 4 }); // -> 4 telefony
+i18n.getTranslation('phone', { _count: 5 }); // -> 5 telefonów
+i18n.getTranslation('phone', { _count: 232 }); // -> 232 telefony
+i18n.getTranslation('phone', { _count: 1000 }); // -> 1000 telefonów
 ```
 
 ## API

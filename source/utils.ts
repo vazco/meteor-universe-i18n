@@ -12,7 +12,6 @@ export function get(object: UnknownRecord, path: string) {
     if (typeof object !== 'object' || object === null) {
       break;
     }
-
     object = object[key] as UnknownRecord;
   }
 

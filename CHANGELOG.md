@@ -1,3 +1,7 @@
+## [v2.1.0](https://github.com/vazco/meteor-universe-i18n/tree/v2.1.0) (2023-09-27)
+
+- **Added:** Pluralization ([\#183](https://github.com/vazco/meteor-universe-i18n/pull/183))
+
 ## [v2.0.8](https://github.com/vazco/meteor-universe-i18n/tree/v2.0.8) (2023-05-24)
 
 - **Fixed:** Cache management ([\#182](https://github.com/vazco/meteor-universe-i18n/pull/182))

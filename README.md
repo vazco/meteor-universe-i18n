@@ -185,6 +185,7 @@ const onChangeLocale = locale => {
     import('../translations/es.i18n.json');
     import('../translations/fr.i18n.yml');
     import('../translations/pl.i18n.yml');
+    // import all locales...
   }
   import(`../translations/${locale}.i18n.json}`).then(() => {
     i18n.setLocale(locale);

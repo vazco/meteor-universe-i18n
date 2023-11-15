@@ -35,6 +35,8 @@ The package supports:
   - [Setting/getting locale](#settinggetting-locale)
   - [Adding translations by methods](#adding-translations-by-methods)
   - [Getting translations](#getting-translations)
+  - [String interpolation](#string-interpolation)
+  - [Dynamic imports](#dynamic-imports)
 - [Translations files](#translations-files)
   - [Recognition locale of translation](#recognition-locale-of-translation)
   - [Namespace](#namespace)
@@ -167,6 +169,35 @@ i18n.__('hello', { name: 'Ania' }); // output: Hello Ania!
 i18n.__('lengthOfArr', { length: ['a', 'b', 'c'].length }); // output: length 3
 i18n.__('items', ['a', 'b', 'c']); // output: The first item is a and the last one is c!
 ```
+
+### Dynamic imports
+
+Loading all your locale files on the client side may unnecessarily increase the bundle size of the client application. Instead, you can use dynamic import to load additional locales only when necessary. There are two ways of doing so:
+
+Method 1:
+
+Using `import()` with dynamic expressions as explained in the [meteor documentation](https://docs.meteor.com/packages/dynamic-import#Using-import-with-dynamic-expressions), e.g.
+
+```js
+const onChangeLocale = locale => {
+  if (false) {
+    import('../translations/en.i18n.yml');
+    import('../translations/es.i18n.json');
+    import('../translations/fr.i18n.yml');
+    import('../translations/pl.i18n.yml');
+    // import all locales...
+  }
+  import(`../translations/${locale}.i18n.json}`).then(() => {
+    i18n.setLocale(locale);
+  });
+};
+```
+
+Method 2:
+
+1. Load locales on the server side. Either `import` files statically or use `addTranslations` if loading locales from other sources, e.g. database.
+
+2. On the client call `setLocale` which will load the respective locale via a `GET` request to the configured [hostUrl](#api).
 
 ## Translations files
 

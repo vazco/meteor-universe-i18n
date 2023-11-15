@@ -10,6 +10,7 @@ Package.describe({
 const npmDependencies = {
   'js-yaml': '4.1.0',
   'strip-json-comments': '3.1.1',
+  '@babel/runtime': '7.20.7',
 };
 
 Npm.depends(npmDependencies);
@@ -47,8 +48,6 @@ Package.onUse(function (api) {
 Package.onTest(function (api) {
   api.use([
     'meteortesting:mocha',
-    'practicalmeteor:chai',
-    'practicalmeteor:sinon',
     'typescript',
     'universe:i18n',
   ]);

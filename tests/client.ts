@@ -1,5 +1,7 @@
 import { i18n } from '../source/client';
 
+import chai from 'chai';
+
 const expect = chai.expect;
 
 describe('universe-i18n - client', () => {

@@ -1,6 +1,6 @@
 /// <reference path="meteor_practicalmeteor_sinon.d.ts"/>
-
-import { sinon } from 'meteor/practicalmeteor:sinon';
+import chai from 'chai';
+import sinon from 'sinon';
 
 import { i18n } from '../source/common';
 

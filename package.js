@@ -10,12 +10,13 @@ Package.describe({
 const npmDependencies = {
   'js-yaml': '4.1.0',
   'strip-json-comments': '3.1.1',
+  '@babel/runtime': '7.20.7',
 };
 
 Npm.depends(npmDependencies);
 Package.registerBuildPlugin({
   name: 'universe:i18n',
-  use: ['caching-compiler@1.2.2', 'tracker', 'typescript'],
+  use: ['caching-compiler@1.2.2 || 2.0.0-beta300.6 || 2.0.0', 'tracker', 'typescript'],
   sources: [
     'source/common.ts',
     'source/compiler.ts',
@@ -26,7 +27,7 @@ Package.registerBuildPlugin({
 });
 
 Package.onUse(function (api) {
-  api.versionsFrom('2.3');
+  api.versionsFrom(['2.3', '3.0-beta.6']);
   api.use([
     'check',
     'ddp',
@@ -46,9 +47,7 @@ Package.onUse(function (api) {
 
 Package.onTest(function (api) {
   api.use([
-    'meteortesting:mocha',
-    'practicalmeteor:chai',
-    'practicalmeteor:sinon',
+    'meteortesting:mocha@3.0.3-alpha300.11',
     'typescript',
     'universe:i18n',
   ]);

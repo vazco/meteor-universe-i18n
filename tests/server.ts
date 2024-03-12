@@ -1,4 +1,5 @@
 import { i18n } from '../source/server';
+import chai from 'chai';
 
 const expect = chai.expect;
 

@@ -47,7 +47,7 @@ Package.onUse(function (api) {
 
 Package.onTest(function (api) {
   api.use([
-    'meteortesting:mocha',
+    'meteortesting:mocha@3.0.3-alpha300.11',
     'typescript',
     'universe:i18n',
   ]);

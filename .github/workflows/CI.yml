@@ -25,7 +25,7 @@ jobs:
           node-version: '20.x'
 
       - name: Install Meteor
-        run: npx meteor
+        run: npm install -g meteor
 
       - name: Install dependencies
         run: meteor npm install

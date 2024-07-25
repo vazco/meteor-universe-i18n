@@ -27,6 +27,9 @@ jobs:
       - name: Install Meteor
         run: npm install -g meteor
 
+      - name: Update PATH
+        run: export PATH=/home/runner/.meteor:$PATH
+
       - name: Install dependencies
         run: meteor npm install
 

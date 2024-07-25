@@ -28,7 +28,7 @@ jobs:
         run: npm install -g meteor
 
       - name: Update PATH
-        run: export PATH=$HOME/.meteor:$PATH
+        run: echo "$HOME/.meteor" >> $GITHUB_PATH
 
       - name: Install dependencies
         run: meteor npm ci

@@ -15,7 +15,7 @@ const npmDependencies = {
 Npm.depends(npmDependencies);
 Package.registerBuildPlugin({
   name: 'universe:i18n',
-  use: ['caching-compiler@1.2.2 || 2.0.0-beta300.6 || 2.0.0', 'tracker', 'typescript'],
+  use: ['caching-compiler@1.2.2 || 2.0.0', 'tracker', 'typescript'],
   sources: [
     'source/common.ts',
     'source/compiler.ts',
@@ -26,7 +26,7 @@ Package.registerBuildPlugin({
 });
 
 Package.onUse(function (api) {
-  api.versionsFrom(['2.3', '3.0-beta.6']);
+  api.versionsFrom(['2.3', '3.0']);
   api.use([
     'check',
     'ddp',

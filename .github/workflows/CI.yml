@@ -28,10 +28,10 @@ jobs:
         run: npm install -g meteor
 
       - name: Update PATH
-        run: export PATH=/home/runner/.meteor:$PATH
+        run: export PATH=$HOME/.meteor:$PATH
 
       - name: Install dependencies
-        run: meteor npm install
+        run: meteor npm ci
 
       - name: Lint
         run: meteor npm run lint:ts

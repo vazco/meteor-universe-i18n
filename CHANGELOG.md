@@ -1,3 +1,7 @@
+## [v3.0.1](https://github.com/vazco/meteor-universe-i18n/tree/v3.0.1) (2024-09-13)
+
+- **Fixed:** Preserving context of environment variables in an altered publication ([\#188](https://github.com/vazco/meteor-universe-i18n/pull/191))
+
 ## [v3.0.0](https://github.com/vazco/meteor-universe-i18n/tree/v3.0.0) (2024-07-26)
 
 - **Breaking:** Added support for Meteor 3.0 ([\#188](https://github.com/vazco/meteor-universe-i18n/pull/188))

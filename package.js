@@ -1,6 +1,6 @@
 Package.describe({
   name: 'universe:i18n',
-  version: '3.0.0',
+  version: '3.0.1',
   summary:
     'Lightweight i18n, YAML & JSON translation files, string interpolation, incremental & remote loading',
   git: 'https://github.com/vazco/meteor-universe-i18n.git',

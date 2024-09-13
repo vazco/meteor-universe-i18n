@@ -59,4 +59,5 @@ Package.onTest(function (api) {
   ]);
   api.addFiles(['tests/client.ts'], 'client');
   // api.addFiles(['tests/server.ts', 'tests/common.ts'], 'server');
+  api.addFiles(['tests/server.ts'], 'server');
 });

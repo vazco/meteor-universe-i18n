@@ -57,7 +57,6 @@ Package.onTest(function (api) {
     'tests/data/pl-pl/x.i18n.yml',
     'tests/data/z.i18n.yml',
   ]);
-  api.addFiles(['tests/client.ts'], 'client');
-  // api.addFiles(['tests/server.ts', 'tests/common.ts'], 'server');
-  api.addFiles(['tests/server.ts'], 'server');
+  api.addFiles(['tests/client.ts', 'tests/common.ts'], 'client');
+  api.addFiles(['tests/server.ts', 'tests/common.ts'], 'server');
 });

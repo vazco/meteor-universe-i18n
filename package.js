@@ -43,3 +43,20 @@ Package.onUse(function (api) {
   api.mainModule('source/server.ts', 'server');
   api.export(['i18n', '_i18n']);
 });
+
+Package.onTest(function (api) {
+  api.use(['meteortesting:mocha', 'typescript', 'universe:i18n']);
+
+  api.addFiles([
+    'tests/data/de/ch.i18n.yml',
+    'tests/data/en_gb.i18n.json',
+    'tests/data/es-es.i18n.json',
+    'tests/data/fr.i18n.yml',
+    'tests/data/it-it.i18n.yml',
+    'tests/data/nest/el/y.i18n.yml',
+    'tests/data/pl-pl/x.i18n.yml',
+    'tests/data/z.i18n.yml',
+  ]);
+  api.addFiles(['tests/client.ts', 'tests/common.ts'], 'client');
+  api.addFiles(['tests/server.ts', 'tests/common.ts'], 'server');
+});

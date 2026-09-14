@@ -5,7 +5,6 @@ import { DDP } from 'meteor/ddp';
 import { Meteor } from 'meteor/meteor';
 import { WebApp } from 'meteor/webapp';
 import stripJsonComments from 'strip-json-comments';
-import { parse, resolve } from 'url';
 
 import { getJS, getJSON, getYML } from './code-generators';
 import { GetCacheEntry, GetCacheFunction, i18n } from './common';
@@ -77,12 +76,12 @@ i18n.loadLocale = async (
     queryParams.ts = new Date().getTime();
   }
 
-  const url = resolve(
-    host,
-    pathOnHost + normalizedLocale + '?type=' + queryParams.type,
-  );
-
   try {
+    // WHATWG URL instead of url.resolve(), which Node 24 flags (DEP0169).
+    const url = new URL(
+      pathOnHost + normalizedLocale + '?type=' + queryParams.type,
+      host,
+    ).href;
     const data = await fetch(url, { method: 'GET' });
     const json = await data.json();
     const { content } = json || {};
@@ -124,19 +123,37 @@ i18n.setLocaleOnConnection = (
   throw new Error(`There is no connection under id: ${connectionId}`);
 };
 
-WebApp.connectHandlers.use('/universe/locale/', ((request, response, next) => {
-  const {
-    pathname,
-    query: {
-      attachment = false,
-      diff = false,
-      namespace,
-      preload = false,
-      type,
-    },
-  } = parse(request.url || '', true);
+// WHATWG URL instead of url.parse(), which Node 24 flags (DEP0169). The base is
+// a placeholder: only the path and query of the request are read.
+function parseLocaleRequest(url = '') {
+  let requestUrl: URL;
+  try {
+    requestUrl = new URL(url, 'http://localhost');
+  } catch {
+    return undefined;
+  }
 
-  if (type && !['js', 'json', 'yml'].includes(type as string)) {
+  const query = requestUrl.searchParams;
+  return {
+    attachment: query.get('attachment') ?? false,
+    diff: query.get('diff') ?? false,
+    namespace: query.get('namespace') ?? undefined,
+    pathname: requestUrl.pathname,
+    preload: query.get('preload') ?? false,
+    type: query.get('type') ?? undefined,
+  };
+}
+
+WebApp.connectHandlers.use('/universe/locale/', ((request, response, next) => {
+  const parsed = parseLocaleRequest(request.url);
+  if (!parsed) {
+    next();
+    return;
+  }
+
+  const { attachment, diff, namespace, pathname, preload, type } = parsed;
+
+  if (type && !['js', 'json', 'yml'].includes(type)) {
     response.writeHead(415);
     response.end();
     return;
